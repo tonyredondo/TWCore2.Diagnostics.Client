@@ -5,6 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { Configuration } from './services/api/configuration';
 import { QueryService } from './services/api/api/query.service';
 
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es';
+registerLocaleData(localeEs, 'es-ES', localeEsExtra);
+
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -65,16 +71,17 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   providers: [
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy,
     },
-    QueryService
+    QueryService,
+    { provide: LOCALE_ID, useValue: 'es-ES' }
   ],
-  bootstrap: [ AppComponent ]
+  bootstrap: [ AppComponent ],
 })
 export class AppModule {
 

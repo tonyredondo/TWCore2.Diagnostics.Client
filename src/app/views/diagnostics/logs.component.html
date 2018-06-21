@@ -1,24 +1,76 @@
 <div>
-Aqui va el Log
-<br/>
-<br/>
-<br/>
-Applications:
 
-<div *ngFor="let item of apps">
-  {{item.application}}
-  <br/>
-  {{ getLogData(item.application, item.levels[0]).data | async | json }}
-  <br/>
-  <br/>
-  <br/>
-</div>
+    <div class="col-xs-12 col-12 col-md-4 form-group">
+        <input type="text"
+               placeholder="Daterangepicker"
+               class="form-control"
+               bsDaterangepicker>
+      </div>
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+  <div class="row">&nbsp;</div>
+  <div *ngFor="let item of (apps | async)">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card" [ngClass]="{
+            'card-accent-success': currentLogData(item).level === 'Stats',
+            'card-accent-danger': currentLogData(item).level === 'Error',
+            'card-accent-warning': currentLogData(item).level === 'Warning',
+            'card-accent-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
+          <div class="card-header">
+            <i class="fa fa-align-justify"></i>
+            <b>{{item.application}}</b>
 
+            <div class="btn-group float-right" dropdown>
+              <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
+                        'btn-success': currentLogData(item).level === 'Stats',
+                        'btn-danger': currentLogData(item).level === 'Error',
+                        'btn-warning': currentLogData(item).level === 'Warning',
+                        'btn-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
+                {{currentLogData(item).level}}
+                <span class="caret"></span>
+              </button>
+              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                <li role="menuitem" *ngFor="let level of item.levels">
+                  <a class="dropdown-item" (click)="changeLevel(item, level)">{{level}}</a>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+          <div class="card-body">
+            <table class="table table-sm table-striped">
+              <thead>
+                <tr>
+                  <th style="width:15%">Timestamp</th>
+                  <th style="width:15%">Type</th>
+                  <th style="width:65%">Message</th>
+                  <th style="width:5%">Machine</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let dataItem of currentLogData(item).unwrappedData?.data">
+                  <td>{{dataItem.timestamp | date:'short'}}</td>
+                  <td>{{dataItem.type}}</td>
+                  <td class="breakWord">{{dataItem.message}}</td>
+                  <td>{{dataItem.machine}}</td>
+                </tr>
+              </tbody>
+            </table>
+            <ul class="pagination" *ngIf="currentLogData(item).unwrappedData?.totalPages > 1">
+              <li class="page-item">
+                <a class="page-link" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber - 1)">Prev</a>
+              </li>
+              <li *ngFor="let i of currentLogData(item).totalPagesArray" class="page-item" [ngClass]="{ 'active' : i == currentLogData(item).unwrappedData?.pageNumber }">
+                <a class="page-link" (click)="goToPage(item, i)">{{i+1}}</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber + 1)">Next</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">&nbsp;</div>
+  </div>
 </div>
