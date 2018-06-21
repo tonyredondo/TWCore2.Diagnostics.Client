@@ -113,6 +113,7 @@ export class LogsComponent implements OnInit {
   changeLevel(item: ApplicationsLevels, level: string) {
     const value = this.currentLogData(item);
     value.level = level;
+    value.page = 0;
     value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, this.bsValue[0], this.bsValue[1], value.page, value.pageSize);
     value.data.subscribe(x => {
       value.unwrappedData = x;
