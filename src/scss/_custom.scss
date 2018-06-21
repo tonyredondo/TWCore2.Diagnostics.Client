@@ -24,3 +24,6 @@
 .bs-datepicker-multiple + .bs-datepicker-multiple{
   margin-left: 5px;
 }
+.table-sm th, .table-sm td {
+  border-top-width: 0px !important;
+}
