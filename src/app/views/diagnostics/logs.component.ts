@@ -25,7 +25,8 @@ export class LogsComponent implements OnInit {
   async ngOnInit() {
     this.bsConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
-      maxDate: moment().toDate()
+      maxDate: moment().toDate(),
+      showWeekNumbers: false
     });
     this.bsValue = [ moment().subtract(7, 'd').toDate(), moment().toDate() ];
     this.localeService.use('es');

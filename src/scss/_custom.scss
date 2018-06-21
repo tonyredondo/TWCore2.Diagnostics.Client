@@ -21,3 +21,6 @@
 .bs-datepicker-container{
   padding: 5px !important;
 }
+.bs-datepicker-multiple + .bs-datepicker-multiple{
+  margin-left: 5px;
+}
