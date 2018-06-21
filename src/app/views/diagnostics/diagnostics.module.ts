@@ -16,6 +16,12 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 // Components Routing
 import { DiagnosticsRoutingModule } from './diagnostics-routing.module';
 
+// Components
+import { LogsComponent } from './logs.component';
+import { TracesComponent } from './traces.component';
+import { StatusComponent } from './status.component';
+import { SearchComponent } from './search.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -31,7 +37,10 @@ import { DiagnosticsRoutingModule } from './diagnostics-routing.module';
     TooltipModule.forRoot()
   ],
   declarations: [
-
+    LogsComponent,
+    TracesComponent,
+    StatusComponent,
+    SearchComponent
   ]
 })
 export class DiagnosticsModule { }
