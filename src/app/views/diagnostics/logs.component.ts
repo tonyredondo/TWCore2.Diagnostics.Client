@@ -8,6 +8,8 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
 defineLocale('es', esLocale);
 
+import { moment } from 'ngx-bootstrap/chronos/test/chain';
+
 @Component({
   templateUrl: 'logs.component.html'
 })
@@ -21,18 +23,19 @@ export class LogsComponent implements OnInit {
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
 
   async ngOnInit() {
-    this.getApplications();
     this.bsConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
-      maxDate: new Date(),
-      value: [ new Date(), new Date() ]
+      maxDate: moment().toDate()
     });
-    this.bsValue = [ new Date(), new Date() ];
+    this.bsValue = [ moment().subtract(7, 'd').toDate(), moment().toDate() ];
     this.localeService.use('es');
+
+    this.getApplications();
   }
 
   async getApplications() {
-    this.apps = this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name);
+    this.apps = this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name, this.bsValue[0], this.bsValue[1]);
+    this.dataCache = {};
   }
 
   currentLogData(item: ApplicationsLevels): ICachedData {
@@ -43,7 +46,7 @@ export class LogsComponent implements OnInit {
         level: item.levels[0],
         page: 0,
         pageSize: this.defaultPageSize,
-        data: this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, item.levels[0], undefined, undefined, 0, this.defaultPageSize),
+        data: this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, item.levels[0], this.bsValue[0], this.bsValue[1], 0, this.defaultPageSize),
         unwrappedData: null,
         totalPagesArray: []
       };
@@ -55,7 +58,7 @@ export class LogsComponent implements OnInit {
       return newValue;
     }
     if (value.data === null) {
-      value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, undefined, undefined, value.page, value.pageSize);
+      value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, this.bsValue[0], this.bsValue[1], value.page, value.pageSize);
       value.data.subscribe(x => {
         value.unwrappedData = x;
         value.totalPagesArray = Array(x.totalPages).fill(0).map((a, i) => i);
@@ -100,7 +103,7 @@ export class LogsComponent implements OnInit {
       return;
     }
     value.page = page;
-    value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, undefined, undefined, value.page, value.pageSize);
+    value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, this.bsValue[0], this.bsValue[1], value.page, value.pageSize);
     value.data.subscribe(x => {
       value.unwrappedData = x;
       value.totalPagesArray = Array(x.totalPages).fill(0).map((a, i) => i);
@@ -110,7 +113,15 @@ export class LogsComponent implements OnInit {
   changeLevel(item: ApplicationsLevels, level: string) {
     const value = this.currentLogData(item);
     value.level = level;
-    value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, undefined, undefined, value.page, value.pageSize);
+    value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, this.bsValue[0], this.bsValue[1], value.page, value.pageSize);
+    value.data.subscribe(x => {
+      value.unwrappedData = x;
+      value.totalPagesArray = Array(x.totalPages).fill(0).map((a, i) => i);
+    });
+  }
+  changeRange(item: ApplicationsLevels) {
+    const value = this.currentLogData(item);
+    value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, this.bsValue[0], this.bsValue[1], value.page, value.pageSize);
     value.data.subscribe(x => {
       value.unwrappedData = x;
       value.totalPagesArray = Array(x.totalPages).fill(0).map((a, i) => i);

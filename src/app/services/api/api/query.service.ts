@@ -65,15 +65,25 @@ export class QueryService {
      *
      *
      * @param environment
+     * @param fromDate
+     * @param toDate
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe?: 'body', reportProgress?: boolean): Observable<Array<ApplicationsLevels>>;
-    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ApplicationsLevels>>>;
-    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ApplicationsLevels>>>;
-    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<Array<ApplicationsLevels>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ApplicationsLevels>>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ApplicationsLevels>>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (environment === null || environment === undefined) {
             throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentLogsApplicationsGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
         }
 
         let headers = this.defaultHeaders;
@@ -101,6 +111,7 @@ export class QueryService {
 
         return this.httpClient.get<Array<ApplicationsLevels>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/applications`,
             {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

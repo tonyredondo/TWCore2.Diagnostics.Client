@@ -5,7 +5,7 @@
             <input type="text"
                    placeholder="Showing dates"
                    class="form-control text-center"
-                   bsDaterangepicker  [bsConfig]="bsConfig" [bsValue]="bsValue">
+                   bsDaterangepicker  [bsConfig]="bsConfig" [bsValue]="bsValue" [(ngModel)]="bsValue" (ngModelChange)="getApplications()">
         </div>
     </div>
 
