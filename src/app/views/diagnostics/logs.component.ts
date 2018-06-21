@@ -3,6 +3,10 @@ import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { ApplicationsLevels, PagedListNodeLogItem } from '../../services/api';
 import { Observable } from 'rxjs/Observable';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { esLocale } from 'ngx-bootstrap/locale';
+defineLocale('es', esLocale);
 
 @Component({
   templateUrl: 'logs.component.html'
@@ -10,12 +14,21 @@ import { Observable } from 'rxjs/Observable';
 export class LogsComponent implements OnInit {
   apps: Observable<ApplicationsLevels[]>;
   dataCache: { [index: string]: ICachedData } = {};
+  bsConfig: Partial<BsDatepickerConfig>;
+  bsValue: Date[];
   private defaultPageSize = 15;
 
-  constructor(private _queryService: QueryService) { }
+  constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
 
   async ngOnInit() {
     this.getApplications();
+    this.bsConfig = Object.assign({}, {
+      containerClass: 'theme-dark-blue',
+      maxDate: new Date(),
+      value: [ new Date(), new Date() ]
+    });
+    this.bsValue = [ new Date(), new Date() ];
+    this.localeService.use('es');
   }
 
   async getApplications() {
