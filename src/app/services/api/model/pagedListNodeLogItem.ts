@@ -16,5 +16,6 @@ export interface PagedListNodeLogItem {
     pageNumber?: number;
     pageSize?: number;
     totalResults?: number;
+    totalPages?: number;
     data?: Array<NodeLogItem>;
 }

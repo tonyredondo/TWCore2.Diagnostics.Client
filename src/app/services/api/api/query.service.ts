@@ -18,7 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs/Observable';
 
-import { BasicInfo } from '../model/basicInfo';
+import { ApplicationsLevels } from '../model/applicationsLevels';
 import { NodeStatusItem } from '../model/nodeStatusItem';
 import { PagedListNodeLogItem } from '../model/pagedListNodeLogItem';
 import { PagedListNodeStatusItem } from '../model/pagedListNodeStatusItem';
@@ -64,13 +64,17 @@ export class QueryService {
     /**
      *
      *
+     * @param environment
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiQueryApplicationsGet(observe?: 'body', reportProgress?: boolean): Observable<Array<BasicInfo>>;
-    public apiQueryApplicationsGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<BasicInfo>>>;
-    public apiQueryApplicationsGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<BasicInfo>>>;
-    public apiQueryApplicationsGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe?: 'body', reportProgress?: boolean): Observable<Array<ApplicationsLevels>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ApplicationsLevels>>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ApplicationsLevels>>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentLogsApplicationsGet.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -82,9 +86,9 @@ export class QueryService {
             'application/xml',
             'text/xml',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -95,8 +99,83 @@ export class QueryService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<BasicInfo>>(`${this.basePath}/api/query/applications`,
+        return this.httpClient.get<Array<ApplicationsLevels>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/applications`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param environment
+     * @param application
+     * @param level
+     * @param fromDate
+     * @param toDate
+     * @param page
+     * @param pageSize
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryByEnvironmentLogsByApplicationByLevelGet(environment: string, application: string, level: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean): Observable<PagedListNodeLogItem>;
+    public apiQueryByEnvironmentLogsByApplicationByLevelGet(environment: string, application: string, level: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagedListNodeLogItem>>;
+    public apiQueryByEnvironmentLogsByApplicationByLevelGet(environment: string, application: string, level: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagedListNodeLogItem>>;
+    public apiQueryByEnvironmentLogsByApplicationByLevelGet(environment: string, application: string, level: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentLogsByApplicationByLevelGet.');
+        }
+        if (application === null || application === undefined) {
+            throw new Error('Required parameter application was null or undefined when calling apiQueryByEnvironmentLogsByApplicationByLevelGet.');
+        }
+        if (level === null || level === undefined) {
+            throw new Error('Required parameter level was null or undefined when calling apiQueryByEnvironmentLogsByApplicationByLevelGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+        if (page !== undefined) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (pageSize !== undefined) {
+            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<PagedListNodeLogItem>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/${encodeURIComponent(String(application))}/${encodeURIComponent(String(level))}`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
@@ -156,9 +235,9 @@ export class QueryService {
             'application/xml',
             'text/xml',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -235,9 +314,9 @@ export class QueryService {
             'application/xml',
             'text/xml',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -310,9 +389,9 @@ export class QueryService {
             'application/xml',
             'text/xml',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -367,9 +446,9 @@ export class QueryService {
             'application/json',
             'text/json',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -440,9 +519,9 @@ export class QueryService {
             'application/json',
             'text/json',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -515,9 +594,9 @@ export class QueryService {
             'application/xml',
             'text/xml',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -611,9 +690,9 @@ export class QueryService {
             'application/xml',
             'text/xml',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -685,9 +764,9 @@ export class QueryService {
             'application/xml',
             'text/xml',
             'application/binary-formatter',
-            'application/w-binary',
+            'application/n-binary',
             'application/pw-binary',
-            'application/n-binary'
+            'application/w-binary'
         ];
         let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected != undefined) {
@@ -701,6 +780,50 @@ export class QueryService {
         return this.httpClient.get<PagedListNodeTraceItem>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/traces/search/${encodeURIComponent(String(search))}`,
             {
                 params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryGet(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public apiQueryGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public apiQueryGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public apiQueryGet(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<string>>(`${this.basePath}/api/query`,
+            {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

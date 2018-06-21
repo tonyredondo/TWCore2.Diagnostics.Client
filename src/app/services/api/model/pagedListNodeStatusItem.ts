@@ -16,5 +16,6 @@ export interface PagedListNodeStatusItem {
     pageNumber?: number;
     pageSize?: number;
     totalResults?: number;
+    totalPages?: number;
     data?: Array<NodeStatusItem>;
 }

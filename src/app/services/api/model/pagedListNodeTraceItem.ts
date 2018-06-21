@@ -16,5 +16,6 @@ export interface PagedListNodeTraceItem {
     pageNumber?: number;
     pageSize?: number;
     totalResults?: number;
+    totalPages?: number;
     data?: Array<NodeTraceItem>;
 }

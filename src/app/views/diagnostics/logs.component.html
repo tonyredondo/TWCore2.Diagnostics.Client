@@ -4,12 +4,19 @@ Aqui va el Log
 <br/>
 <br/>
 Applications:
-{{apps | json}}
+
+<div *ngFor="let item of apps">
+  {{item.application}}
+  <br/>
+  {{ getLogData(item.application, item.levels[0]).data | async | json }}
+  <br/>
+  <br/>
+  <br/>
+</div>
+
 <br/>
 <br/>
 <br/>
-<br/>
-{{data | json}}
 <br/>
 <br/>
 <br/>
