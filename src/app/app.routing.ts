@@ -51,6 +51,10 @@ export const routes: Routes = [
     },
     children: [
       {
+        path: 'diagnostics',
+        loadChildren: './views/diagnostics/diagnostics.module#DiagnosticsModule'
+      },
+      {
         path: 'base',
         loadChildren: './views/base/base.module#BaseModule'
       },

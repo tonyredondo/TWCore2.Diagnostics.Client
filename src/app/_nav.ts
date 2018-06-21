@@ -3,10 +3,34 @@ export const navItems = [
     name: 'Dashboard',
     url: '/dashboard',
     icon: 'icon-speedometer',
-    badge: {
-      variant: 'info',
-      text: 'NEW'
-    }
+    // badge: {
+    //   variant: 'info',
+    //   text: 'NEW'
+    // }
+  },
+  {
+    name: 'Search',
+    url: '/diagnostics/search',
+    icon: 'icon-magnifier'
+  },
+  {
+    title: true,
+    name: 'Diagnostics'
+  },
+  {
+    name: 'Logs',
+    url: '/diagnostics/logs',
+    icon: 'icon-docs'
+  },
+  {
+    name: 'Traces',
+    url: '/diagnostics/traces',
+    icon: 'icon-envelope'
+  },
+  {
+    name: 'Status',
+    url: '/diagnostics/status',
+    icon: 'icon-heart'
   },
   {
     title: true,
