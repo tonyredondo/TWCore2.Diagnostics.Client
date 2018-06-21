@@ -1,6 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
+import { CommonModule, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { Configuration } from './services/api/configuration';
+import { QueryService } from './services/api/api/query.service';
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
@@ -52,7 +55,9 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    CommonModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
@@ -62,10 +67,28 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     LoginComponent,
     RegisterComponent
   ],
-  providers: [{
-    provide: LocationStrategy,
-    useClass: HashLocationStrategy
-  }],
+  providers: [
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy,
+    },
+    QueryService
+  ],
   bootstrap: [ AppComponent ]
 })
-export class AppModule { }
+export class AppModule {
+
+  public static forRoot(configurationFactory: () => Configuration): ModuleWithProviders {
+    return {
+      ngModule: AppModule,
+      providers: [ { provide: Configuration, useFactory: configurationFactory } ]
+    };
+  }
+
+  constructor( @Optional() @SkipSelf() parentModule: AppModule) {
+    if (parentModule) {
+      throw new Error('ApiModule is already loaded. Import your base AppModule only.');
+    }
+  }
+
+}
