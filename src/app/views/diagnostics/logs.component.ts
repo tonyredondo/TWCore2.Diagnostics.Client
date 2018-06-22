@@ -5,8 +5,8 @@ import { ApplicationsLevels, PagedListNodeLogItem, LogLevelQuantity, Serializabl
 import { Observable } from 'rxjs/Observable';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
-import { esLocale } from 'ngx-bootstrap/locale';
-defineLocale('es', esLocale);
+import { enGbLocale } from 'ngx-bootstrap/locale';
+defineLocale('en-gb', enGbLocale);
 
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { LogLevelEnum } from '../../services/api/model/loglevel';
@@ -38,7 +38,7 @@ export class LogsComponent implements OnInit {
       showWeekNumbers: false
     });
     this.bsValue = [ moment().subtract(7, 'd').toDate(), moment().toDate() ];
-    this.localeService.use('es');
+    this.localeService.use('en-gb');
 
     this.getApplications();
   }

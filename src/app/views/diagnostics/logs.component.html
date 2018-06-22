@@ -84,7 +84,7 @@
             <table class="table table-sm table-striped table-log">
               <thead>
                 <tr>
-                  <th style="width: 100px">Timestamp</th>
+                  <th style="width: 135px">Timestamp</th>
                   <th style="width: 100px">Type</th>
                   <th style="width: max-content;">Message</th>
                   <th style="width: 100px">Machine</th>
@@ -92,7 +92,7 @@
               </thead>
               <tbody>
                 <tr *ngFor="let dataItem of currentLogData(item).unwrappedData?.data">
-                  <td>{{dataItem.timestamp | date:'short'}}</td>
+                  <td>{{dataItem.timestamp | date:'dd/MM/yy HH:mm:ss'}}</td>
                   <td>{{dataItem.type}}</td>
                   <td class="breakWord">{{dataItem.message}}
                     <span *ngIf="dataItem.exception != null" (click)="showException(dataItem.exception)" class="badge button-exception">Show Exception</span>
