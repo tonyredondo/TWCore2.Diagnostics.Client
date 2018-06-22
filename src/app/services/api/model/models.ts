@@ -1,5 +1,6 @@
 export * from './applicationsLevels';
 export * from './keyValueStringString';
+export * from './logLevelQuantity';
 export * from './nodeLogItem';
 export * from './nodeStatusItem';
 export * from './nodeStatusItemValue';
@@ -9,3 +10,4 @@ export * from './pagedListNodeStatusItem';
 export * from './pagedListNodeTraceItem';
 export * from './serializableException';
 export * from './serializedObject';
+export * from './loglevel';

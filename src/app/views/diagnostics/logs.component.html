@@ -1,16 +1,52 @@
 <div>
 
-    <div class="row content-center">
-        <div class="col-md-4 form-group">
-            <input type="text"
-                   placeholder="Showing dates"
-                   class="form-control text-center"
-                   bsDaterangepicker  [bsConfig]="bsConfig" [bsValue]="bsValue" [(ngModel)]="bsValue" (ngModelChange)="getApplications()">
+  <div class="row">
+    <div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-0 clearfix">
+          <i class="fa fa-calendar bg-info p-4 font-2xl mr-3 float-left"></i>
+          <div class="h5 text-info mb-0 pt-3">
+              <input type="text" placeholder="Showing dates" class="widget-range" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+              [(ngModel)]="bsValue" (ngModelChange)="getApplications()" />
+          </div>
+          <div class="text-muted text-uppercase font-weight-bold font-xs">Range</div>
         </div>
+      </div>
     </div>
+    <!--/.col-->
+    <div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-0 clearfix">
+          <i class="fa fa-bug bg-danger p-4 font-2xl mr-3 float-left"></i>
+          <div class="h5 text-danger mb-0 pt-3">{{errorCount}}</div>
+          <div class="text-muted text-uppercase font-weight-bold font-xs">Errors</div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-0 clearfix">
+          <i class="fa fa-warning bg-warning p-4 font-2xl mr-3 float-left"></i>
+          <div class="h5 text-warning mb-0 pt-3">{{warningCount}}</div>
+          <div class="text-muted text-uppercase font-weight-bold font-xs">Warnings</div>
+        </div>
+      </div>
+    </div>
+    <!--/.col-->
+    <div class="col-6 col-lg-3">
+      <div class="card">
+        <div class="card-body p-0 clearfix">
+          <i class="fa fa-info bg-success p-4 font-2xl mr-3 float-left"></i>
+          <div class="h5 text-info mb-0 pt-3">{{statsCount}}</div>
+          <div class="text-muted text-uppercase font-weight-bold font-xs">Stats</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
-  <div class="row">&nbsp;</div>
+
   <div *ngFor="let item of (apps | async)">
     <div class="row">
       <div class="col-lg-12">
@@ -20,33 +56,39 @@
             'card-accent-warning': currentLogData(item).level === 'Warning',
             'card-accent-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
           <div class="card-header">
-            <i class="fa fa-align-justify"></i>
-            <b>{{item.application}}</b>
-
-            <div class="btn-group float-right" dropdown>
-              <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
-                        'btn-success': currentLogData(item).level === 'Stats',
-                        'btn-danger': currentLogData(item).level === 'Error',
-                        'btn-warning': currentLogData(item).level === 'Warning',
-                        'btn-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
-                {{currentLogData(item).level}}
-                <span class="caret"></span>
-              </button>
-              <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                <li role="menuitem" *ngFor="let level of item.levels">
-                  <a class="dropdown-item" (click)="changeLevel(item, level)">{{level}}</a>
-                </li>
-              </ul>
-            </div>
-
+            <table class="card-table">
+              <tr>
+                <td class="td-icon">
+                  <i class="fa fa-align-justify"></i>
+                </td>
+                <td class="td-title">{{item.application}}</td>
+                <td class="td-level">
+                  <div class="btn-group float-right" dropdown [isDisabled]="item.levels.length == 1">
+                    <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
+                                  'btn-success': currentLogData(item).level === 'Stats',
+                                  'btn-danger': currentLogData(item).level === 'Error',
+                                  'btn-warning': currentLogData(item).level === 'Warning',
+                                  'btn-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
+                      {{currentLogData(item).level}}
+                      <span class="caret"></span>
+                    </button>
+                    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                      <li role="menuitem" *ngFor="let level of item.levels">
+                        <a class="dropdown-item" (click)="changeLevel(item, level.name)">{{level.name}}</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
           <div class="card-body">
-            <table class="table table-sm table-striped">
+            <table class="table table-sm table-striped table-log">
               <thead>
                 <tr>
-                  <th style="width:15%">Timestamp</th>
-                  <th style="width:15%">Type</th>
-                  <th style="width:65%">Message</th>
+                  <th style="width:10%">Timestamp</th>
+                  <th style="width:10%">Type</th>
+                  <th style="width:75%">Message</th>
                   <th style="width:5%">Machine</th>
                 </tr>
               </thead>

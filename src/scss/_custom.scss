@@ -14,6 +14,7 @@
 }
 .breakWord {
   word-break: break-word;
+  white-space: pre-wrap;
 }
 .content-center {
   justify-content: center;
@@ -26,4 +27,70 @@
 }
 .table-sm th, .table-sm td {
   border-top-width: 0px !important;
+}
+
+.card-accent-danger {
+  border-bottom-color: #f86c6b;
+  border-bottom-width: 2px;
+}
+.card-accent-warning {
+  border-bottom-color: #ffc107;
+  border-bottom-width: 2px;
+}
+.card-accent-success {
+  border-bottom-color: #4dbd74;
+  border-bottom-width: 2px;
+}
+.card-accent-secondary {
+  border-bottom-color: #c8ced3;
+  border-bottom-width: 2px;
+}
+
+.card-table {
+  width: 100%;
+  padding: 0rem;
+  margin: 0rem;
+  border-width: 0rem;
+}
+.card-table .td-icon {
+  width:0%;
+  padding-right: 7px;
+}
+.card-table .td-title {
+  width:90%;
+  font-weight: bold;
+}
+.card-table .td-level {
+  width:10%;
+}
+
+.table-log {
+  font-family: consolas, 'Courier New', Courier, monospace;
+  font-size: 12px;
+}
+
+.card-range {
+  flex: 1 1 auto;
+  padding: 0.6rem;
+  width:250px;
+}
+.card-range .range-row {
+  padding-bottom: 0.6rem;
+}
+.card-range .range-row .form-group {
+  margin-bottom: 0px !important;
+}
+.card-lessmargin {
+  margin-bottom: 0.5rem;
+}
+
+.widget-range {
+  width: auto;
+  padding: 0px;
+  font-family: inherit;
+  font-size: 0.7rem;
+  line-height: 0px;
+  border-width: 0px;
+  font-weight: bold;
+  color:#63c2de !important
 }
