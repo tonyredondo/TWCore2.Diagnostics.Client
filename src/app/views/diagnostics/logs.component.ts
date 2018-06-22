@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
-import { ApplicationsLevels, PagedListNodeLogItem, LogLevelQuantity, SerializableException } from '../../services/api';
+import { ApplicationsLevels, PagedListNodeLogItem, SerializableException, LogSummary } from '../../services/api';
 import { Observable } from 'rxjs/Observable';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -11,12 +11,18 @@ defineLocale('en-gb', enGbLocale);
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { LogLevelEnum } from '../../services/api/model/loglevel';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+ import { BaseChartDirective } from 'ng2-charts/ng2-charts';
+
+// Charts
+import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 
 @Component({
   templateUrl: 'logs.component.html'
 })
 export class LogsComponent implements OnInit {
-  apps: Observable<ApplicationsLevels[]>;
+  private defaultPageSize = 15;
+  summary: LogSummary;
   errorCount: number;
   warningCount: number;
   statsCount: number;
@@ -24,14 +30,95 @@ export class LogsComponent implements OnInit {
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date[];
   @ViewChild('exceptionModal') exceptionModal: ModalDirective;
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
+
   exceptionData: SerializableException;
   innerExceptionsData: SerializableException[];
 
-  private defaultPageSize = 15;
+  // Main chart
+  public mainChartData1: Array<number> = [];
+  public mainChartData2: Array<number> = [];
+  public mainChartData: Array<any> = [
+    {
+      data: this.mainChartData1,
+      label: 'Error'
+    },
+    {
+      data: this.mainChartData2,
+      label: 'Warning'
+    }
+  ];
+  public mainChartColours: Array<any> = [
+    { // Error
+      backgroundColor: hexToRgba(getStyle('--danger'), 100),
+      borderColor: getStyle('--danger'),
+      pointHoverBackgroundColor: '#fff'
+    },
+    { // Warning
+      backgroundColor: hexToRgba(getStyle('--warning'), 100),
+      borderColor: getStyle('--warning'),
+      pointHoverBackgroundColor: '#fff',
+    }
+  ];
+  public mainChartLabels: Array<any> = [];
+  public mainChartOptions: any = {
+    tooltips: {
+      enabled: false,
+      custom: CustomTooltips,
+      intersect: true,
+      mode: 'index',
+      position: 'nearest',
+      callbacks: {
+        labelColor: function(tooltipItem, chart) {
+          return { backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor };
+        }
+      }
+    },
+    responsive: true,
+    scaleShowVerticalLines: false,
+    maintainAspectRatio: false,
+    // scales: {
+    //   xAxes: [{
+    //     gridLines: {
+    //       drawOnChartArea: false,
+    //     },
+    //     display: true
+    //     // ticks: {
+    //     //   callback: function(value: any) {
+    //     //     return moment(value, 'DD/MM/YY hh:mm').format('dd');
+    //     //   }
+    //     // }
+    //   }],
+    //   yAxes: [{
+    //     ticks: {
+    //       beginAtZero: true,
+    //       maxTicksLimit: 15,
+    //     }
+    //   }]
+    // },
+    // elements: {
+    //   line: {
+    //     borderWidth: 3
+    //   },
+    //   point: {
+    //     radius: 0,
+    //     hitRadius: 15,
+    //     hoverRadius: 6,
+    //     hoverBorderWidth: 5,
+    //   }
+    // },
+    legend: {
+      display: true
+    }
+  };
+  public mainChartLegend = false;
+  public mainChartType = 'bar';
+
+
 
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.bsConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       maxDate: moment().toDate(),
@@ -43,28 +130,58 @@ export class LogsComponent implements OnInit {
     this.getApplications();
   }
 
-  async getApplications() {
-    this.apps = this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name, this.bsValue[0], this.bsValue[1]);
-    this.apps.subscribe(x => {
+  getApplications() {
+    this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name, this.bsValue[0], this.bsValue[1]).subscribe(x => {
       if (x === null) {
         return;
       }
+      this.summary = x;
       this.errorCount = 0;
       this.warningCount = 0;
       this.statsCount = 0;
-      x.forEach(item => {
-        item.levels.forEach(level => {
-          if (level.name === LogLevelEnum.Error) {
-            this.errorCount += level.count;
+      this.mainChartData1.length = 0;
+      this.mainChartData2.length = 0;
+      this.mainChartLabels.length = 0;
+      this.chart.chart.update();
+      const series = {};
+
+      x.levels.forEach(item => {
+        if (item.name === LogLevelEnum.Error) {
+          this.errorCount = item.count;
+        }
+        if (item.name === LogLevelEnum.Warning) {
+          this.warningCount = item.count;
+        }
+        if (item.name === LogLevelEnum.Stats) {
+          this.statsCount = item.count;
+        }
+        item.series.forEach(value => {
+          const valueDate = value.date.toString();
+          if (series[valueDate] === undefined) {
+            series[valueDate] = {};
           }
-          if (level.name === LogLevelEnum.Warning) {
-            this.warningCount += level.count;
-          }
-          if (level.name === LogLevelEnum.Stats) {
-            this.statsCount += level.count;
-          }
+          series[valueDate][item.name] = value.count;
         });
       });
+
+      for (const key in series) {
+        if (series.hasOwnProperty(key)) {
+          const element = series[key] as {};
+          if (element[LogLevelEnum.Error] !== undefined) {
+            this.mainChartData1.push(element[LogLevelEnum.Error]);
+          } else {
+            this.mainChartData1.push(0);
+          }
+          if (element[LogLevelEnum.Warning] !== undefined) {
+            this.mainChartData2.push(element[LogLevelEnum.Warning]);
+          } else {
+            this.mainChartData2.push(0);
+          }
+
+          this.mainChartLabels.push(moment(key).format('DD/MM/YYYY'));
+        }
+      }
+      this.chart.chart.update();
     });
     this.dataCache = {};
   }
@@ -150,6 +267,16 @@ export class LogsComponent implements OnInit {
     this.innerExceptionsData.push(item);
     this.createInnerExceptionData(item.innerException);
   }
+
+
+
+
+
+
+
+
+
+
 }
 
 interface ICachedData {

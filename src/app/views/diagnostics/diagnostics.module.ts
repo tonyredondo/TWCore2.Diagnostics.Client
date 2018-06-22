@@ -20,6 +20,9 @@ import { DiagnosticsRoutingModule } from './diagnostics-routing.module';
 // Modal Component
 import { ModalModule } from 'ngx-bootstrap/modal';
 
+// Charts
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+
 // Components
 import { LogsComponent } from './logs.component';
 import { TracesComponent } from './traces.component';
@@ -40,7 +43,8 @@ import { SearchComponent } from './search.component';
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    ChartsModule
   ],
   declarations: [
     LogsComponent,

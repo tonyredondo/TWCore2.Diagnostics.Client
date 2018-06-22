@@ -18,7 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs/Observable';
 
-import { ApplicationsLevels } from '../model/applicationsLevels';
+import { LogSummary } from '../model/logSummary';
 import { NodeStatusItem } from '../model/nodeStatusItem';
 import { PagedListNodeLogItem } from '../model/pagedListNodeLogItem';
 import { PagedListNodeStatusItem } from '../model/pagedListNodeStatusItem';
@@ -28,6 +28,7 @@ import { SerializedObject } from '../model/serializedObject';
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 import { environment } from '../../../../environments/environment';
+
 
 @Injectable()
 export class QueryService {
@@ -70,9 +71,9 @@ export class QueryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<Array<ApplicationsLevels>>;
-    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<ApplicationsLevels>>>;
-    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<ApplicationsLevels>>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<LogSummary>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<LogSummary>>;
+    public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<LogSummary>>;
     public apiQueryByEnvironmentLogsApplicationsGet(environment: string, fromDate?: Date, toDate?: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (environment === null || environment === undefined) {
             throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentLogsApplicationsGet.');
@@ -109,7 +110,7 @@ export class QueryService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<ApplicationsLevels>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/applications`,
+        return this.httpClient.get<LogSummary>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/applications`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
