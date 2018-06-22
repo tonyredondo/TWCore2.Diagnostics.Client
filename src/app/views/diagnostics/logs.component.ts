@@ -32,6 +32,7 @@ export class LogsComponent implements OnInit {
   @ViewChild('exceptionModal') exceptionModal: ModalDirective;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
 
+  // Serializable
   exceptionData: SerializableException;
   innerExceptionsData: SerializableException[];
 
@@ -77,36 +78,6 @@ export class LogsComponent implements OnInit {
     responsive: true,
     scaleShowVerticalLines: false,
     maintainAspectRatio: false,
-    // scales: {
-    //   xAxes: [{
-    //     gridLines: {
-    //       drawOnChartArea: false,
-    //     },
-    //     display: true
-    //     // ticks: {
-    //     //   callback: function(value: any) {
-    //     //     return moment(value, 'DD/MM/YY hh:mm').format('dd');
-    //     //   }
-    //     // }
-    //   }],
-    //   yAxes: [{
-    //     ticks: {
-    //       beginAtZero: true,
-    //       maxTicksLimit: 15,
-    //     }
-    //   }]
-    // },
-    // elements: {
-    //   line: {
-    //     borderWidth: 3
-    //   },
-    //   point: {
-    //     radius: 0,
-    //     hitRadius: 15,
-    //     hoverRadius: 6,
-    //     hoverBorderWidth: 5,
-    //   }
-    // },
     legend: {
       display: true
     }
@@ -114,8 +85,7 @@ export class LogsComponent implements OnInit {
   public mainChartLegend = false;
   public mainChartType = 'bar';
 
-
-
+  // Constructor
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
 
   ngOnInit() {
@@ -126,7 +96,6 @@ export class LogsComponent implements OnInit {
     });
     this.bsValue = [ moment().subtract(7, 'd').toDate(), moment().toDate() ];
     this.localeService.use('en-gb');
-
     this.getApplications();
   }
 
@@ -135,6 +104,7 @@ export class LogsComponent implements OnInit {
       if (x === null) {
         return;
       }
+      this.dataCache = {};
       this.summary = x;
       this.errorCount = 0;
       this.warningCount = 0;
@@ -183,7 +153,6 @@ export class LogsComponent implements OnInit {
       }
       this.chart.chart.update();
     });
-    this.dataCache = {};
   }
 
   currentLogData(item: ApplicationsLevels): ICachedData {
