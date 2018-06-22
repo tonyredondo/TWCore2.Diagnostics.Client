@@ -6,7 +6,7 @@
         <div class="card-body p-0 clearfix">
           <i class="fa fa-calendar bg-info p-4 font-2xl mr-3 float-left"></i>
           <div class="h5 text-info mb-0 pt-3">
-              <input type="text" placeholder="Showing dates" class="widget-range" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+            <input type="text" placeholder="Showing dates" class="widget-range" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
               [(ngModel)]="bsValue" (ngModelChange)="getApplications()" />
           </div>
           <div class="text-muted text-uppercase font-weight-bold font-xs">Range</div>
@@ -44,8 +44,6 @@
       </div>
     </div>
   </div>
-
-
 
   <div *ngFor="let item of (apps | async)">
     <div class="row">
@@ -96,7 +94,9 @@
                 <tr *ngFor="let dataItem of currentLogData(item).unwrappedData?.data">
                   <td>{{dataItem.timestamp | date:'short'}}</td>
                   <td>{{dataItem.type}}</td>
-                  <td class="breakWord">{{dataItem.message}}</td>
+                  <td class="breakWord">{{dataItem.message}}
+                    <span *ngIf="dataItem.exception != null" (click)="showException(dataItem.exception)" class="badge button-exception">Show Exception</span>
+                  </td>
                   <td>{{dataItem.machine}}</td>
                 </tr>
               </tbody>
@@ -119,3 +119,93 @@
     <div class="row">&nbsp;</div>
   </div>
 </div>
+
+
+<div bsModal #exceptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Exception View</h4>
+        <button type="button" class="close" (click)="exceptionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+        <table class="table table-sm table-striped table-log">
+          <thead>
+            <tr>
+              <th style="width: 100px">Name</th>
+              <th style="width: max-content;">Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Type</td>
+              <td class="breakWord font-weight-bold">{{exceptionData?.exceptionType}}</td>
+            </tr>
+            <tr>
+              <td>Source</td>
+              <td class="breakWord font-weight-bold">{{exceptionData?.source}}</td>
+            </tr>
+            <tr>
+              <td>Message</td>
+              <td class="breakWord font-weight-bold">{{exceptionData?.message}}</td>
+            </tr>
+            <tr>
+              <td>Data</td>
+              <td class="breakWord font-weight-bold">{{exceptionData?.data | json}}</td>
+            </tr>
+            <tr>
+              <td>Stacktrace</td>
+              <td class="breakWord font-weight-bold">{{exceptionData?.stackTrace}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngFor="let innerException of innerExceptionsData">
+            <div class="font-weight-bold inner-exception-title">Inner Exception:</div>
+            <table class="table table-sm table-striped table-log">
+                <thead>
+                  <tr>
+                    <th style="width: 100px">Name</th>
+                    <th style="width: max-content;">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Type</td>
+                    <td class="breakWord font-weight-bold">{{innerException.exceptionType}}</td>
+                  </tr>
+                  <tr>
+                    <td>Source</td>
+                    <td class="breakWord font-weight-bold">{{innerException.source}}</td>
+                  </tr>
+                  <tr>
+                    <td>Message</td>
+                    <td class="breakWord font-weight-bold">{{innerException.message}}</td>
+                  </tr>
+                  <tr>
+                    <td>Data</td>
+                    <td class="breakWord font-weight-bold">{{innerException.data | json}}</td>
+                  </tr>
+                  <tr>
+                    <td>Stacktrace</td>
+                    <td class="breakWord font-weight-bold">{{innerException.stackTrace}}</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="exceptionModal.hide()">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

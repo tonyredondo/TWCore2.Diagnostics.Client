@@ -17,6 +17,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 // Components Routing
 import { DiagnosticsRoutingModule } from './diagnostics-routing.module';
 
+// Modal Component
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 // Components
 import { LogsComponent } from './logs.component';
 import { TracesComponent } from './traces.component';
@@ -36,7 +39,8 @@ import { SearchComponent } from './search.component';
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    ModalModule.forRoot()
   ],
   declarations: [
     LogsComponent,

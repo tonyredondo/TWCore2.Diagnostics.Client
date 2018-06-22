@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
-import { ApplicationsLevels, PagedListNodeLogItem, LogLevelQuantity } from '../../services/api';
+import { ApplicationsLevels, PagedListNodeLogItem, LogLevelQuantity, SerializableException } from '../../services/api';
 import { Observable } from 'rxjs/Observable';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -10,6 +10,7 @@ defineLocale('es', esLocale);
 
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { LogLevelEnum } from '../../services/api/model/loglevel';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   templateUrl: 'logs.component.html'
@@ -22,6 +23,10 @@ export class LogsComponent implements OnInit {
   dataCache: { [index: string]: ICachedData } = {};
   bsConfig: Partial<BsDatepickerConfig>;
   bsValue: Date[];
+  @ViewChild('exceptionModal') exceptionModal: ModalDirective;
+  exceptionData: SerializableException;
+  innerExceptionsData: SerializableException[];
+
   private defaultPageSize = 15;
 
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
@@ -130,6 +135,20 @@ export class LogsComponent implements OnInit {
         value.totalPagesArray = Array(maxPages).fill(0).map((a, i) => startPoint + i);
       }
     }
+  }
+
+  showException(item: SerializableException) {
+    this.exceptionData = item;
+    this.innerExceptionsData = [];
+    this.createInnerExceptionData(item.innerException);
+    this.exceptionModal.show();
+  }
+  createInnerExceptionData(item: SerializableException) {
+    if (item === null) {
+      return;
+    }
+    this.innerExceptionsData.push(item);
+    this.createInnerExceptionData(item.innerException);
   }
 }
 
