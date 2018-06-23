@@ -75,16 +75,22 @@
             'card-accent-success': currentLogData(item).level === 'Stats',
             'card-accent-danger': currentLogData(item).level === 'Error',
             'card-accent-warning': currentLogData(item).level === 'Warning',
-            'card-accent-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
-          <div class="card-header">
+            'card-accent-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning',
+            'card-collapsed': currentLogData(item).isCollapsed,
+            'card-expanded': !currentLogData(item).isCollapsed
+          }">
+          <div class="card-header" [ngClass]="{ 'background-white': currentLogData(item).isCollapsed }">
             <table class="card-table">
               <tr>
                 <td class="td-icon">
-                  <i class="fa fa-align-justify"></i>
+                  <i class="fa fa-pointer" [ngClass]="{
+                      'fa-caret-right': currentLogData(item).isCollapsed,
+                      'fa-caret-down': !currentLogData(item).isCollapsed }"
+                    (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed"></i>
                 </td>
                 <td class="td-title">{{item.application}}</td>
                 <td class="td-level">
-                  <div class="btn-group float-right" dropdown [isDisabled]="item.levels.length == 1">
+                  <div class="btn-group float-right" dropdown [isDisabled]="item.levels.length == 1" [hidden]="currentLogData(item).isCollapsed">
                     <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
                                   'btn-success': currentLogData(item).level === 'Stats',
                                   'btn-danger': currentLogData(item).level === 'Error',
@@ -99,11 +105,12 @@
                       </li>
                     </ul>
                   </div>
+                  <span *ngIf="currentLogData(item).isCollapsed">{{currentLogData(item).unwrappedData?.totalResults}} items</span>
                 </td>
               </tr>
             </table>
           </div>
-          <div class="card-body">
+          <div class="card-body" [collapse]="currentLogData(item).isCollapsed">
             <table class="table table-sm table-striped table-log">
               <thead>
                 <tr>
@@ -139,8 +146,8 @@
         </div>
       </div>
     </div>
-    <div class="row">&nbsp;</div>
   </div>
+  <div class="row">&nbsp;</div>
 </div>
 
 

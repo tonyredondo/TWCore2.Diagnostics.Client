@@ -84,6 +84,12 @@
 
 .card-table .td-level {
   width: 10%;
+  text-align: right;
+}
+.card-table .td-level span {
+  font-weight: 700;
+  color: #a7a7a7;
+  font-size: 80%;
 }
 
 .table-log {
@@ -141,4 +147,26 @@
 
 .no-bottom-margin-alert div {
   margin-bottom: 0px;
+}
+
+.fa-pointer {
+  cursor: pointer;
+}
+
+.background-white {
+  background-color: #ffffff;
+}
+
+.card-collapsed {
+  margin-bottom: 0.5rem;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-radius: 0px;
+}
+.card-collapsed .card-header {
+  border-bottom-width: 0px;
+}
+.card-expanded {
+  margin-bottom: 2rem;
+  /*margin-top: 1.5rem;*/
 }

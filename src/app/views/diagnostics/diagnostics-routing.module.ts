@@ -9,9 +9,6 @@ import { SearchComponent } from './search.component';
 const routes: Routes = [
   {
     path: '',
-    data: {
-      title: 'Diagnostics'
-    },
     children: [
       {
         path: 'search',

@@ -168,7 +168,8 @@ export class LogsComponent implements OnInit {
         pageSize: this.defaultPageSize,
         data: this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, item.levels[0].name, this.bsValue[0], this.bsValue[1], 0, this.defaultPageSize),
         unwrappedData: null,
-        totalPagesArray: []
+        totalPagesArray: [],
+        isCollapsed: true
       };
       newValue.data.subscribe(x => this.resolveSubscription(newValue, x));
       this.dataCache[item.application] = newValue;
@@ -240,15 +241,6 @@ export class LogsComponent implements OnInit {
     this.createInnerExceptionData(item.innerException);
   }
 
-
-
-
-
-
-
-
-
-
 }
 
 interface ICachedData {
@@ -259,4 +251,5 @@ interface ICachedData {
   data: Observable<PagedListNodeLogItem>;
   unwrappedData: PagedListNodeLogItem;
   totalPagesArray: number[];
+  isCollapsed: boolean;
 }
