@@ -84,6 +84,7 @@ export class LogsComponent implements OnInit {
   };
   public mainChartLegend = false;
   public mainChartType = 'bar';
+  public showChart = true;
 
   // Constructor
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
@@ -114,6 +115,7 @@ export class LogsComponent implements OnInit {
       this.mainChartLabels.length = 0;
       this.chart.chart.update();
       const series = {};
+      this.showChart = false;
 
       x.levels.forEach(item => {
         if (item.name === LogLevelEnum.Error) {
@@ -131,6 +133,7 @@ export class LogsComponent implements OnInit {
             series[valueDate] = {};
           }
           series[valueDate][item.name] = value.count;
+          this.showChart = true;
         });
       });
 

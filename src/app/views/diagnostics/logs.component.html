@@ -47,12 +47,23 @@
   </div>
 
   <!-- Row con Charts -->
-  <div class="card">
+  <div class="card" [hidden]="!showChart">
     <div class="card-body">
-        <div class="chart-wrapper" style="height:150px">
-          <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels" [options]="mainChartOptions" [colors]="mainChartColours"
-            [legend]="mainChartLegend" [chartType]="mainChartType"></canvas>
-        </div>
+      <div class="chart-wrapper" style="height:150px">
+        <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels" [options]="mainChartOptions" [colors]="mainChartColours"
+          [legend]="mainChartLegend" [chartType]="mainChartType"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- No Data Alert -->
+  <div class="card" *ngIf="!showChart">
+    <div class="card-body">
+      <alert type="info" class="no-bottom-margin-alert">
+        <strong>Ups!, there is not data for the selected date range.</strong>
+        <br/>
+        Please select another range of dates to get results.
+      </alert>
     </div>
   </div>
 
@@ -165,9 +176,9 @@
               <td>Message</td>
               <td class="breakWord font-weight-bold">{{exceptionData?.message}}</td>
             </tr>
-            <tr>
-              <td>Data</td>
-              <td class="breakWord font-weight-bold">{{exceptionData?.data | json}}</td>
+            <tr *ngFor="let itemData of exceptionData?.data">
+              <td>Data.{{itemData.key}}</td>
+              <td class="breakWord font-weight-bold">{{itemData.value}}</td>
             </tr>
             <tr>
               <td>Stacktrace</td>
@@ -198,9 +209,9 @@
                 <td>Message</td>
                 <td class="breakWord font-weight-bold">{{innerException.message}}</td>
               </tr>
-              <tr>
-                <td>Data</td>
-                <td class="breakWord font-weight-bold">{{innerException.data | json}}</td>
+              <tr *ngFor="let itemData of innerException.data">
+                <td>Data.{{itemData.key}}</td>
+                <td class="breakWord font-weight-bold">{{itemData.value}}</td>
               </tr>
               <tr>
                 <td>Stacktrace</td>

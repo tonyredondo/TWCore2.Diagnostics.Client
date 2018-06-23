@@ -13,6 +13,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 // Components Routing
 import { DiagnosticsRoutingModule } from './diagnostics-routing.module';
@@ -44,7 +45,8 @@ import { SearchComponent } from './search.component';
     TooltipModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ModalModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    AlertModule.forRoot(),
   ],
   declarations: [
     LogsComponent,
