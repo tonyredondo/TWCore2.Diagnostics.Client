@@ -90,6 +90,7 @@
                 </td>
                 <td class="td-title">{{item.application}}</td>
                 <td class="td-level">
+                  <span *ngIf="!currentLogData(item).isCollapsed">{{currentLogData(item).unwrappedData?.totalResults}} items &nbsp;</span>
                   <div class="btn-group float-right" dropdown [isDisabled]="item.levels.length == 1" [hidden]="currentLogData(item).isCollapsed">
                     <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
                                   'btn-success': currentLogData(item).level === 'Stats',
