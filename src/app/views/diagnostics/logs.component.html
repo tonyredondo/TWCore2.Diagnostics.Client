@@ -88,7 +88,7 @@
                       'fa-caret-down': !currentLogData(item).isCollapsed }"
                     (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed"></i>
                 </td>
-                <td class="td-title">{{item.application}}</td>
+                <td class="td-title" (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed">{{item.application}}</td>
                 <td class="td-level">
                   <span *ngIf="!currentLogData(item).isCollapsed">{{currentLogData(item).unwrappedData?.totalResults}} items &nbsp;</span>
                   <div class="btn-group float-right" dropdown [isDisabled]="item.levels.length == 1" [hidden]="currentLogData(item).isCollapsed">
