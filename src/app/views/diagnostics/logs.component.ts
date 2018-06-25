@@ -11,15 +11,17 @@ defineLocale('en-gb', enGbLocale);
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { LogLevelEnum } from '../../services/api/model/loglevel';
 import { ModalDirective } from 'ngx-bootstrap/modal';
- import { BaseChartDirective } from 'ng2-charts/ng2-charts';
+import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 
 // Charts
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 
+
 @Component({
   templateUrl: 'logs.component.html'
 })
+
 export class LogsComponent implements OnInit {
   private defaultPageSize = 15;
   summary: LogSummary;
@@ -31,11 +33,9 @@ export class LogsComponent implements OnInit {
   bsValue: Date[];
   @ViewChild('exceptionModal') exceptionModal: ModalDirective;
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-
   // Serializable
   exceptionData: SerializableException;
   innerExceptionsData: SerializableException[];
-
   // Main chart
   public mainChartData1: Array<number> = [];
   public mainChartData2: Array<number> = [];
@@ -89,6 +89,7 @@ export class LogsComponent implements OnInit {
   // Constructor
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
 
+  // Methods
   ngOnInit() {
     this.bsConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
@@ -99,7 +100,6 @@ export class LogsComponent implements OnInit {
     this.localeService.use('en-gb');
     this.getApplications();
   }
-
   getApplications() {
     this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name, this.bsValue[0], this.bsValue[1]).subscribe(x => {
       if (x === null) {
@@ -157,7 +157,6 @@ export class LogsComponent implements OnInit {
       this.chart.chart.update();
     });
   }
-
   currentLogData(item: ApplicationsLevels): ICachedData {
     const value = this.dataCache[item.application];
     if (value === undefined) {
@@ -181,7 +180,6 @@ export class LogsComponent implements OnInit {
     }
     return value;
   }
-
   goToPage(item: ApplicationsLevels, page: number = 0): ICachedData {
     if (page < 0) {
       return;
@@ -207,7 +205,6 @@ export class LogsComponent implements OnInit {
     value.data = this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, value.level, this.bsValue[0], this.bsValue[1], value.page, value.pageSize);
     value.data.subscribe(x => this.resolveSubscription(value, x));
   }
-
   resolveSubscription(value: ICachedData, item: PagedListNodeLogItem) {
     const maxPages = 10;
     value.unwrappedData = item;
@@ -226,7 +223,6 @@ export class LogsComponent implements OnInit {
       }
     }
   }
-
   showException(item: SerializableException) {
     this.exceptionData = item;
     this.innerExceptionsData = [];
