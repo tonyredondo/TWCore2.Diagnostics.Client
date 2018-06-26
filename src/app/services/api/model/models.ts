@@ -14,3 +14,4 @@ export * from './serializableException';
 export * from './serializedObject';
 export * from './timeCount';
 export * from './loglevel';
+export * from './traceResult';

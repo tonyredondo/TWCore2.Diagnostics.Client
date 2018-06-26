@@ -1,5 +1,33 @@
 <div>
 
+  <!-- Primer Row con Widgets -->
+  <div class="row">
+    <div class="col-6 col-lg-4">
+    </div>
+    <div class="col-6 col-lg-4">
+      <div class="card widget-range-card">
+        <div class="card-body p-0 clearfix">
+          <i class="fa fa-calendar bg-info p-4 font-2xl mr-3 float-left"></i>
+          <div class="h5 text-info mb-0 pt-3">
+            <input type="text" placeholder="Showing dates" class="widget-range" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+              [(ngModel)]="bsValue" (ngModelChange)="getTraces()" />
+          </div>
+          <div class="text-muted text-uppercase font-weight-bold font-xs">Range</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 col-lg-4">
+    </div>
+  </div>
 
-  Aqui va el trace
+  <!-- No Data Alert -->
+  <div class="card" [hidden]="traceData?.length > 1">
+    <div class="card-body">
+      <alert type="info" class="no-bottom-margin-alert">
+        <strong>Ups!, there is not data for the selected date range.</strong>
+        <br/> Please select another range of dates to get results.
+      </alert>
+    </div>
+  </div>
+
 </div>
