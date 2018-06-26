@@ -1,5 +1,7 @@
 export * from './applicationsLevels';
+export * from './basicInfo';
 export * from './keyValueStringString';
+export * from './loglevel';
 export * from './logLevelQuantity';
 export * from './logLevelTimes';
 export * from './logSummary';
@@ -13,5 +15,4 @@ export * from './pagedListNodeTraceItem';
 export * from './serializableException';
 export * from './serializedObject';
 export * from './timeCount';
-export * from './loglevel';
 export * from './traceResult';
