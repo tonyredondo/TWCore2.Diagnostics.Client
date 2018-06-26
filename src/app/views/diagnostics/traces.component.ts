@@ -24,7 +24,8 @@ export class TracesComponent implements OnInit {
   private defaultPageSize = 15;
   traceData: TraceResult[];
   bsConfig: Partial<BsDatepickerConfig>;
-  bsValue: Date[];
+  // bsValue: Date[];
+  bsValue: Date;
 
   // Constructor
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
@@ -36,12 +37,13 @@ export class TracesComponent implements OnInit {
       maxDate: moment().toDate(),
       showWeekNumbers: false
     });
-    this.bsValue = [ moment().subtract(1, 'd').toDate(), moment().toDate() ];
+    // this.bsValue = [ moment().subtract(0, 'd').toDate(), moment().toDate() ];
+    this.bsValue = moment().toDate();
     this.localeService.use('en-gb');
     this.getTraces();
   }
   getTraces() {
-    this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue[0], this.bsValue[1]).subscribe(x => {
+    this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue).subscribe(x => {
       if (x === null) {
         return;
       }

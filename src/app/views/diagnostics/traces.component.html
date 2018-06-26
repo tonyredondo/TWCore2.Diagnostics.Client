@@ -9,10 +9,10 @@
         <div class="card-body p-0 clearfix">
           <i class="fa fa-calendar bg-info p-4 font-2xl mr-3 float-left"></i>
           <div class="h5 text-info mb-0 pt-3">
-            <input type="text" placeholder="Showing dates" class="widget-range" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+            <input type="text" placeholder="Showing dates" class="widget-range" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
               [(ngModel)]="bsValue" (ngModelChange)="getTraces()" />
           </div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Range</div>
+          <div class="text-muted text-uppercase font-weight-bold font-xs">Date</div>
         </div>
       </div>
     </div>
@@ -21,7 +21,7 @@
   </div>
 
   <!-- No Data Alert -->
-  <div class="card" [hidden]="traceData?.length > 1">
+  <div class="card" *ngIf="traceData != null && traceData.length == 0">
     <div class="card-body">
       <alert type="info" class="no-bottom-margin-alert">
         <strong>Ups!, there is not data for the selected date range.</strong>
@@ -29,5 +29,41 @@
       </alert>
     </div>
   </div>
+
+  <!-- Tablas de Datos -->
+  <div class="row" *ngIf="traceData != null && traceData.length > 0">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-body">
+
+          <i class="fa fa-pointer fa-refresh float-right" (click)="getTraces()"></i>
+
+          <table class="table table-sm table-striped table-log">
+            <thead>
+              <tr>
+                <th style="width: 150px;">Start</th>
+                <th style="width: 150px;">End</th>
+                <th style="width: max-content;">Group name</th>
+                <th style="width: 90px;">Quantity</th>
+                <th style="width: 90px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let dataItem of traceData">
+                <td>{{dataItem.start | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{dataItem.end | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td class="breakWord">{{dataItem.group}}</td>
+                <td>{{dataItem.count}}</td>
+                <td>
+                  <span class="badge button-success">Show Traces</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 </div>
