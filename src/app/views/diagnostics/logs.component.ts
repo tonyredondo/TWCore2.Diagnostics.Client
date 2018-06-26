@@ -94,7 +94,7 @@ export class LogsComponent implements OnInit {
       maxDate: moment().toDate(),
       showWeekNumbers: false
     });
-    this.bsValue = [ moment().subtract(7, 'd').toDate(), moment().toDate() ];
+    this.bsValue = [ moment().subtract(6, 'd').toDate(), moment().toDate() ];
     this.localeService.use('en-gb');
     this.getApplications();
   }
