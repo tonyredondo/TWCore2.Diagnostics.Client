@@ -48,7 +48,6 @@ export class TracesComponent implements OnInit {
         return;
       }
       this.traceData = x;
-      console.log(x);
     });
   }
 }

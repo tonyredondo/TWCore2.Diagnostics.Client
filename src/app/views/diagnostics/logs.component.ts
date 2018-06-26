@@ -94,7 +94,7 @@ export class LogsComponent implements OnInit {
       maxDate: moment().toDate(),
       showWeekNumbers: false
     });
-    this.bsValue = [ moment().subtract(6, 'd').toDate(), moment().toDate() ];
+    this.bsValue = [ moment().subtract(4, 'd').toDate(), moment().toDate() ];
     this.localeService.use('en-gb');
     this.getApplications();
   }
@@ -113,6 +113,7 @@ export class LogsComponent implements OnInit {
       this.mainChartLabels.length = 0;
       this.chart.chart.update();
       const series = {};
+      const seriesArray = [];
       this.showChart = false;
 
       x.levels.forEach(item => {
@@ -126,10 +127,13 @@ export class LogsComponent implements OnInit {
           this.statsCount = item.count;
         }
         item.series.forEach(value => {
+          const date = moment(value.date);
           const valueDate = value.date.toString();
           if (series[valueDate] === undefined) {
             series[valueDate] = {};
           }
+          series[valueDate]['Time'] = date.toDate().getTime();
+          series[valueDate]['Key'] = date.format('DD/MM/YYYY');
           series[valueDate][item.name] = value.count;
           this.showChart = true;
         });
@@ -137,21 +141,26 @@ export class LogsComponent implements OnInit {
 
       for (const key in series) {
         if (series.hasOwnProperty(key)) {
-          const element = series[key] as {};
-          if (element[LogLevelEnum.Error] !== undefined) {
-            this.mainChartData1.push(element[LogLevelEnum.Error]);
-          } else {
-            this.mainChartData1.push(0);
-          }
-          if (element[LogLevelEnum.Warning] !== undefined) {
-            this.mainChartData2.push(element[LogLevelEnum.Warning]);
-          } else {
-            this.mainChartData2.push(0);
-          }
-
-          this.mainChartLabels.push(moment(key).format('DD/MM/YYYY'));
+          seriesArray.push(series[key]);
         }
       }
+      seriesArray.sort((a, b) => a.Time - b.Time);
+
+      for (let i = 0; i < seriesArray.length; i++) {
+        const element = seriesArray[i] as {};
+        if (element[LogLevelEnum.Error] !== undefined) {
+          this.mainChartData1.push(element[LogLevelEnum.Error]);
+        } else {
+          this.mainChartData1.push(0);
+        }
+        if (element[LogLevelEnum.Warning] !== undefined) {
+          this.mainChartData2.push(element[LogLevelEnum.Warning]);
+        } else {
+          this.mainChartData2.push(0);
+        }
+        this.mainChartLabels.push(element['Key']);
+      }
+
       this.chart.chart.update();
     });
   }
