@@ -14,6 +14,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { CodemirrorModule } from '@nomadreservations/ngx-codemirror';
 
 // Components Routing
 import { DiagnosticsRoutingModule } from './diagnostics-routing.module';
@@ -48,6 +49,7 @@ import { SearchComponent } from './search.component';
     ModalModule.forRoot(),
     ChartsModule,
     AlertModule.forRoot(),
+    CodemirrorModule
   ],
   declarations: [
     LogsComponent,

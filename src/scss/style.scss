@@ -8,3 +8,7 @@
 @import "custom";
 
 @import "ngx-bootstrap/datepicker/bs-datepicker.css";
+
+@import "codemirror/lib/codemirror.css";
+@import "codemirror/addon/fold/foldgutter.css";
+@import "codemirror/theme/material.css";
