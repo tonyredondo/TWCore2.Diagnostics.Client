@@ -16,4 +16,5 @@ export interface TraceResult {
     count?: number;
     start?: Date;
     end?: Date;
+    hasErrors?: boolean;
 }
