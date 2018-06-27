@@ -60,6 +60,7 @@ export class TraceDetailsComponent implements OnInit {
         editor.setOption('matchBrackets', true);
         editor.setOption('foldGutter', true);
         editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+        editor.setOption('extraKeys', {'Alt-F': 'findPersistent'});
         editor.setValue(this.traceObject);
         editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
@@ -85,6 +86,7 @@ export class TraceDetailsComponent implements OnInit {
         editor.setOption('matchBrackets', true);
         editor.setOption('foldGutter', true);
         editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+        editor.setOption('extraKeys', {'Alt-F': 'findPersistent'});
         editor.setValue(this.traceObject);
         editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
