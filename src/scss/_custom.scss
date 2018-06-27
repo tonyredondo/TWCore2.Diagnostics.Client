@@ -35,6 +35,28 @@
   background-color: #4dbd74;
   cursor: pointer;
 }
+.button-error {
+  font-size: 95%;
+  float: right !important;
+  color: #fff;
+  background-color: #f86c6b;
+  cursor: pointer;
+}
+.button-info {
+  font-size: 95%;
+  float: right !important;
+  color: #fff;
+  background-color: #03A9F4;
+  cursor: pointer;
+}
+.button-ser {
+  font-size: 95%;
+  float: right !important;
+  color: #fff;
+  background-color: #009688;
+  cursor: pointer;
+}
+
 
 .content-center {
   justify-content: center;
@@ -182,4 +204,20 @@
 .card-expanded .card-header {
   padding-top:0px;
   padding-bottom: 6px;
+}
+
+.badge-tag {
+  margin-bottom: 1px;
+  margin-top: 1px;
+  margin-right: 1px;
+  margin-left: 1px;
+}
+
+.popover {
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+}
+.popover-header {
+  background-color: #607d8b !important;
+  color: #ffffff !important;
 }

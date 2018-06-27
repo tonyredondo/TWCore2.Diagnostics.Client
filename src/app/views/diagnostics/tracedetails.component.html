@@ -1,3 +1,61 @@
 <div>
 
+  <!-- No Group Alert -->
+  <div class="card" *ngIf="group == null">
+    <div class="card-body">
+      <alert type="info" class="no-bottom-margin-alert">
+        <strong>Ups!, something went wrong</strong>
+        <br/> You must select a trace group in order to view it's details.
+      </alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-cubes"></i>
+          <strong>Group:</strong> {{group}}
+        </div>
+        <div class="card-body">
+          <i class="fa fa-pointer fa-refresh float-right" (click)="updateData()"></i>
+          <table class="table table-sm table-striped table-log">
+            <thead>
+              <tr>
+                <th style="width: max-content;">Name</th>
+                <th style="width: 375px">Application</th>
+                <th style="width: 120px">Machine</th>
+                <th style="width: 230px">Tags</th>
+                <th style="width: 130px">Timestamp</th>
+                <th style="width: 80px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items">
+                <td class="breakWord">
+                  <i class="fa fa-cube">&nbsp;&nbsp;</i>{{item.name}}</td>
+                <td class="breakWord">{{item.application}}</td>
+                <td>{{item.machine}}</td>
+                <td>
+                  <button *ngFor="let tag of item.tagsArray" class="btn badge badge-tag" [ngClass]="{
+                      'button-info' : tag.key != 'Status',
+                      'button-success' : tag.key == 'Status' && tag.value == 'Success',
+                      'button-error' : tag.key == 'Status' && tag.value == 'Error'
+                    }" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">
+                    {{tag.key}}
+                  </button>
+                </td>
+                <td>{{item.timestamp | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>
+                  <button class="btn badge badge-tag button-ser">Json</button>
+                  <button class="btn badge badge-tag button-ser">Xml</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
