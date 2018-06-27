@@ -55,7 +55,7 @@
                 <td class="breakWord">{{dataItem.group}}</td>
                 <td>{{dataItem.count}}</td>
                 <td>
-                  <span class="badge button-success">Show Traces</span>
+                  <span class="badge button-success" [routerLink]="['/diagnostics/traces', dataItem.group]">Show Traces</span>
                 </td>
               </tr>
             </tbody>

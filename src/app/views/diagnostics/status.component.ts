@@ -1,10 +1,16 @@
-import { Component } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   templateUrl: 'status.component.html'
 })
-export class StatusComponent {
+export class StatusComponent implements OnInit {
+  private _params: Params;
+  private _queryParams: Params;
+  constructor(private _activatedRoute: ActivatedRoute, private _router: Router) { }
 
-  constructor() { }
-
+  ngOnInit() {
+    this._params = Object.assign({}, this._activatedRoute.snapshot.params);
+    this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
+  }
 }

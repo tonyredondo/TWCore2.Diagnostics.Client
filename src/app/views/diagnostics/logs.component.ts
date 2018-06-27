@@ -21,20 +21,25 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 })
 
 export class LogsComponent implements OnInit {
-  private defaultPageSize = 15;
-  summary: LogSummary;
-  errorCount: number;
-  warningCount: number;
-  statsCount: number;
-  dataCache: { [index: string]: ICachedData } = {};
-  bsConfig: Partial<BsDatepickerConfig>;
-  bsValue: Date[];
-  @ViewChild('exceptionModal') exceptionModal: ModalDirective;
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-  // Serializable
-  exceptionData: SerializableException;
-  innerExceptionsData: SerializableException[];
-  // Main chart
+  private _defaultPageSize = 15;
+  // Summary rows
+  public summary: LogSummary;
+  public errorCount: number;
+  public warningCount: number;
+  public statsCount: number;
+  // Data Cache
+  public dataCache: { [index: string]: ICachedData } = {};
+  // Date picker
+  public bsConfig: Partial<BsDatepickerConfig>;
+  public bsValue: Date[];
+  // Exception Viewer
+  @ViewChild('exceptionModal')
+  public exceptionModal: ModalDirective;
+  public exceptionData: SerializableException;
+  public innerExceptionsData: SerializableException[];
+  // Cart
+  @ViewChild(BaseChartDirective)
+  public chart: BaseChartDirective;
   public mainChartData1: Array<number> = [];
   public mainChartData2: Array<number> = [];
   public mainChartData: Array<any> = [
@@ -83,7 +88,6 @@ export class LogsComponent implements OnInit {
   public mainChartLegend = false;
   public mainChartType = 'bar';
   public showChart = true;
-
   // Constructor
   constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
 
@@ -171,8 +175,8 @@ export class LogsComponent implements OnInit {
         environment: environment.name,
         level: item.levels[0].name,
         page: 0,
-        pageSize: this.defaultPageSize,
-        data: this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, item.levels[0].name, this.bsValue[0], this.bsValue[1], 0, this.defaultPageSize),
+        pageSize: this._defaultPageSize,
+        data: this._queryService.apiQueryByEnvironmentLogsByApplicationByLevelGet(environment.name, item.application, item.levels[0].name, this.bsValue[0], this.bsValue[1], 0, this._defaultPageSize),
         unwrappedData: null,
         totalPagesArray: [],
         isCollapsed: true
@@ -243,7 +247,6 @@ export class LogsComponent implements OnInit {
     this.innerExceptionsData.push(item);
     this.createInnerExceptionData(item.innerException);
   }
-
 }
 
 interface ICachedData {

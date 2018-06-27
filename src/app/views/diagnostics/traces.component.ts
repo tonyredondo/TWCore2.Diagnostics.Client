@@ -1,49 +1,51 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import {  PagedListTraceResult } from '../../services/api';
-import { Observable } from 'rxjs/Observable';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
 defineLocale('en-gb', enGbLocale);
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
-import { LogLevelEnum } from '../../services/api/model/loglevel';
-import { ModalDirective } from 'ngx-bootstrap/modal';
-import { BaseChartDirective } from 'ng2-charts/ng2-charts';
-// Charts
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-
 
 @Component({
   templateUrl: 'traces.component.html'
 })
 
 export class TracesComponent implements OnInit {
-  private currentPage = 0;
-  private pageSize = 25;
-  totalPagesArray: number[];
-  traceData: PagedListTraceResult;
-  bsConfig: Partial<BsDatepickerConfig>;
-  bsValue: Date;
-
-  // Constructor
-  constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
+  private _queryParams: Params;
+  private _currentPage = 0;
+  private _pageSize = 25;
+  public totalPagesArray: number[];
+  public traceData: PagedListTraceResult;
+  public bsConfig: Partial<BsDatepickerConfig>;
+  public bsValue: Date;
+  constructor(private _queryService: QueryService, private _localeService: BsLocaleService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
 
   // Methods
   ngOnInit() {
+    let initialDate = new Date();
+    this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
+    if (this._queryParams.date !== undefined) {
+      initialDate = moment(this._queryParams.date, 'YYYY-MM-DD').toDate();
+    }
+    if (this._queryParams.page !== undefined) {
+      this._currentPage = parseInt(this._queryParams.page, 0);
+    }
+
     this.bsConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
-      maxDate: moment().toDate(),
+      maxDate: new Date(),
       showWeekNumbers: false
     });
-    this.bsValue = moment().toDate();
-    this.localeService.use('en-gb');
-    this.changeDate();
+    this.bsValue = initialDate;
+    this._localeService.use('en-gb');
+    this.updateParams();
+    this.updateData();
   }
   updateData() {
-    this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this.currentPage, this.pageSize).subscribe(item => {
+    this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this._currentPage, this._pageSize).subscribe(item => {
       if (item === null) {
         return;
       }
@@ -66,7 +68,8 @@ export class TracesComponent implements OnInit {
     });
   }
   changeDate() {
-    this.currentPage = 0;
+    this._currentPage = 0;
+    this.updateParams();
     this.updateData();
   }
   goToPage(page: number = 0) {
@@ -76,7 +79,13 @@ export class TracesComponent implements OnInit {
     if (page > this.totalPagesArray[this.totalPagesArray.length - 1]) {
       return;
     }
-    this.currentPage = page;
+    this._currentPage = page;
+    this.updateParams();
     this.updateData();
+  }
+  updateParams() {
+    this._queryParams.date = moment(this.bsValue).format('YYYY-MM-DD');
+    this._queryParams.page = this._currentPage;
+    this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
   }
 }

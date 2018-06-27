@@ -16,7 +16,8 @@ const routes: Routes = [
         data: {
           title: 'Search'
         }
-      },{
+      },
+      {
         path: 'logs',
         component: LogsComponent,
         data: {
@@ -28,6 +29,13 @@ const routes: Routes = [
         component: TracesComponent,
         data: {
           title: 'Traces'
+        }
+      },
+      {
+        path: 'traces/:group',
+        component: StatusComponent,
+        data: {
+          title: 'Trace Group'
         }
       },
       {
