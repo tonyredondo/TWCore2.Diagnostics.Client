@@ -12,6 +12,7 @@ export * from './nodeTraceItem';
 export * from './pagedListNodeLogItem';
 export * from './pagedListNodeStatusItem';
 export * from './pagedListNodeTraceItem';
+export * from './pagedListTraceResult';
 export * from './serializableException';
 export * from './serializedObject';
 export * from './timeCount';

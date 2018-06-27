@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
-import { ApplicationsLevels, PagedListNodeLogItem, SerializableException, LogSummary, TraceResult } from '../../services/api';
+import {  PagedListTraceResult } from '../../services/api';
 import { Observable } from 'rxjs/Observable';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -21,10 +21,11 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 })
 
 export class TracesComponent implements OnInit {
-  private defaultPageSize = 15;
-  traceData: TraceResult[];
+  private currentPage = 0;
+  private pageSize = 25;
+  totalPagesArray: number[];
+  traceData: PagedListTraceResult;
   bsConfig: Partial<BsDatepickerConfig>;
-  // bsValue: Date[];
   bsValue: Date;
 
   // Constructor
@@ -37,17 +38,45 @@ export class TracesComponent implements OnInit {
       maxDate: moment().toDate(),
       showWeekNumbers: false
     });
-    // this.bsValue = [ moment().subtract(0, 'd').toDate(), moment().toDate() ];
     this.bsValue = moment().toDate();
     this.localeService.use('en-gb');
-    this.getTraces();
+    this.changeDate();
   }
-  getTraces() {
-    this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue).subscribe(x => {
-      if (x === null) {
+  updateData() {
+    this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this.currentPage, this.pageSize).subscribe(item => {
+      if (item === null) {
         return;
       }
-      this.traceData = x;
+      const maxPages = 10;
+      this.traceData = item;
+      if (item.totalPages < maxPages) {
+        this.totalPagesArray = Array(item.totalPages).fill(0).map((a, i) => i);
+      } else {
+        const midPoint = maxPages / 2;
+        if (item.pageNumber <= midPoint) {
+          this.totalPagesArray = Array(maxPages).fill(0).map((a, i) => i);
+        } else if (item.totalPages - item.pageNumber < midPoint) {
+          const startPoint = item.totalPages - maxPages;
+          this.totalPagesArray = Array(maxPages).fill(0).map((a, i) => startPoint + i);
+        } else {
+          const startPoint = item.pageNumber - midPoint;
+          this.totalPagesArray = Array(maxPages).fill(0).map((a, i) => startPoint + i);
+        }
+      }
     });
+  }
+  changeDate() {
+    this.currentPage = 0;
+    this.updateData();
+  }
+  goToPage(page: number = 0) {
+    if (page < 0) {
+      return;
+    }
+    if (page > this.totalPagesArray[this.totalPagesArray.length - 1]) {
+      return;
+    }
+    this.currentPage = page;
+    this.updateData();
   }
 }

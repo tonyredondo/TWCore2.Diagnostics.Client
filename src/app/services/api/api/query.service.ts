@@ -23,8 +23,8 @@ import { NodeStatusItem } from '../model/nodeStatusItem';
 import { PagedListNodeLogItem } from '../model/pagedListNodeLogItem';
 import { PagedListNodeStatusItem } from '../model/pagedListNodeStatusItem';
 import { PagedListNodeTraceItem } from '../model/pagedListNodeTraceItem';
+import { PagedListTraceResult } from '../model/pagedListTraceResult';
 import { SerializedObject } from '../model/serializedObject';
-import { TraceResult } from '../model/traceResult';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -562,13 +562,15 @@ export class QueryService {
      * @param environment
      * @param fromDate
      * @param toDate
+     * @param page
+     * @param pageSize
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<Array<TraceResult>>;
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<TraceResult>>>;
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<TraceResult>>>;
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean): Observable<PagedListTraceResult>;
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagedListTraceResult>>;
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagedListTraceResult>>;
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (environment === null || environment === undefined) {
             throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentTracesGet.');
         }
@@ -579,6 +581,12 @@ export class QueryService {
         }
         if (toDate !== undefined) {
             queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+        if (page !== undefined) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (pageSize !== undefined) {
+            queryParameters = queryParameters.set('pageSize', <any>pageSize);
         }
 
         let headers = this.defaultHeaders;
@@ -604,7 +612,7 @@ export class QueryService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<TraceResult>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/traces`,
+        return this.httpClient.get<PagedListTraceResult>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/traces`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
