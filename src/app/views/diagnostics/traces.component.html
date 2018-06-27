@@ -31,12 +31,15 @@
   </div>
 
   <!-- Tablas de Datos -->
-  <div class="row" *ngIf="traceData != null && traceData?.data.length > 0">
+  <div class="row" *ngIf="traceData != null && traceData.data.length > 0">
     <div class="col-lg-12">
       <div class="card">
         <div class="card-body">
 
-          <i class="fa fa-pointer fa-refresh float-right" (click)="updateData()"></i>
+          <span class=" float-right">
+              <span *ngIf="traceData != null">{{traceData.totalResults}} items &nbsp;</span>
+              <i class="fa fa-pointer fa-refresh" (click)="updateData()"></i>
+          </span>
 
           <table class="table table-sm table-striped table-log">
             <thead>
@@ -55,9 +58,7 @@
                 <td class="breakWord">{{dataItem.group}}</td>
                 <td>{{dataItem.count}}</td>
                 <td>
-                  <span class="badge"
-                  [ngClass]="{ 'button-success': !dataItem.hasErrors, 'button-error': dataItem.hasErrors }"
-                  [routerLink]="['/diagnostics/traces', dataItem.group]">Show Traces</span>
+                  <span class="badge" [ngClass]="{ 'button-success': !dataItem.hasErrors, 'button-error': dataItem.hasErrors }" [routerLink]="['/diagnostics/traces', dataItem.group]">Show Traces</span>
                 </td>
               </tr>
             </tbody>
