@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LogsComponent } from './logs.component';
 import { TracesComponent } from './traces.component';
+import { TraceDetailsComponent } from './tracedetails.component';
 import { StatusComponent } from './status.component';
 import { SearchComponent } from './search.component';
 
@@ -33,9 +34,9 @@ const routes: Routes = [
       },
       {
         path: 'traces/:group',
-        component: StatusComponent,
+        component: TraceDetailsComponent,
         data: {
-          title: 'Trace Group'
+          title: 'Trace Group Details'
         }
       },
       {

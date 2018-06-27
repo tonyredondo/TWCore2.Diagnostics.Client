@@ -27,6 +27,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 // Components
 import { LogsComponent } from './logs.component';
 import { TracesComponent } from './traces.component';
+import { TraceDetailsComponent } from './tracedetails.component';
 import { StatusComponent } from './status.component';
 import { SearchComponent } from './search.component';
 
@@ -51,6 +52,7 @@ import { SearchComponent } from './search.component';
   declarations: [
     LogsComponent,
     TracesComponent,
+    TraceDetailsComponent,
     StatusComponent,
     SearchComponent
   ]
