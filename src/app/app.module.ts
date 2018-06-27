@@ -10,6 +10,10 @@ import { registerLocaleData } from '@angular/common';
 import localeEnGB from '@angular/common/locales/en-GB';
 import localeEnGBExtra from '@angular/common/locales/extra/en-GB';
 registerLocaleData(localeEnGB, 'en-GB', localeEnGBExtra);
+import localeEs from '@angular/common/locales/es';
+import localeEsExtra from '@angular/common/locales/extra/es';
+registerLocaleData(localeEs, 'es', localeEsExtra);
+
 
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';

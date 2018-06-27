@@ -84,6 +84,10 @@ export class TracesComponent implements OnInit {
     this.updateData();
   }
 
+  getTimeDiff(end: Date, start: Date): Number {
+    return (moment(end).valueOf() - moment(start).valueOf()) / 1000;
+  }
+
   // Private Methods
   private updateParams() {
     this._queryParams.date = moment(this.bsValue).format('YYYY-MM-DD');

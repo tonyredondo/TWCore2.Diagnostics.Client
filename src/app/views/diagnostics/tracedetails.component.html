@@ -1,5 +1,21 @@
 <div>
 
+  <div class="row">
+    <div class="col-lg-2 back-link">
+      <i class="fa fa-chevron-left fa-pointer" (click)="goBack()">&nbsp;&nbsp; Back</i>
+    </div>
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body title">
+          <alert type="info" class="no-bottom-margin-alert">
+            <h5>
+              <strong>Trace Group:</strong>&nbsp;&nbsp;{{group}}</h5>
+          </alert>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- No Group Alert -->
   <div class="card" *ngIf="group == null">
     <div class="card-body">
@@ -13,20 +29,20 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="card">
-        <div class="card-header">
+        <!-- <div class="card-header">
           <i class="fa fa-cubes"></i>
           <strong>Group:</strong> {{group}}
-        </div>
+        </div> -->
         <div class="card-body">
           <i class="fa fa-pointer fa-refresh float-right" (click)="updateData()"></i>
-          <table class="table table-sm table-striped table-log">
+          <table class="table table-sm table-striped table-trace">
             <thead>
               <tr>
                 <th style="width: max-content;">Name</th>
-                <th style="width: 375px">Application</th>
-                <th style="width: 120px">Machine</th>
-                <th style="width: 230px">Tags</th>
-                <th style="width: 130px">Timestamp</th>
+                <th style="width: 365px">Application</th>
+                <th style="width: 90px">Machine</th>
+                <th style="width: 180px">Tags</th>
+                <th style="width: 90px">Timestamp</th>
                 <th style="width: 80px"></th>
               </tr>
             </thead>
@@ -45,7 +61,7 @@
                     {{tag.key}}
                   </button>
                 </td>
-                <td>{{item.timestamp | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{item.timestamp | date:'HH:mm:ss.SSS'}}</td>
                 <td>
                   <button class="btn badge badge-tag button-ser" (click)="showJsonData(item.id, item.name)">Json</button>
                   <button class="btn badge badge-tag button-ser" (click)="showXmlData(item.id, item.name)">Xml</button>

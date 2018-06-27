@@ -9,7 +9,7 @@
         <div class="card-body p-0 clearfix">
           <i class="fa fa-calendar bg-info p-4 font-2xl mr-3 float-left"></i>
           <div class="h5 text-info mb-0 pt-3">
-            <input type="text" placeholder="Showing dates" class="widget-range" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+            <input type="text" placeholder="Showing dates" class="widget-range fa-pointer" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
               [(ngModel)]="bsValue" (ngModelChange)="changeDate()" />
           </div>
           <div class="text-muted text-uppercase font-weight-bold font-xs">Date</div>
@@ -44,8 +44,9 @@
           <table class="table table-sm table-striped table-log">
             <thead>
               <tr>
-                <th style="width: 150px;">Start</th>
-                <th style="width: 150px;">End</th>
+                <th style="width: 165px;">Start</th>
+                <th style="width: 165px;">End</th>
+                <th style="width: 100px;">Time in Sec</th>
                 <th style="width: max-content;">Group name</th>
                 <th style="width: 90px;">Quantity</th>
                 <th style="width: 90px;"></th>
@@ -53,8 +54,9 @@
             </thead>
             <tbody>
               <tr *ngFor="let dataItem of traceData?.data">
-                <td>{{dataItem.start | date:'dd/MM/yy HH:mm:ss'}}</td>
-                <td>{{dataItem.end | date:'dd/MM/yy HH:mm:ss'}}</td>
+                <td>{{dataItem.start | date:'dd/MM/yy HH:mm:ss.SSS'}}</td>
+                <td>{{dataItem.end | date:'dd/MM/yy HH:mm:ss.SSS'}}</td>
+                <td>{{ getTimeDiff(dataItem.end, dataItem.start) | number : '2.3-3' }}</td>
                 <td class="breakWord">{{dataItem.group}}</td>
                 <td>{{dataItem.count}}</td>
                 <td>

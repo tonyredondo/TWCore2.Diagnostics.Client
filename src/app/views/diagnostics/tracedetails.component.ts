@@ -1,5 +1,6 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { NodeTraceItem } from '../../services/api';
@@ -19,7 +20,7 @@ export class TraceDetailsComponent implements OnInit {
   public traceModal: ModalDirective;
   public traceObject: string;
   public traceName: string;
-  constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router, private _codeMirror: CodemirrorService) { }
+  constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router, private _codeMirror: CodemirrorService, private _location: Location) { }
 
   ngOnInit() {
     this._params = Object.assign({}, this._activatedRoute.snapshot.params);
@@ -27,6 +28,9 @@ export class TraceDetailsComponent implements OnInit {
     if (this._params.group !== undefined) {
       this.group = this._params.group;
       this.updateData();
+    }
+    else {
+      this._location.back();
     }
   }
   updateData() {
@@ -96,7 +100,9 @@ export class TraceDetailsComponent implements OnInit {
       });
     });
   }
-
+  goBack() {
+    this._location.back();
+  }
 }
 
 interface INodeTraceItemExt extends NodeTraceItem {
