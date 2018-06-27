@@ -1,3 +1,4 @@
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
@@ -21,6 +22,7 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 })
 
 export class LogsComponent implements OnInit {
+  private _queryParams: Params;
   private _defaultPageSize = 15;
   // Summary rows
   public summary: LogSummary;
@@ -89,20 +91,30 @@ export class LogsComponent implements OnInit {
   public mainChartType = 'bar';
   public showChart = true;
   // Constructor
-  constructor(private _queryService: QueryService, private localeService: BsLocaleService) {}
+  constructor(private _queryService: QueryService, private localeService: BsLocaleService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
 
-  // Methods
+  // Public Methods
   ngOnInit() {
+    const initialDate = [ moment().subtract(4, 'd').toDate(), moment().toDate() ];
+    this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
+    if (this._queryParams.fromDate !== undefined) {
+      initialDate[0] = moment(this._queryParams.fromDate, 'YYYY-MM-DD').toDate();
+    }
+    if (this._queryParams.toDate !== undefined) {
+      initialDate[1] = moment(this._queryParams.toDate, 'YYYY-MM-DD').toDate();
+    }
+
     this.bsConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
       maxDate: moment().toDate(),
       showWeekNumbers: false
     });
-    this.bsValue = [ moment().subtract(4, 'd').toDate(), moment().toDate() ];
+    this.bsValue = initialDate;
     this.localeService.use('en-gb');
     this.getApplications();
   }
   getApplications() {
+    this.updateParams();
     this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name, this.bsValue[0], this.bsValue[1]).subscribe(x => {
       if (x === null) {
         return;
@@ -246,6 +258,13 @@ export class LogsComponent implements OnInit {
     }
     this.innerExceptionsData.push(item);
     this.createInnerExceptionData(item.innerException);
+  }
+
+  // Private Methods
+  private updateParams() {
+    this._queryParams.fromDate = moment(this.bsValue[0]).format('YYYY-MM-DD');
+    this._queryParams.toDate = moment(this.bsValue[1]).format('YYYY-MM-DD');
+    this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
   }
 }
 

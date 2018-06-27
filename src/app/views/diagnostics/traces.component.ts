@@ -23,7 +23,7 @@ export class TracesComponent implements OnInit {
   public bsValue: Date;
   constructor(private _queryService: QueryService, private _localeService: BsLocaleService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
 
-  // Methods
+  // Public Methods
   ngOnInit() {
     let initialDate = new Date();
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
@@ -83,7 +83,9 @@ export class TracesComponent implements OnInit {
     this.updateParams();
     this.updateData();
   }
-  updateParams() {
+
+  // Private Methods
+  private updateParams() {
     this._queryParams.date = moment(this.bsValue).format('YYYY-MM-DD');
     this._queryParams.page = this._currentPage;
     this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
