@@ -22,7 +22,11 @@
 
 <div>
 
-  <div class="card">
+  <div *ngIf="bProcessing">
+    <strong>Searching ...</strong>
+  </div>
+
+  <div class="card" *ngIf="bHasResults == false">
     <div class="card-body">
       <alert type="info" class="no-bottom-margin-alert">
         <strong>Nothing found!</strong>
@@ -31,6 +35,5 @@
     </div>
   </div>
 
-  <div *ngIf="bProcessing"><strong>Searching ...</strong></div>
 
 </div>

@@ -12,6 +12,7 @@ export class SearchComponent implements OnInit {
   private _queryParams: Params;
   public searchValue: string;
   public bProcessing: boolean = false;
+  public bHasResults?: boolean;
   constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
 
   // Public Methods
@@ -25,11 +26,14 @@ export class SearchComponent implements OnInit {
 
   doSearch() {
     this.updateParams();
+    this.bHasResults = null;
     this.bProcessing = true;
-    console.log('Do Search: ' + this.searchValue);
+
     setTimeout(() => {
       this.bProcessing = false;
+      this.bHasResults = false;
     }, 1000);
+
   }
 
 
