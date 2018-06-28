@@ -10,9 +10,9 @@
               <i class="fa fa-search"></i>
             </span>
           </div>
-          <input type="text" id="search" name="search" class="form-control" placeholder="Enter your search">
+          <input type="text" [(ngModel)]="searchValue" (keyup.enter)="doSearch()" id="search" name="search" class="form-control" placeholder="Enter your search">
           <span class="input-group-append">
-            <button class="btn btn-secondary" type="button">Search</button>
+            <button class="btn btn-secondary" type="button" (click)="doSearch()">Search</button>
           </span>
         </div>
       </td>
@@ -30,5 +30,7 @@
       </alert>
     </div>
   </div>
+
+  <div *ngIf="bProcessing"><strong>Searching ...</strong></div>
 
 </div>
