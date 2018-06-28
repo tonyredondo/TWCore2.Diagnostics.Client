@@ -319,10 +319,13 @@
   width:100px;
 }
 
+.header{
+  min-width: 190px;
+}
 .header .card {
   margin-bottom: 0.5rem;
 }
-.header .bg-success {
+.header .bg-danger {
   width: 70px;
 }
 .header .bg-warning {

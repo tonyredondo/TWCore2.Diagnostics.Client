@@ -1,7 +1,7 @@
 <app-header
   [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'Diagnostics'}"
-  [navbarBrandMinimized]="{src: 'assets/img/brand/server.svg', width: 30, height: 30, alt: 'Diagnostics'}"
+  [navbarBrandFull]="{src: 'assets/img/brand/diagnostics.svg', width: 130, height: 25, alt: 'Diagnostics'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/diagnostics.svg', width: 30, height: 30, alt: 'Diagnostics'}"
   [sidebarToggler]="'lg'"
   [asideMenuToggler]="false" [mobileAsideMenuToggler]="false">
   <ul class="nav navbar-nav ml-auto env-nav">
@@ -14,7 +14,7 @@
     <li class="nav-item d-md-down-none">
       <a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
     </li> -->
-    <li class="nav-item dropdown" dropdown placement="bottom right">
+    <li class="nav-item dropdown" dropdown placement="bottom right" *ngIf="false">
       <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
         <div>Environment: <span class="bolder">Production</span></div>
       </a>

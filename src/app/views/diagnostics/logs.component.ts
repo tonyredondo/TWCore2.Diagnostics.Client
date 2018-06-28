@@ -95,7 +95,7 @@ export class LogsComponent implements OnInit {
 
   // Public Methods
   ngOnInit() {
-    const initialDate = [ moment().subtract(4, 'd').toDate(), moment().toDate() ];
+    const initialDate = [ moment().subtract(2, 'd').toDate(), moment().toDate() ];
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
     if (this._queryParams.fromDate !== undefined) {
       initialDate[0] = moment(this._queryParams.fromDate, 'YYYY-MM-DD').toDate();
