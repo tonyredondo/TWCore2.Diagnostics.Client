@@ -35,6 +35,7 @@
           <table class="table table-sm table-striped table-trace">
             <thead>
               <tr>
+                <th style="width: 5px"></th>
                 <th style="width: max-content;">Name</th>
                 <th style="width: 365px">Application</th>
                 <th style="width: 90px">Machine</th>
@@ -45,11 +46,13 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of items">
-                <td class="breakWord">
-                  <i class="fa" [ngClass]="item.application.indexOf('Api') > -1 ? 'fa-cloud' :
-                    item.application.indexOf('Engine') > -1 ? 'fa-cog' :
-                    item.application.indexOf('Provider') > -1 ? 'fa-external-link' :
-                    'fa-cube'">&nbsp;&nbsp;</i>{{item.name}}</td>
+                <td>
+                    <i class="fa fa-big" [ngClass]="item.application.indexOf('Api') > -1 ? 'fa-cloud' :
+                        item.application.indexOf('Engine') > -1 ? 'fa-cog' :
+                        item.application.indexOf('Provider') > -1 ? 'fa-plane' :
+                        'fa-cube'"></i>
+                </td>
+                <td class="breakWord">{{item.name}}</td>
                 <td class="breakWord">{{item.application}}</td>
                 <td>{{item.machine}}</td>
                 <td>

@@ -19,6 +19,9 @@
   word-break: break-all;
   white-space: pre-wrap;
 }
+.breakWord span {
+  font-size: 11px;
+}
 
 .button-exception {
   font-size: 95%;
@@ -147,16 +150,18 @@
 }
 
 .table-log {
-  font-family: Consolas, 'Courier New', Courier, monospace;
   font-size: 12px;
+}
+.table-log td {
+  font-family: Consolas, 'Courier New', Courier, monospace;
 }
 
 .table-trace {
-  font-family: Consolas, 'Courier New', Courier, monospace;
   font-size: 12px;
 }
 .table-trace td {
   vertical-align: middle;
+  font-family: Consolas, 'Courier New', Courier, monospace;
 }
 .table-trace .breakWord {
   padding-right: 15px !important;
@@ -335,4 +340,10 @@
 .header .bg-success {
   width: 70px;
   padding-left: 2rem !important;
+}
+.fa-blue {
+  color: #03A9F4;
+}
+.fa-big {
+  font-size: 14px;
 }
