@@ -2,7 +2,11 @@
   <table>
     <tr>
       <td class="breadcrumb-icon"></td>
-      <td class="breadcrumb-title"><strong>Logs</strong></td>
+      <td class="breadcrumb-title">
+        <strong>Logs</strong> -
+        <input type="text" placeholder="Showing dates" class="widget-date widget-range fa-pointer" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+              [(ngModel)]="bsValue" (ngModelChange)="getApplications()" />
+      </td>
     </tr>
   </table>
 </ol>
@@ -10,21 +14,21 @@
 <div>
 
   <!-- Primer Row con Widgets -->
-  <div class="row">
-    <div class="col-6 col-lg-3">
-      <div class="card widget-range-card">
-        <div class="card-body p-0 clearfix">
-          <i class="fa fa-calendar bg-info p-4 font-2xl mr-3 float-left"></i>
-          <div class="h5 text-info mb-0 pt-3">
-            <input type="text" placeholder="Showing dates" class="widget-range fa-pointer" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
-              [(ngModel)]="bsValue" (ngModelChange)="getApplications()" />
+  <div class="row" [hidden]="!showChart">
+
+    <div class="col-6 col-lg-10">
+      <div class="card">
+        <div class="card-body">
+          <div class="chart-wrapper" style="height:195px">
+            <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels" [options]="mainChartOptions" [colors]="mainChartColours"
+              [legend]="mainChartLegend" [chartType]="mainChartType"></canvas>
           </div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Range</div>
         </div>
       </div>
     </div>
+
     <!--/.col-->
-    <div class="col-6 col-lg-3">
+    <div class="col-6 col-lg-2 header">
       <div class="card">
         <div class="card-body p-0 clearfix">
           <i class="fa fa-bug bg-danger p-4 font-2xl mr-3 float-left"></i>
@@ -32,9 +36,6 @@
           <div class="text-muted text-uppercase font-weight-bold font-xs">Errors</div>
         </div>
       </div>
-    </div>
-    <!--/.col-->
-    <div class="col-6 col-lg-3">
       <div class="card">
         <div class="card-body p-0 clearfix">
           <i class="fa fa-warning bg-warning p-4 font-2xl mr-3 float-left"></i>
@@ -42,9 +43,6 @@
           <div class="text-muted text-uppercase font-weight-bold font-xs">Warnings</div>
         </div>
       </div>
-    </div>
-    <!--/.col-->
-    <div class="col-6 col-lg-3">
       <div class="card">
         <div class="card-body p-0 clearfix">
           <i class="fa fa-info bg-success p-4 font-2xl mr-3 float-left"></i>
@@ -56,14 +54,7 @@
   </div>
 
   <!-- Row con Charts -->
-  <div class="card" [hidden]="!showChart">
-    <div class="card-body">
-      <div class="chart-wrapper" style="height:150px">
-        <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels" [options]="mainChartOptions" [colors]="mainChartColours"
-          [legend]="mainChartLegend" [chartType]="mainChartType"></canvas>
-      </div>
-    </div>
-  </div>
+
 
   <!-- No Data Alert -->
   <div class="card" *ngIf="!showChart">

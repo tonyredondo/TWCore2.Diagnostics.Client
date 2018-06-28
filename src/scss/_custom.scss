@@ -180,7 +180,7 @@
   margin-bottom: 0.5rem;
 }
 
-.widget-range {
+.widget-date {
   width: auto;
   padding: 0px;
   font-family: inherit;
@@ -311,5 +311,25 @@
 }
 .breadcrumb-body .widget-range {
   font-size: inherit !important;
+  width:190px;
+}
+
+.breadcrumb-body .widget-day {
+  font-size: inherit !important;
   width:100px;
+}
+
+.header .card {
+  margin-bottom: 0.5rem;
+}
+.header .bg-success {
+  width: 70px;
+}
+.header .bg-warning {
+  width: 70px;
+  padding-left: 1.45rem !important;
+}
+.header .bg-success {
+  width: 70px;
+  padding-left: 2rem !important;
 }

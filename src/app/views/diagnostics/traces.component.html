@@ -4,7 +4,7 @@
       <td class="breadcrumb-icon"></td>
       <td class="breadcrumb-title">
         <strong>Day Traces</strong> -
-        <input type="text" placeholder="Showing dates" class="widget-range fa-pointer" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+        <input type="text" placeholder="Showing dates" class="widget-date widget-day fa-pointer" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
               [(ngModel)]="bsValue" (ngModelChange)="changeDate()" />
       </td>
     </tr>
@@ -12,26 +12,6 @@
 </ol>
 
 <div>
-
-  <!-- Primer Row con Widgets -->
-  <!-- <div class="row">
-    <div class="col-6 col-lg-4">
-    </div>
-    <div class="col-6 col-lg-4">
-      <div class="card widget-range-card">
-        <div class="card-body p-0 clearfix">
-          <i class="fa fa-calendar bg-info p-4 font-2xl mr-3 float-left"></i>
-          <div class="h5 text-info mb-0 pt-3">
-            <input type="text" placeholder="Showing dates" class="widget-range fa-pointer" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
-              [(ngModel)]="bsValue" (ngModelChange)="changeDate()" />
-          </div>
-          <div class="text-muted text-uppercase font-weight-bold font-xs">Date</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-6 col-lg-4">
-    </div>
-  </div> -->
 
   <!-- No Data Alert -->
   <div class="card" *ngIf="traceData != null && traceData?.data.length == 0">
