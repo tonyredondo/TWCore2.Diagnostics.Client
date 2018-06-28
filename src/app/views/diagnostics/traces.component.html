@@ -1,7 +1,20 @@
+<ol class="breadcrumb breadcrumb-body">
+  <table>
+    <tr>
+      <td class="breadcrumb-icon"></td>
+      <td class="breadcrumb-title">
+        <strong>Day Traces</strong> -
+        <input type="text" placeholder="Showing dates" class="widget-range fa-pointer" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
+              [(ngModel)]="bsValue" (ngModelChange)="changeDate()" />
+      </td>
+    </tr>
+  </table>
+</ol>
+
 <div>
 
   <!-- Primer Row con Widgets -->
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-6 col-lg-4">
     </div>
     <div class="col-6 col-lg-4">
@@ -18,7 +31,7 @@
     </div>
     <div class="col-6 col-lg-4">
     </div>
-  </div>
+  </div> -->
 
   <!-- No Data Alert -->
   <div class="card" *ngIf="traceData != null && traceData?.data.length == 0">

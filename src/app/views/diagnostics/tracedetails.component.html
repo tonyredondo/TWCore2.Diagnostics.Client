@@ -1,20 +1,17 @@
-<div>
+<ol class="breadcrumb breadcrumb-body">
+  <table>
+    <tr>
+      <td class="breadcrumb-icon">
+        <span class="back-link fa-pointer" (click)="goBack()">
+          <i class="fa fa-chevron-left ">&nbsp;&nbsp;</i>Back
+        </span>
+      </td>
+      <td class="breadcrumb-title"><strong>Trace Group:</strong>&nbsp;&nbsp;{{group}}</td>
+    </tr>
+  </table>
+</ol>
 
-  <div class="row">
-    <div class="col-lg-2 back-link">
-      <i class="fa fa-chevron-left fa-pointer" (click)="goBack()">&nbsp;&nbsp; Back</i>
-    </div>
-    <div class="col-lg-8">
-      <div class="card">
-        <div class="card-body title">
-          <alert type="info" class="no-bottom-margin-alert">
-            <h5>
-              <strong>Trace Group:</strong>&nbsp;&nbsp;{{group}}</h5>
-          </alert>
-        </div>
-      </div>
-    </div>
-  </div>
+<div>
 
   <!-- No Group Alert -->
   <div class="card" *ngIf="group == null">
@@ -80,7 +77,7 @@
 
 <!-- Trace View -->
 <div bsModal #traceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-info" role="document">
+  <div class="modal-dialog modal-primary modal-code" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">

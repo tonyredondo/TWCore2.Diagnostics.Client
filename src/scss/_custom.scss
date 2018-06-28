@@ -273,3 +273,43 @@
   font-size:14px;
   border-radius: 0.5rem;
 }
+
+.modal-code {
+
+}
+.modal-code .modal-header {
+  padding:0.5rem 1rem;
+  border-bottom-color: #20a8d8;
+}
+.modal-code .modal-body {
+  padding:0rem;
+}
+.modal-code .CodeMirror {
+  border-radius: 0px !important;
+}
+.modal-code .modal-content {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.breadcrumb-body {
+  margin: -22px -30px 22px -30px;
+}
+.breadcrumb-body table {
+  width:90%;
+  padding: 0px;
+  margin: 0px;
+}
+.breadcrumb-icon {
+  width:10%;
+  padding: 0px;
+}
+.breadcrumb-title {
+  text-align: center;
+  padding: 0px;
+  color:#444444;
+}
+.breadcrumb-body .widget-range {
+  font-size: inherit !important;
+  width:100px;
+}
