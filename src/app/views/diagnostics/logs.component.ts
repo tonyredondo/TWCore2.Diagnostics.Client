@@ -2,7 +2,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
-import { ApplicationsLevels, PagedListNodeLogItem, SerializableException, LogSummary } from '../../services/api';
+import { ApplicationsLevels, PagedListNodeLogItem, SerializableException, LogSummary, NodeLogItem } from '../../services/api';
 import { Observable } from 'rxjs/Observable';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -37,6 +37,9 @@ export class LogsComponent implements OnInit {
   // Exception Viewer
   @ViewChild('exceptionModal')
   public exceptionModal: ModalDirective;
+  public exceptionTimestamp: Date;
+  public exceptionApplication: string;
+  public exceptionMachine: string;
   public exceptionData: SerializableException;
   public innerExceptionsData: SerializableException[];
   // Cart
@@ -246,10 +249,13 @@ export class LogsComponent implements OnInit {
       }
     }
   }
-  showException(item: SerializableException) {
-    this.exceptionData = item;
+  showException(item: NodeLogItem) {
+    this.exceptionTimestamp = item.timestamp;
+    this.exceptionApplication = item.application;
+    this.exceptionMachine = item.machine;
+    this.exceptionData = item.exception;
     this.innerExceptionsData = [];
-    this.createInnerExceptionData(item.innerException);
+    this.createInnerExceptionData(this.exceptionData.innerException);
     this.exceptionModal.show();
   }
   createInnerExceptionData(item: SerializableException) {

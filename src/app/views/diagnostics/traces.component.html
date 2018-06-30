@@ -60,8 +60,9 @@
               </tr>
             </tbody>
           </table>
-
-          <ul class="pagination" *ngIf="traceData?.totalPages > 1">
+        </div>
+        <div class="card-footer" *ngIf="traceData?.totalPages > 1">
+          <ul class="pagination">
             <li class="page-item">
               <a class="page-link" (click)="goToPage(traceData?.pageNumber - 1)">Prev</a>
             </li>
@@ -72,7 +73,6 @@
               <a class="page-link" (click)="goToPage(traceData?.pageNumber + 1)">Next</a>
             </li>
           </ul>
-
         </div>
       </div>
     </div>

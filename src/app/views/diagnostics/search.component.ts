@@ -1,8 +1,10 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
+import { SearchResults, SerializableException, NodeLogItem } from '../../services/api';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 
 @Component({
@@ -15,6 +17,15 @@ export class SearchComponent implements OnInit {
   public bProcessing: boolean = false;
   public bHasResults?: boolean;
   public bsValue: Date[];
+  public searchResults: SearchResults;
+  // Exception Viewer
+  @ViewChild('exceptionModal')
+  public exceptionModal: ModalDirective;
+  public exceptionTimestamp: Date;
+  public exceptionApplication: string;
+  public exceptionMachine: string;
+  public exceptionData: SerializableException;
+  public innerExceptionsData: SerializableException[];
   constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
 
   // Public Methods
@@ -47,12 +58,26 @@ export class SearchComponent implements OnInit {
         return;
       }
       this.bHasResults = true;
-
-
-
+      this.searchResults = data;
     });
   }
 
+  showException(item: NodeLogItem) {
+    this.exceptionTimestamp = item.timestamp;
+    this.exceptionApplication = item.application;
+    this.exceptionMachine = item.machine;
+    this.exceptionData = item.exception;
+    this.innerExceptionsData = [];
+    this.createInnerExceptionData(this.exceptionData.innerException);
+    this.exceptionModal.show();
+  }
+  createInnerExceptionData(item: SerializableException) {
+    if (item === null) {
+      return;
+    }
+    this.innerExceptionsData.push(item);
+    this.createInnerExceptionData(item.innerException);
+  }
 
   // Private Methods
   private updateParams() {

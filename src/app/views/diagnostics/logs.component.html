@@ -4,8 +4,8 @@
       <td class="breadcrumb-icon"></td>
       <td class="breadcrumb-title">
         <strong>Logs</strong> -
-        <input type="text" placeholder="Showing dates" class="widget-date widget-range fa-pointer" bsDaterangepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
-              [(ngModel)]="bsValue" (ngModelChange)="getApplications()" />
+        <input type="text" placeholder="Showing dates" class="widget-date widget-range fa-pointer" bsDaterangepicker [bsConfig]="bsConfig"
+          [bsValue]="bsValue" [(ngModel)]="bsValue" (ngModelChange)="getApplications()" />
       </td>
     </tr>
   </table>
@@ -19,7 +19,7 @@
     <div class="col-lg-9">
       <div class="card">
         <div class="card-body">
-          <div class="chart-wrapper" style="height:195px">
+          <div class="chart-wrapper">
             <canvas baseChart class="chart" [datasets]="mainChartData" [labels]="mainChartLabels" [options]="mainChartOptions" [colors]="mainChartColours"
               [legend]="mainChartLegend" [chartType]="mainChartType"></canvas>
           </div>
@@ -126,13 +126,15 @@
                   <td>{{dataItem.timestamp | date:'dd/MM/yy HH:mm:ss'}}</td>
                   <td>{{dataItem.type}}</td>
                   <td class="breakWord">{{dataItem.message}}
-                    <span *ngIf="dataItem.exception != null" (click)="showException(dataItem.exception)" class="badge button-exception">Show Exception</span>
+                    <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception">Show Exception</span>
                   </td>
                   <td>{{dataItem.machine}}</td>
                 </tr>
               </tbody>
             </table>
-            <ul class="pagination" *ngIf="currentLogData(item).unwrappedData?.totalPages > 1">
+          </div>
+          <div class="card-footer" [collapse]="currentLogData(item).isCollapsed" *ngIf="currentLogData(item).unwrappedData?.totalPages > 1">
+            <ul class="pagination">
               <li class="page-item">
                 <a class="page-link" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber - 1)">Prev</a>
               </li>
@@ -174,6 +176,18 @@
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>Timestamp</td>
+              <td class="breakWord font-weight-bold">{{exceptionTimestamp | date:'dd/MM/yy HH:mm:ss.SSS'}}</td>
+            </tr>
+            <tr>
+              <td>Application</td>
+              <td class="breakWord font-weight-bold">{{exceptionApplication}}</td>
+            </tr>
+            <tr>
+              <td>Machine</td>
+              <td class="breakWord font-weight-bold">{{exceptionMachine}}</td>
+            </tr>
             <tr>
               <td>Type</td>
               <td class="breakWord font-weight-bold">{{exceptionData?.exceptionType}}</td>

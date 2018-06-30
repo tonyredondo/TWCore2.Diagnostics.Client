@@ -13,6 +13,7 @@
 
 .pagination {
   justify-content: center;
+  margin-bottom: 0rem;
 }
 
 .breakWord {
@@ -121,6 +122,11 @@
   border-bottom-width: 2px;
 }
 
+.card-body {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
 .card-table {
   width: 100%;
   padding: 0rem;
@@ -149,15 +155,66 @@
   font-size: 80%;
 }
 
+.chart-wrapper {
+  height:205px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .table-log {
   font-size: 12px;
+  margin-bottom: 0.5rem;
 }
 .table-log td {
   font-family: Consolas, 'Courier New', Courier, monospace;
 }
+.table-log-search {
+  line-height: 1.2;
+}
+.table-log-search td {
+  vertical-align: middle;
+  padding: 0.1rem 0.3rem;
+}
+.td-app {
+  font-size:11px;
+  font-style: italic;
+}
+
+.span-level-error {
+  color: #f86c6b;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.span-level-warning {
+  color: #ffc107;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.span-level-success {
+  color: #4dbd74;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+
+.tr-level-error {
+  background-color: #f86c6b44 !important;
+  border-bottom: 1px solid #f86c6b88;
+}
+.tr-level-warning {
+  background-color: #ffc10744 !important;
+  border-bottom: 1px solid #ffc10788;
+}
+.tr-level-success {
+  background-color: #4dbd7444 !important;
+  border-bottom: 1px solid #4dbd7488;
+}
+
+
 
 .table-trace {
   font-size: 12px;
+  margin-bottom: 0.5rem;
 }
 .table-trace td {
   vertical-align: middle;
@@ -221,6 +278,9 @@
 
 .fa-pointer {
   cursor: pointer;
+}
+.fa-refresh {
+  margin-top:0.5rem;
 }
 
 .background-white {
@@ -346,4 +406,11 @@
 }
 .fa-big {
   font-size: 14px;
+}
+
+.modal-body {
+  padding:0.5rem;
+}
+.modal-header {
+  padding:0.5rem;
 }
