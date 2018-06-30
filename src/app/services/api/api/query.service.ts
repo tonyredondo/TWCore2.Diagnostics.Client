@@ -25,6 +25,7 @@ import { PagedListNodeLogItem } from '../model/pagedListNodeLogItem';
 import { PagedListNodeStatusItem } from '../model/pagedListNodeStatusItem';
 import { PagedListNodeTraceItem } from '../model/pagedListNodeTraceItem';
 import { PagedListTraceResult } from '../model/pagedListTraceResult';
+import { SearchResults } from '../model/searchResults';
 import { SerializedObject } from '../model/serializedObject';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -417,6 +418,69 @@ export class QueryService {
         ];
 
         return this.httpClient.get<PagedListNodeLogItem>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/search/${encodeURIComponent(String(search))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param environment
+     * @param searchTerm
+     * @param fromDate
+     * @param toDate
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryByEnvironmentSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<SearchResults>;
+    public apiQueryByEnvironmentSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<SearchResults>>;
+    public apiQueryByEnvironmentSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<SearchResults>>;
+    public apiQueryByEnvironmentSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentSearchBySearchTermGet.');
+        }
+        if (searchTerm === null || searchTerm === undefined) {
+            throw new Error('Required parameter searchTerm was null or undefined when calling apiQueryByEnvironmentSearchBySearchTermGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<SearchResults>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/search/${encodeURIComponent(String(searchTerm))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
