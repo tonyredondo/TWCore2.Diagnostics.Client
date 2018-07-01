@@ -72,7 +72,7 @@
                 <span class="td-app">{{dataItem.application}}</span> -->
               </td>
               <td class="breakWord">
-                  <span class="td-app">{{dataItem.application}}</span>
+                <span class="td-app">{{dataItem.application}}</span>
                 <span *ngIf="dataItem.type != null">&lt;{{dataItem.type}}&gt;</span>
                 {{dataItem.message}}
                 <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception">Show Exception</span>

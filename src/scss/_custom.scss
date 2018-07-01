@@ -216,7 +216,12 @@
   margin-right: -4px;
   margin-top: -2px;
   color: #555;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  direction: rtl;
 }
+
 .tr-level-error .td-app {
   background-color: #f86c6b44;
   border-bottom-color: #f86c6b44;
