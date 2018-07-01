@@ -37,7 +37,7 @@
 
   <div *ngIf="bHasResults == true">
 
-    <div class="card">
+    <div class="card" *ngIf="searchResults.logs.length > 0">
       <div class="card-header">
         <table class="card-table">
           <tr>
