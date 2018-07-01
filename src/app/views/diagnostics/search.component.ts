@@ -67,8 +67,6 @@ export class SearchComponent implements OnInit {
       this.bHasResults = true;
       this.searchResults = data;
 
-      console.log(data);
-
       const items = [];
       for (let i = 0; i < this.searchResults.traces.length; i++) {
         const item = this.searchResults.traces[i];
@@ -80,12 +78,8 @@ export class SearchComponent implements OnInit {
         }
         items.push(Object.assign(item, { tagsArray : tags }));
       }
-      console.log(items);
 
       const groupObject = this.groupBy(items, 'group');
-      console.log(groupObject);
-
-
       this.searchTraces = [];
       for(const groupItem in groupObject) {
         if (groupObject.hasOwnProperty(groupItem)) {
