@@ -11,6 +11,8 @@
             </span>
           </div>
           <input type="text" [(ngModel)]="searchValue" (keyup.enter)="doSearch()" id="search" name="search" class="form-control" placeholder="Enter your search">
+          <input type="text" placeholder="Showing dates" class="form-control fa-pointer input-date" bsDaterangepicker [bsConfig]="bsConfig"
+              [bsValue]="bsValue" [(ngModel)]="bsValue" (ngModelChange)="doSearch()" />
           <span class="input-group-append">
             <button class="btn btn-secondary" type="button" (click)="doSearch()">Search</button>
           </span>

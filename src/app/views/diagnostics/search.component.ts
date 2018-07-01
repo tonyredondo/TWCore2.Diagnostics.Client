@@ -6,6 +6,10 @@ import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
+import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { enGbLocale } from 'ngx-bootstrap/locale';
+defineLocale('en-gb', enGbLocale);
 
 
 @Component({
@@ -17,6 +21,7 @@ export class SearchComponent implements OnInit {
   public searchValue: string;
   public bProcessing: boolean = false;
   public bHasResults?: boolean;
+  public bsConfig: Partial<BsDatepickerConfig>;
   public bsValue: Date[];
   public searchResults: SearchResults;
   public searchTraces: Array<Array<INodeTraceItemExt>>;
@@ -33,7 +38,7 @@ export class SearchComponent implements OnInit {
   public traceModal: ModalDirective;
   public traceObject: string;
   public traceName: string;
-  constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router, private _codeMirror: CodemirrorService) {}
+  constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router, private _codeMirror: CodemirrorService, private localeService: BsLocaleService) {}
 
   // Public Methods
   ngOnInit() {
@@ -45,7 +50,14 @@ export class SearchComponent implements OnInit {
     if (this._queryParams.toDate !== undefined) {
       initialDate[1] = moment(this._queryParams.toDate, 'YYYY-MM-DD').toDate();
     }
+
+    this.bsConfig = Object.assign({}, {
+      containerClass: 'theme-dark-blue',
+      maxDate: moment().toDate(),
+      showWeekNumbers: false
+    });
     this.bsValue = initialDate;
+    this.localeService.use('en-gb');
     if (this._queryParams.term !== undefined) {
       this.searchValue = this._queryParams.term;
       this.doSearch();

@@ -2,7 +2,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
-import {  PagedListTraceResult } from '../../services/api';
+import { PagedListTraceResult } from '../../services/api';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
