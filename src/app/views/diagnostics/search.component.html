@@ -98,7 +98,53 @@
         </table>
       </div>
       <div class="card-body">
-        Items
+
+
+        <table class="table table-sm table-striped table-trace">
+            <thead>
+              <tr>
+                <th style="width: 5px"></th>
+                <th style="width: max-content;">Name</th>
+                <th style="width: 380px">Application</th>
+                <th style="width: 90px">Machine</th>
+                <th style="width: 180px">Tags</th>
+                <th style="width: 90px">Timestamp</th>
+                <th style="width: 80px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of group">
+                <td>
+                    <i class="fa fa-big" [ngClass]="item.application.indexOf('Api') > -1 ? 'fa-cloud' :
+                        item.application.indexOf('Engine') > -1 ? 'fa-cog' :
+                        item.application.indexOf('Provider') > -1 ? 'fa-plane' :
+                        'fa-cube'"></i>
+                </td>
+                <td class="breakWord">{{item.name}}</td>
+                <td class="breakWord">{{item.application}}</td>
+                <td>{{item.machine}}</td>
+                <td>
+                  <button *ngFor="let tag of item.tagsArray" class="btn badge badge-tag" [ngClass]="{
+                      'button-info' : tag.key != 'Status',
+                      'button-success' : tag.key == 'Status' && tag.value == 'Success',
+                      'button-warning' : tag.key == 'Status' && tag.value == 'Warning',
+                      'button-error' : tag.key == 'Status' && tag.value == 'Error'
+                    }" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">
+                    {{tag.key}}
+                  </button>
+                </td>
+                <td>{{item.timestamp | date:'HH:mm:ss.SSS'}}</td>
+                <td>
+                  <button class="btn badge badge-tag button-ser" (click)="showJsonData(item.id, item.name)">Json</button>
+                  <button class="btn badge badge-tag button-ser" (click)="showXmlData(item.id, item.name)">Xml</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+
+
       </div>
     </div>
 

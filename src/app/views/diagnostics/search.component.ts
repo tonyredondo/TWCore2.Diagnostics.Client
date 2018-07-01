@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   public bHasResults?: boolean;
   public bsValue: Date[];
   public searchResults: SearchResults;
-  public searchTraces: Array<Array<NodeTraceItem>>;
+  public searchTraces: Array<Array<INodeTraceItemExt>>;
   // Exception Viewer
   @ViewChild('exceptionModal')
   public exceptionModal: ModalDirective;
@@ -60,7 +60,20 @@ export class SearchComponent implements OnInit {
       }
       this.bHasResults = true;
       this.searchResults = data;
-      const groupObject = this.groupBy(this.searchResults.traces, 'group');
+
+      const items = [];
+      for (let i = 0; i < this.searchResults.traces.length; i++) {
+        const item = this.searchResults.traces[i];
+        const itemTags = item.tags.split(', ');
+        const tags = [] as TagItem[];
+        for (let it = 0; it < itemTags.length; it++) {
+          const itemTagItem = itemTags[it].split(': ');
+          tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
+        }
+        items.push(Object.assign(item, { tagsArray : tags }));
+      }
+
+      const groupObject = this.groupBy(items, 'group');
       this.searchTraces = [];
       for(const groupItem in groupObject) {
         if (groupObject.hasOwnProperty(groupItem)) {
@@ -70,8 +83,8 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  groupBy(value: any[], key: string) : { [index: string]: Array<NodeTraceItem> } {
-    var resObj = {} as { [index: string]: Array<NodeTraceItem> };
+  groupBy(value: any[], key: string) : { [index: string]: Array<INodeTraceItemExt> } {
+    var resObj = {} as { [index: string]: Array<INodeTraceItemExt> };
     for (var i = 0; i < value.length; i++) {
         const item = value[i] !== undefined ? value[i] : null;
         if (item != null) {
@@ -117,4 +130,13 @@ export class SearchComponent implements OnInit {
     this._queryParams.toDate = moment(this.bsValue[1]).format('YYYY-MM-DD');
     this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
   }
+}
+
+
+interface INodeTraceItemExt extends NodeTraceItem {
+  tagsArray: TagItem[];
+}
+interface TagItem {
+  key: string;
+  value: string;
 }
