@@ -101,7 +101,13 @@
 
       </div>
       <div class="card-body">
-        aqui las trazas
+
+        <div *ngFor="let group of searchTraces" class="card">
+          <div class="card-header">
+            {{group[0].group}}
+          </div>
+        </div>
+
       </div>
     </div>
 

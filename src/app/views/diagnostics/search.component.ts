@@ -18,7 +18,7 @@ export class SearchComponent implements OnInit {
   public bHasResults?: boolean;
   public bsValue: Date[];
   public searchResults: SearchResults;
-  public searchTraces: { [index: string]: Array<NodeTraceItem> };
+  public searchTraces: Array<Array<NodeTraceItem>>;
   // Exception Viewer
   @ViewChild('exceptionModal')
   public exceptionModal: ModalDirective;
@@ -60,7 +60,13 @@ export class SearchComponent implements OnInit {
       }
       this.bHasResults = true;
       this.searchResults = data;
-      this.searchTraces = this.groupBy(this.searchResults.traces, 'group');
+      const groupObject = this.groupBy(this.searchResults.traces, 'group');
+      this.searchTraces = [];
+      for(const groupItem in groupObject) {
+        if (groupObject.hasOwnProperty(groupItem)) {
+          this.searchTraces.push(groupObject[groupItem]);
+        }
+      }
     });
   }
 
