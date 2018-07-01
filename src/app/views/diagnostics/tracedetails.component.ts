@@ -15,7 +15,7 @@ export class TraceDetailsComponent implements OnInit {
   private _queryParams: Params;
   public group: string = null;
   public items: INodeTraceItemExt[] = [];
-  // Exception Viewer
+  // Trace Viewer
   @ViewChild('traceModal')
   public traceModal: ModalDirective;
   public traceObject: string;

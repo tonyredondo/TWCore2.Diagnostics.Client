@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
 
 
 @Component({
@@ -27,7 +28,12 @@ export class SearchComponent implements OnInit {
   public exceptionMachine: string;
   public exceptionData: SerializableException;
   public innerExceptionsData: SerializableException[];
-  constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
+  // Trace Viewer
+  @ViewChild('traceModal')
+  public traceModal: ModalDirective;
+  public traceObject: string;
+  public traceName: string;
+  constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router, private _codeMirror: CodemirrorService) {}
 
   // Public Methods
   ngOnInit() {
@@ -61,6 +67,8 @@ export class SearchComponent implements OnInit {
       this.bHasResults = true;
       this.searchResults = data;
 
+      console.log(data);
+
       const items = [];
       for (let i = 0; i < this.searchResults.traces.length; i++) {
         const item = this.searchResults.traces[i];
@@ -72,8 +80,12 @@ export class SearchComponent implements OnInit {
         }
         items.push(Object.assign(item, { tagsArray : tags }));
       }
+      console.log(items);
 
       const groupObject = this.groupBy(items, 'group');
+      console.log(groupObject);
+
+
       this.searchTraces = [];
       for(const groupItem in groupObject) {
         if (groupObject.hasOwnProperty(groupItem)) {
@@ -100,7 +112,7 @@ export class SearchComponent implements OnInit {
                   resObj[currentKey] = [resObj[currentKey], item];
             }
             else
-                resObj[currentKey] = item;
+                resObj[currentKey] = [item];
         }
     }
     return resObj;
@@ -121,6 +133,58 @@ export class SearchComponent implements OnInit {
     }
     this.innerExceptionsData.push(item);
     this.createInnerExceptionData(item.innerException);
+  }
+  showXmlData(id: string, name: string) {
+    this.traceName = name;
+    this.traceModal.show();
+    this._queryService.apiQueryByEnvironmentTracesXmlByIdGet(environment.name, id).subscribe(x => {
+      this.traceObject = x;
+      this._codeMirror.instance$.subscribe(editor => {
+        editor.setOption('mode', 'application/xml');
+        if (x.startsWith('{')) {
+          editor.setOption('mode', 'application/json');
+        }
+        editor.setOption('theme', 'material');
+        editor.setOption('readOnly', true);
+        editor.setOption('lineNumbers', true);
+        editor.setOption('matchBrackets', true);
+        editor.setOption('foldGutter', true);
+        editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+        editor.setOption('extraKeys', {'Alt-F': 'findPersistent'});
+        editor.setValue(this.traceObject);
+        editor.setSize('100%', '700px');
+        editor.getDoc().setCursor({ line: 0, ch: 0});
+        editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
+        editor.scrollTo(0, 0);
+        setTimeout(() => editor.refresh(), 200);
+      });
+    });
+  }
+  showJsonData(id: string, name: string) {
+    this.traceName = name;
+    this.traceModal.show();
+    this._queryService.apiQueryByEnvironmentTracesJsonByIdGet(environment.name, id).subscribe(x => {
+      this.traceObject = x;
+      this._codeMirror.instance$.subscribe(editor => {
+        editor.setOption('mode', 'application/json');
+        if (x.startsWith('<?xml')) {
+          editor.setOption('mode', 'application/xml');
+        }
+        editor.setOption('theme', 'material');
+        editor.setOption('readOnly', true);
+        editor.setOption('lineNumbers', true);
+        editor.setOption('matchBrackets', true);
+        editor.setOption('foldGutter', true);
+        editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+        editor.setOption('extraKeys', {'Alt-F': 'findPersistent'});
+        editor.setValue(this.traceObject);
+        editor.setSize('100%', '700px');
+        editor.getDoc().setCursor({ line: 0, ch: 0});
+        editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
+        editor.scrollTo(0, 0);
+        setTimeout(() => editor.refresh(), 200);
+      });
+    });
   }
 
   // Private Methods

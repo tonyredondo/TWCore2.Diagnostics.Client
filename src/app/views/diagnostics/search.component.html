@@ -99,7 +99,6 @@
       </div>
       <div class="card-body">
 
-
         <table class="table table-sm table-striped table-trace">
             <thead>
               <tr>
@@ -141,9 +140,6 @@
               </tr>
             </tbody>
           </table>
-
-
-
 
       </div>
     </div>
@@ -256,3 +252,22 @@
   <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+
+<!-- Trace View -->
+<div bsModal #traceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-primary modal-code" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <strong>Trace Object View: </strong> {{traceName}}</h5>
+          <button type="button" class="close" (click)="traceModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ngx-codemirror></ngx-codemirror>
+        </div>
+      </div>
+    </div>
+  </div>
