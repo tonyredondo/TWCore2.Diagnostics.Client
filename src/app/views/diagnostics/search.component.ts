@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
-import { SearchResults, SerializableException, NodeLogItem } from '../../services/api';
+import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 
@@ -18,6 +18,7 @@ export class SearchComponent implements OnInit {
   public bHasResults?: boolean;
   public bsValue: Date[];
   public searchResults: SearchResults;
+  public searchTraces: { [index: string]: Array<NodeTraceItem> };
   // Exception Viewer
   @ViewChild('exceptionModal')
   public exceptionModal: ModalDirective;
@@ -59,7 +60,31 @@ export class SearchComponent implements OnInit {
       }
       this.bHasResults = true;
       this.searchResults = data;
+      this.searchTraces = this.groupBy(this.searchResults.traces, 'group');
     });
+  }
+
+  groupBy(value: any[], key: string) : { [index: string]: Array<NodeTraceItem> } {
+    var resObj = {} as { [index: string]: Array<NodeTraceItem> };
+    for (var i = 0; i < value.length; i++) {
+        const item = value[i] !== undefined ? value[i] : null;
+        if (item != null) {
+            var currentKey = ' ';
+            if (item[key] !== undefined)
+                currentKey = item[key];
+
+            if (resObj[currentKey] !== undefined) {
+              const rObjItem = resObj[currentKey];
+              if (Array.isArray(rObjItem))
+                  resObj[currentKey].push(item);
+              else
+                  resObj[currentKey] = [resObj[currentKey], item];
+            }
+            else
+                resObj[currentKey] = item;
+        }
+    }
+    return resObj;
   }
 
   showException(item: NodeLogItem) {
