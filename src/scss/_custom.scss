@@ -383,6 +383,9 @@
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
 }
+.modal-exception .modal-body {
+  padding:0rem;
+}
 
 .breadcrumb-body {
   margin: -22px -30px 22px -30px;
@@ -443,4 +446,19 @@
 }
 .input-group .input-date {
   flex: 0.3 0.5 auto;
+}
+
+.blue-color {
+  color: #2156f3;
+}
+.error-message {
+  color: #e62011;
+  font-size:13px;
+}
+.stacktrace {
+  background: #d2d2d2;
+  color: #000000;
+  border-radius: 10px;
+  padding: 10px !important;
+  font-weight: bold;
 }

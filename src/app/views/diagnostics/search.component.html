@@ -155,7 +155,7 @@
 
 <!-- Exception View -->
 <div bsModal #exceptionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-danger" role="document">
+  <div class="modal-dialog modal-danger modal-exception" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Exception View</h4>
@@ -200,11 +200,11 @@
             </tr>
             <tr *ngFor="let itemData of exceptionData?.data">
               <td>Data.{{itemData.key}}</td>
-              <td class="breakWord font-weight-bold">{{itemData.value}}</td>
+              <td class="breakWord font-weight-bold blue-color">{{itemData.value}}</td>
             </tr>
             <tr>
               <td>Stacktrace</td>
-              <td class="breakWord font-weight-bold">{{exceptionData?.stackTrace}}</td>
+              <td class="breakWord"><div class="stacktrace">{{exceptionData?.stackTrace}}</div></td>
             </tr>
           </tbody>
         </table>
@@ -233,11 +233,11 @@
               </tr>
               <tr *ngFor="let itemData of innerException.data">
                 <td>Data.{{itemData.key}}</td>
-                <td class="breakWord font-weight-bold">{{itemData.value}}</td>
+                <td class="breakWord font-weight-bold blue-color">{{itemData.value}}</td>
               </tr>
               <tr>
                 <td>Stacktrace</td>
-                <td class="breakWord font-weight-bold">{{innerException.stackTrace}}</td>
+                <td class="breakWord"><div class="stacktrace">{{innerException.stackTrace}}</div></td>
               </tr>
             </tbody>
           </table>
