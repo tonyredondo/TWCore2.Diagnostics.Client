@@ -6,5 +6,5 @@
 export const environment = {
   production: false,
   apiUrl: 'http://10.10.1.60:55999',
-  name: 'Docker'
+  name: ''
 };

@@ -45,6 +45,9 @@ export class TracesComponent implements OnInit {
     this.updateData();
   }
   updateData() {
+    if (environment.name === undefined || environment.name === null || environment.name.length === 0) {
+      return;
+    }
     this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this._currentPage, this._pageSize).subscribe(item => {
       if (item === null) {
         return;
@@ -90,6 +93,7 @@ export class TracesComponent implements OnInit {
 
   // Private Methods
   private updateParams() {
+    this._queryParams.env = environment.name;
     this._queryParams.date = moment(this.bsValue).format('YYYY-MM-DD');
     this._queryParams.page = this._currentPage;
     this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });

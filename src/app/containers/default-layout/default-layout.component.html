@@ -1,8 +1,5 @@
-<app-header
-  [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/diagnostics.svg', width: 130, height: 25, alt: 'Diagnostics'}"
-  [navbarBrandMinimized]="{src: 'assets/img/brand/diagnostics.svg', width: 30, height: 30, alt: 'Diagnostics'}"
-  [sidebarToggler]="'lg'"
+<app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/img/brand/diagnostics.svg', width: 130, height: 25, alt: 'Diagnostics'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/diagnostics.svg', width: 30, height: 30, alt: 'Diagnostics'}" [sidebarToggler]="'lg'"
   [asideMenuToggler]="false" [mobileAsideMenuToggler]="false">
   <ul class="nav navbar-nav ml-auto env-nav">
     <!-- <li class="nav-item d-md-down-none">
@@ -14,15 +11,21 @@
     <li class="nav-item d-md-down-none">
       <a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
     </li> -->
-    <li class="nav-item dropdown" dropdown placement="bottom right" *ngIf="false">
-      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
-        <div>Environment: <span class="bolder">Production</span></div>
+    <li class="nav-item dropdown" dropdown placement="bottom right">
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle
+        (click)="false">
+        <div>Environment:
+          <span class="bolder">{{currentEnvironment}}</span>
+        </div>
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
-        <div class="dropdown-header text-center"><strong>Environments</strong></div>
-        <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> DEV<span class="badge badge-info"></span></a>
-        <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> Docker<span class="badge badge-success"></span></a>
-        <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> Production<span class="badge badge-danger"></span></a>
+        <div class="dropdown-header text-center">
+          <strong>Environments</strong>
+        </div>
+        <a *ngFor="let item of environments" class="dropdown-item" (click)="changeEnvironmentAndReload(item)">
+          <i class="fa fa-tasks"></i> {{item}}
+          <span class="badge badge-info"></span>
+        </a>
       </div>
     </li>
   </ul>
@@ -49,6 +52,9 @@
 
 
 <app-footer>
-  <span><a href="https://github.com/tonyredondo">TWCore Diagnostics</a> &copy; 2018 Daniel Redondo.</span>
-  <span class="ml-auto">Powered by <a href="https://coreui.io/angular">CoreUI for Angular</a></span>
+  <span>
+    <a href="https://github.com/tonyredondo/TWCore2.Diagnostics.Client">TWCore Diagnostics</a> &copy; 2018 Daniel Redondo.</span>
+  <span class="ml-auto">Powered by
+    <a href="https://coreui.io/angular">CoreUI for Angular</a>
+  </span>
 </app-footer>

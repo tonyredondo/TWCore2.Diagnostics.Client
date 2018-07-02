@@ -31,6 +31,7 @@ export class TraceDetailsComponent implements OnInit {
     } else {
       this._location.back();
     }
+    this.updateParams();
   }
   updateData() {
     this._queryService.apiQueryByEnvironmentTracesByGroupNameGet(environment.name, this.group).subscribe(lstTraces => {
@@ -101,6 +102,13 @@ export class TraceDetailsComponent implements OnInit {
   }
   goBack() {
     this._location.back();
+  }
+
+  // Private Methods
+  private updateParams() {
+    this._queryParams.env = environment.name;
+    this._params.group = this.group;
+    this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
   }
 }
 

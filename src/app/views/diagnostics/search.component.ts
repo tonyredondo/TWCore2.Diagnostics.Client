@@ -66,7 +66,7 @@ export class SearchComponent implements OnInit {
 
   doSearch() {
     this.updateParams();
-    if (this.searchValue === null || this.searchValue.length === 0) {
+    if (this.searchValue === undefined || this.searchValue === null || this.searchValue.length === 0) {
       return;
     }
     this.bHasResults = null;
@@ -199,6 +199,7 @@ export class SearchComponent implements OnInit {
 
   // Private Methods
   private updateParams() {
+    this._queryParams.env = environment.name;
     this._queryParams.term = this.searchValue;
     this._queryParams.fromDate = moment(this.bsValue[0]).format('YYYY-MM-DD');
     this._queryParams.toDate = moment(this.bsValue[1]).format('YYYY-MM-DD');
