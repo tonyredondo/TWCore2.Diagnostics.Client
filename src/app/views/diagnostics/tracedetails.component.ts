@@ -28,8 +28,7 @@ export class TraceDetailsComponent implements OnInit {
     if (this._params.group !== undefined) {
       this.group = this._params.group;
       this.updateData();
-    }
-    else {
+    } else {
       this._location.back();
     }
   }

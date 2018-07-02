@@ -19,7 +19,7 @@ defineLocale('en-gb', enGbLocale);
 export class SearchComponent implements OnInit {
   private _queryParams: Params;
   public searchValue: string;
-  public bProcessing: boolean = false;
+  public bProcessing = false;
   public bHasResults?: boolean;
   public bsConfig: Partial<BsDatepickerConfig>;
   public bsValue: Date[];
@@ -66,13 +66,15 @@ export class SearchComponent implements OnInit {
 
   doSearch() {
     this.updateParams();
+    if (this.searchValue === null || this.searchValue.length === 0) {
+      return;
+    }
     this.bHasResults = null;
     this.bProcessing = true;
 
     this._queryService.apiQueryByEnvironmentSearchBySearchTermGet(environment.name, this.searchValue, this.bsValue[0], this.bsValue[1]).subscribe(data => {
       this.bProcessing = false;
-      if (data == null || (data.logs.length == 0 && data.traces.length == 0))
-      {
+      if (data == null || (data.logs.length === 0 && data.traces.length === 0)) {
         this.bHasResults = false;
         return;
       }
@@ -93,7 +95,7 @@ export class SearchComponent implements OnInit {
 
       const groupObject = this.groupBy(items, 'group');
       this.searchTraces = [];
-      for(const groupItem in groupObject) {
+      for (const groupItem in groupObject) {
         if (groupObject.hasOwnProperty(groupItem)) {
           this.searchTraces.push(groupObject[groupItem]);
         }
@@ -101,24 +103,26 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  groupBy(value: any[], key: string) : { [index: string]: Array<INodeTraceItemExt> } {
-    var resObj = {} as { [index: string]: Array<INodeTraceItemExt> };
-    for (var i = 0; i < value.length; i++) {
+  groupBy(value: any[], key: string): { [index: string]: Array<INodeTraceItemExt> } {
+    const resObj = {} as { [index: string]: Array<INodeTraceItemExt> };
+    for (let i = 0; i < value.length; i++) {
         const item = value[i] !== undefined ? value[i] : null;
         if (item != null) {
-            var currentKey = ' ';
-            if (item[key] !== undefined)
+            let currentKey = ' ';
+            if (item[key] !== undefined) {
                 currentKey = item[key];
+            }
 
             if (resObj[currentKey] !== undefined) {
               const rObjItem = resObj[currentKey];
-              if (Array.isArray(rObjItem))
+              if (Array.isArray(rObjItem)) {
                   resObj[currentKey].push(item);
-              else
+              } else {
                   resObj[currentKey] = [resObj[currentKey], item];
-            }
-            else
+              }
+            } else {
                 resObj[currentKey] = [item];
+            }
         }
     }
     return resObj;
