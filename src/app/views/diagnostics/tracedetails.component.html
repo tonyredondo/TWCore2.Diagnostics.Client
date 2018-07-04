@@ -52,8 +52,8 @@
                         item.application.indexOf('Provider') > -1 ? 'fa-plane' :
                         'fa-cube'"></i>
                 </td>
-                <td class="breakWord" >{{item.name}}</td>
-                <td class="breakWord" [ngClass]="item.cssClass">{{item.application}}</td>
+                <td class="breakWord">{{item.name}}</td>
+                <td class="breakWord">{{item.application}}</td>
                 <td>{{item.machine}}</td>
                 <td>
                   <button *ngFor="let tag of item.tagsArray" class="btn badge badge-tag" [ngClass]="{
