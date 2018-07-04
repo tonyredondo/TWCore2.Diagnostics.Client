@@ -46,14 +46,14 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of items">
-                <td>
+                <td [ngClass]="item.cssClass">
                     <i class="fa fa-big" [ngClass]="item.application.indexOf('Api') > -1 ? 'fa-cloud' :
                         item.application.indexOf('Engine') > -1 ? 'fa-cog' :
                         item.application.indexOf('Provider') > -1 ? 'fa-plane' :
                         'fa-cube'"></i>
                 </td>
-                <td class="breakWord">{{item.name}}</td>
-                <td class="breakWord">{{item.application}}</td>
+                <td class="breakWord" >{{item.name}}</td>
+                <td class="breakWord" [ngClass]="item.cssClass">{{item.application}}</td>
                 <td>{{item.machine}}</td>
                 <td>
                   <button *ngFor="let tag of item.tagsArray" class="btn badge badge-tag" [ngClass]="{

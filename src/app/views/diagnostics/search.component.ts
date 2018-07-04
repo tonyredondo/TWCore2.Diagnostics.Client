@@ -25,6 +25,7 @@ export class SearchComponent implements OnInit {
   public bsValue: Date[];
   public searchResults: SearchResults;
   public searchTraces: Array<Array<INodeTraceItemExt>>;
+  public applications: string[] = [];
   // Exception Viewer
   @ViewChild('exceptionModal')
   public exceptionModal: ModalDirective;
@@ -81,6 +82,7 @@ export class SearchComponent implements OnInit {
       this.bHasResults = true;
       this.searchResults = data;
 
+      this.applications.length = 0;
       const items = [];
       for (let i = 0; i < this.searchResults.traces.length; i++) {
         const item = this.searchResults.traces[i];
@@ -90,7 +92,13 @@ export class SearchComponent implements OnInit {
           const itemTagItem = itemTags[it].split(': ');
           tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
         }
-        items.push(Object.assign(item, { tagsArray : tags }));
+        if (this.applications.indexOf(item.application) === -1) {
+          this.applications.push(item.application);
+        }
+        items.push(Object.assign(item, {
+          tagsArray : tags,
+          cssClass : 'trace-application-color' + this.applications.indexOf(item.application)
+        }));
       }
 
       const groupObject = this.groupBy(items, 'group');
@@ -210,6 +218,7 @@ export class SearchComponent implements OnInit {
 
 interface INodeTraceItemExt extends NodeTraceItem {
   tagsArray: TagItem[];
+  cssClass: string;
 }
 interface TagItem {
   key: string;

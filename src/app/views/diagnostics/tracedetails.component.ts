@@ -15,6 +15,7 @@ export class TraceDetailsComponent implements OnInit {
   private _queryParams: Params;
   public group: string = null;
   public items: INodeTraceItemExt[] = [];
+  public applications: string[] = [];
   // Trace Viewer
   @ViewChild('traceModal')
   public traceModal: ModalDirective;
@@ -35,6 +36,8 @@ export class TraceDetailsComponent implements OnInit {
   }
   updateData() {
     this._queryService.apiQueryByEnvironmentTracesByGroupNameGet(environment.name, this.group).subscribe(lstTraces => {
+      // Parse Tags and create TagsArray and Group Applications
+      this.applications.length = 0;
       this.items.length = 0;
       for (let i = 0; i < lstTraces.length; i++) {
         const item = lstTraces[i];
@@ -44,8 +47,15 @@ export class TraceDetailsComponent implements OnInit {
           const itemTagItem = itemTags[it].split(': ');
           tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
         }
-        this.items.push(Object.assign(item, { tagsArray : tags }));
+        if (this.applications.indexOf(item.application) === -1) {
+          this.applications.push(item.application);
+        }
+        this.items.push(Object.assign(item, {
+          tagsArray : tags,
+          cssClass : 'trace-application-color' + this.applications.indexOf(item.application)
+        }));
       }
+      console.log(this.applications);
     });
   }
   showXmlData(id: string, name: string) {
@@ -114,6 +124,7 @@ export class TraceDetailsComponent implements OnInit {
 
 interface INodeTraceItemExt extends NodeTraceItem {
   tagsArray: TagItem[];
+  cssClass: string;
 }
 interface TagItem {
   key: string;

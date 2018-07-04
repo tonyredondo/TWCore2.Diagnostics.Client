@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { LogSummary } from '../model/logSummary';
+import { NodeLogItem } from '../model/nodeLogItem';
 import { NodeStatusItem } from '../model/nodeStatusItem';
 import { NodeTraceItem } from '../model/nodeTraceItem';
 import { PagedListNodeLogItem } from '../model/pagedListNodeLogItem';
@@ -188,6 +189,69 @@ export class QueryService {
         ];
 
         return this.httpClient.get<PagedListNodeLogItem>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/${encodeURIComponent(String(application))}/${encodeURIComponent(String(level))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param environment
+     * @param searchTerm
+     * @param fromDate
+     * @param toDate
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryByEnvironmentLogsSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<Array<NodeLogItem>>;
+    public apiQueryByEnvironmentLogsSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<NodeLogItem>>>;
+    public apiQueryByEnvironmentLogsSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<NodeLogItem>>>;
+    public apiQueryByEnvironmentLogsSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentLogsSearchBySearchTermGet.');
+        }
+        if (searchTerm === null || searchTerm === undefined) {
+            throw new Error('Required parameter searchTerm was null or undefined when calling apiQueryByEnvironmentLogsSearchBySearchTermGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<NodeLogItem>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/logs/search/${encodeURIComponent(String(searchTerm))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
