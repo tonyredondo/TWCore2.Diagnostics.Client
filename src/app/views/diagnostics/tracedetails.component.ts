@@ -28,13 +28,16 @@ export class TraceDetailsComponent implements OnInit {
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
     if (this._params.group !== undefined) {
       this.group = this._params.group;
-      this.updateData();
+      this.loadData();
     } else {
       this._location.back();
     }
-    this.updateParams();
   }
   updateData() {
+    this.updateParams();
+    this.loadData();
+  }
+  loadData() {
     this._queryService.apiQueryByEnvironmentTracesByGroupNameGet(environment.name, this.group).subscribe(lstTraces => {
       // Parse Tags and create TagsArray and Group Applications
       this.applications.length = 0;
@@ -52,10 +55,9 @@ export class TraceDetailsComponent implements OnInit {
         }
         this.items.push(Object.assign(item, {
           tagsArray : tags,
-          cssClass : 'trace-application-color' + this.applications.indexOf(item.application)
+          cssClass : 'trace-application-bgcolor' + this.applications.indexOf(item.application)
         }));
       }
-      console.log(this.applications);
     });
   }
   showXmlData(id: string, name: string) {

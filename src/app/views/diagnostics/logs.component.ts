@@ -101,10 +101,10 @@ export class LogsComponent implements OnInit {
     const initialDate = [ moment().subtract(2, 'd').toDate(), moment().toDate() ];
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
     if (this._queryParams.fromDate !== undefined) {
-      initialDate[0] = moment(this._queryParams.fromDate, 'YYYY-MM-DD').toDate();
+      initialDate[0] = moment.utc(this._queryParams.fromDate, 'YYYY-MM-DD').toDate();
     }
     if (this._queryParams.toDate !== undefined) {
-      initialDate[1] = moment(this._queryParams.toDate, 'YYYY-MM-DD').toDate();
+      initialDate[1] = moment.utc(this._queryParams.toDate, 'YYYY-MM-DD').toDate();
     }
 
     this.bsConfig = Object.assign({}, {

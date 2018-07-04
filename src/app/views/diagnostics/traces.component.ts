@@ -21,6 +21,7 @@ export class TracesComponent implements OnInit {
   public traceData: PagedListTraceResult;
   public bsConfig: Partial<BsDatepickerConfig>;
   public bsValue: Date;
+  public environmentName: string;
   constructor(private _queryService: QueryService, private _localeService: BsLocaleService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
 
   // Public Methods
@@ -28,7 +29,7 @@ export class TracesComponent implements OnInit {
     let initialDate = new Date();
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
     if (this._queryParams.date !== undefined) {
-      initialDate = moment(this._queryParams.date, 'YYYY-MM-DD').toDate();
+      initialDate = moment.utc(this._queryParams.date, 'YYYY-MM-DD').toDate();
     }
     if (this._queryParams.page !== undefined) {
       this._currentPage = parseInt(this._queryParams.page, 0);
@@ -48,6 +49,7 @@ export class TracesComponent implements OnInit {
     if (environment.name === undefined || environment.name === null || environment.name.length === 0) {
       return;
     }
+    this.environmentName = environment.name;
     this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this._currentPage, this._pageSize).subscribe(item => {
       if (item === null) {
         return;

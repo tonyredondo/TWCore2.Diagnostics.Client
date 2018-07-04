@@ -24,8 +24,9 @@ export class SearchComponent implements OnInit {
   public bsConfig: Partial<BsDatepickerConfig>;
   public bsValue: Date[];
   public searchResults: SearchResults;
-  public searchTraces: Array<Array<INodeTraceItemExt>>;
+  public searchTraces: Array<INodeGroup>;
   public applications: string[] = [];
+  public logCollapsed = false;
   // Exception Viewer
   @ViewChild('exceptionModal')
   public exceptionModal: ModalDirective;
@@ -45,11 +46,12 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     const initialDate = [ moment().subtract(14, 'd').toDate(), moment().toDate() ];
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
+
     if (this._queryParams.fromDate !== undefined) {
-      initialDate[0] = moment(this._queryParams.fromDate, 'YYYY-MM-DD').toDate();
+      initialDate[0] = moment.utc(this._queryParams.fromDate, 'YYYY-MM-DD').toDate();
     }
     if (this._queryParams.toDate !== undefined) {
-      initialDate[1] = moment(this._queryParams.toDate, 'YYYY-MM-DD').toDate();
+      initialDate[1] = moment.utc(this._queryParams.toDate, 'YYYY-MM-DD').toDate();
     }
 
     this.bsConfig = Object.assign({}, {
@@ -61,12 +63,16 @@ export class SearchComponent implements OnInit {
     this.localeService.use('en-gb');
     if (this._queryParams.term !== undefined) {
       this.searchValue = this._queryParams.term;
-      this.doSearch();
+      this.getData();
     }
   }
 
   doSearch() {
     this.updateParams();
+    this.getData();
+  }
+
+  getData() {
     if (this.searchValue === undefined || this.searchValue === null || this.searchValue.length === 0) {
       return;
     }
@@ -97,7 +103,7 @@ export class SearchComponent implements OnInit {
         }
         items.push(Object.assign(item, {
           tagsArray : tags,
-          cssClass : 'trace-application-color' + this.applications.indexOf(item.application)
+          cssClass : 'trace-application-bgcolor' + this.applications.indexOf(item.application)
         }));
       }
 
@@ -105,9 +111,13 @@ export class SearchComponent implements OnInit {
       this.searchTraces = [];
       for (const groupItem in groupObject) {
         if (groupObject.hasOwnProperty(groupItem)) {
-          this.searchTraces.push(groupObject[groupItem]);
+          this.searchTraces.push({
+            collapsed: false,
+            data: groupObject[groupItem]
+          });
         }
       }
+      console.log(this.searchTraces);
     });
   }
 
@@ -168,7 +178,9 @@ export class SearchComponent implements OnInit {
         editor.setOption('matchBrackets', true);
         editor.setOption('foldGutter', true);
         editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-        editor.setOption('extraKeys', {'Alt-F': 'findPersistent'});
+        editor.setOption('extraKeys', {
+          'Alt-F': 'findPersistent'
+        });
         editor.setValue(this.traceObject);
         editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
@@ -194,7 +206,9 @@ export class SearchComponent implements OnInit {
         editor.setOption('matchBrackets', true);
         editor.setOption('foldGutter', true);
         editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-        editor.setOption('extraKeys', {'Alt-F': 'findPersistent'});
+        editor.setOption('extraKeys', {
+          'Alt-F': 'findPersistent'
+        });
         editor.setValue(this.traceObject);
         editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
@@ -215,7 +229,10 @@ export class SearchComponent implements OnInit {
   }
 }
 
-
+interface INodeGroup {
+  collapsed: boolean;
+  data: INodeTraceItemExt[];
+}
 interface INodeTraceItemExt extends NodeTraceItem {
   tagsArray: TagItem[];
   cssClass: string;

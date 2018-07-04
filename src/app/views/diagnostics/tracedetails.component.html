@@ -46,7 +46,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of items">
-                <td [ngClass]="item.cssClass">
+                <td>
                     <i class="fa fa-big" [ngClass]="item.application.indexOf('Api') > -1 ? 'fa-cloud' :
                         item.application.indexOf('Engine') > -1 ? 'fa-cog' :
                         item.application.indexOf('Provider') > -1 ? 'fa-plane' :
@@ -67,8 +67,8 @@
                 </td>
                 <td>{{item.timestamp | date:'HH:mm:ss.SSS'}}</td>
                 <td>
-                  <button class="btn badge badge-tag button-ser" (click)="showJsonData(item.id, item.name)">Json</button>
-                  <button class="btn badge badge-tag button-ser" (click)="showXmlData(item.id, item.name)">Xml</button>
+                  <button class="btn badge badge-tag button-ser" (click)="showJsonData(item.id, item.name)" [ngClass]="item.cssClass">Json</button>
+                  <button class="btn badge badge-tag button-ser" (click)="showXmlData(item.id, item.name)" [ngClass]="item.cssClass">Xml</button>
                 </td>
               </tr>
             </tbody>

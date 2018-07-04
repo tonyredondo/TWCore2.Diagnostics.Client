@@ -55,7 +55,12 @@
                 <td>
                   <span class="badge"
                     [ngClass]="{ 'button-success': !dataItem.hasErrors, 'button-error': dataItem.hasErrors }"
-                    [routerLink]="['/diagnostics/traces', dataItem.group]">Show Traces</span>
+                    [routerLink]="['/diagnostics/search']" [queryParams]="{
+                      term: dataItem.group,
+                      env: environmentName,
+                      fromDate: dataItem.start,
+                      toDate: dataItem.end
+                    }">Show Log and Traces</span>
                 </td>
               </tr>
             </tbody>
