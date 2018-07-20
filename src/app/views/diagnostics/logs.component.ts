@@ -266,6 +266,21 @@ export class LogsComponent implements OnInit {
     this.createInnerExceptionData(item.innerException);
   }
 
+  levelsLegend(item: ApplicationsLevels): string {
+    if (item.levels === null) {
+      return;
+    }
+    const textItems = [];
+    item.levels.forEach(value => {
+      let name = value.name;
+      if (name !== 'Stats') {
+        name += 's';
+      }
+      textItems.push(value.count + ' ' + name);
+    });
+    return textItems.join(', ');
+  }
+
   // Private Methods
   private updateParams() {
     this._queryParams.env = environment.name;

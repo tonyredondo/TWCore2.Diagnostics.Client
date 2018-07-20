@@ -6,6 +6,11 @@
         <strong>Logs</strong> -
         <input type="text" placeholder="Showing dates" class="widget-date widget-range fa-pointer" bsDaterangepicker [bsConfig]="bsConfig"
           [bsValue]="bsValue" [(ngModel)]="bsValue" (ngModelChange)="getApplications()" />
+
+        <span class="fa-pointer float-right" (click)="getApplications()">
+            <i class="fa fa-refresh"></i>&nbsp;
+            <span>Refresh</span>
+        </span>
       </td>
     </tr>
   </table>
@@ -87,9 +92,9 @@
                       'fa-caret-down': !currentLogData(item).isCollapsed }" (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed"></i>
                 </td>
                 <td class="td-title" (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed">{{item.application}}</td>
-                <td class="td-level">
-                  <span *ngIf="!currentLogData(item).isCollapsed">{{currentLogData(item).unwrappedData?.totalResults}} items &nbsp;</span>
-                  <div class="btn-group float-right" dropdown [isDisabled]="item.levels.length == 1" [hidden]="currentLogData(item).isCollapsed">
+                <td class="td-level" >
+                  <span class="expandedSpan" *ngIf="!currentLogData(item).isCollapsed">{{currentLogData(item).unwrappedData?.totalResults}} items &nbsp;</span>
+                  <div class="btn-group float-right right-buttons" dropdown [isDisabled]="item.levels.length == 1" [hidden]="currentLogData(item).isCollapsed">
                     <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
                                   'btn-success': currentLogData(item).level === 'Stats',
                                   'btn-danger': currentLogData(item).level === 'Error',
@@ -104,7 +109,7 @@
                       </li>
                     </ul>
                   </div>
-                  <span *ngIf="currentLogData(item).isCollapsed">{{currentLogData(item).unwrappedData?.totalResults}} items</span>
+                  <span *ngIf="currentLogData(item).isCollapsed">{{levelsLegend(item)}}</span>
                 </td>
               </tr>
             </table>

@@ -141,19 +141,24 @@
 }
 
 .card-table .td-title {
-  width: 90%;
+  width: 80%;
   font-weight: bold;
   cursor: pointer;
 }
 
 .card-table .td-level {
-  width: 100px;
+  width: 20%;
   text-align: right;
 }
 .card-table .td-level span {
   font-weight: 700;
   color: #a7a7a7;
   font-size: 80%;
+  margin-bottom: -1px;
+}
+.card-table .td-level .expandedSpan {
+  display:inline-block;
+  margin-top: 0.5rem;
 }
 
 .chart-wrapper {
@@ -368,13 +373,19 @@
 .card-collapsed .card-header {
   border-bottom-width: 0px;
 }
+.card-header {
+  padding: 0.4rem 1.25rem 0.55rem 1.25rem;
+}
 .card-expanded {
   margin-bottom: 2rem;
   /*margin-top: 1.5rem;*/
 }
 .card-expanded .card-header {
-  padding-top:0px;
+  padding-top:5px;
   padding-bottom: 6px;
+}
+.card-expanded .right-buttons {
+  margin-right: -10px;
 }
 
 .badge-tag {
@@ -436,7 +447,7 @@
   margin: -22px -30px 22px -30px;
 }
 .breadcrumb-body table {
-  width:90%;
+  width:100%;
   padding: 0px;
   margin: 0px;
 }
@@ -448,6 +459,12 @@
   text-align: center;
   padding: 0px;
   color:#444444;
+}
+.breadcrumb-title .float-right {
+  margin-top: -4px;
+}
+.breadcrumb-icon .float-right {
+  margin-top: -4px;
 }
 .breadcrumb-body .widget-range {
   font-size: inherit !important;

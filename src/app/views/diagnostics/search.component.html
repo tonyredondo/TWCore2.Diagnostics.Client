@@ -16,7 +16,15 @@
           <span class="input-group-append">
             <button class="btn btn-secondary" type="button" (click)="doSearch()">Search</button>
           </span>
+
+
         </div>
+      </td>
+      <td class="breadcrumb-icon">
+          <span class="fa-pointer float-right" *ngIf="bHasResults == true" (click)="getData()">
+              <i class="fa fa-refresh"></i>&nbsp;
+              <span>Refresh</span>
+          </span>
       </td>
     </tr>
   </table>

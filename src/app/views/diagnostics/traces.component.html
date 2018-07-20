@@ -6,6 +6,10 @@
         <strong>Day Traces</strong> -
         <input type="text" placeholder="Showing dates" class="widget-date widget-day fa-pointer" bsDatepicker [bsConfig]="bsConfig" [bsValue]="bsValue"
               [(ngModel)]="bsValue" (ngModelChange)="changeDate()" />
+            <span class="fa-pointer float-right" (click)="updateData()">
+                <i class="fa fa-refresh"></i>&nbsp;
+                <span>Refresh</span>
+            </span>
       </td>
     </tr>
   </table>
@@ -31,7 +35,6 @@
 
           <span class=" float-right">
               <span *ngIf="traceData != null">{{traceData.totalResults}} items &nbsp;</span>
-              <i class="fa fa-pointer fa-refresh" (click)="updateData()"></i>
           </span>
 
           <table class="table table-sm table-striped table-log">
