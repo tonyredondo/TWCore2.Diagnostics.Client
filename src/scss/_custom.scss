@@ -32,7 +32,14 @@
   cursor: pointer;
   margin:2px;
 }
-
+.button-group {
+  font-size: 95%;
+  float: right !important;
+  color: #fff;
+  background-color: #03A9F4;
+  cursor: pointer;
+  margin:2px;
+}
 .button-success {
   font-size: 95%;
   float: right !important;
@@ -61,7 +68,10 @@
   background-color: #009688;
   cursor: pointer;
 }
-
+.logButtons {
+  display: inline;
+  float: right;
+}
 
 .content-center {
   justify-content: center;
