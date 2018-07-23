@@ -255,7 +255,9 @@ export class LogsComponent implements OnInit {
     this.exceptionMachine = item.machine;
     this.exceptionData = item.exception;
     this.innerExceptionsData = [];
-    this.createInnerExceptionData(this.exceptionData.innerException);
+    if (this.exceptionData !== null) {
+      this.createInnerExceptionData(this.exceptionData.innerException);
+    }
     this.exceptionModal.show();
   }
   createInnerExceptionData(item: SerializableException) {
