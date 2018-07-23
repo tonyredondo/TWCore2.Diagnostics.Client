@@ -120,7 +120,11 @@ export class TraceDetailsComponent implements OnInit {
   private updateParams() {
     this._queryParams.env = environment.name;
     this._params.group = this.group;
-    this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
+    this._router.navigate([], {
+      relativeTo: this._activatedRoute,
+      queryParams: this._queryParams,
+      replaceUrl: true
+    });
   }
 }
 

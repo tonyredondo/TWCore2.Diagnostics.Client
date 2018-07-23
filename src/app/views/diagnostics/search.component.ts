@@ -225,7 +225,11 @@ export class SearchComponent implements OnInit {
     this._queryParams.term = this.searchValue;
     this._queryParams.fromDate = moment(this.bsValue[0]).format('YYYY-MM-DD');
     this._queryParams.toDate = moment(this.bsValue[1]).format('YYYY-MM-DD');
-    this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
+    this._router.navigate([], {
+      relativeTo: this._activatedRoute,
+      queryParams: this._queryParams,
+      replaceUrl: true
+    });
   }
 }
 

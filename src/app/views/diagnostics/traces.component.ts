@@ -98,6 +98,10 @@ export class TracesComponent implements OnInit {
     this._queryParams.env = environment.name;
     this._queryParams.date = moment(this.bsValue).format('YYYY-MM-DD');
     this._queryParams.page = this._currentPage;
-    this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: this._queryParams });
+    this._router.navigate([], {
+      relativeTo: this._activatedRoute,
+      queryParams: this._queryParams,
+      replaceUrl: true
+    });
   }
 }

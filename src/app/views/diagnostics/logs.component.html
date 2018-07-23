@@ -136,7 +136,7 @@
                     {{dataItem.message}}
                     <div class="logButtons">
                       <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception">Exception</span>
-                      <span *ngIf="dataItem.group != null && dataItem.group != 'AspNetCore'" (click)="showException(dataItem)" class="badge button-group"
+                      <span *ngIf="dataItem.group != null && dataItem.group != 'AspNetCore' && dataItem.group.length > 3" (click)="showException(dataItem)" class="badge button-group"
                       [routerLink]="['/diagnostics/search']" [queryParams]="{
                         term: dataItem.group,
                         env: environmentName,
