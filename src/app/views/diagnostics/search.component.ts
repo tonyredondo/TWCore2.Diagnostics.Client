@@ -1,4 +1,4 @@
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router, DefaultUrlSerializer } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
@@ -9,8 +9,8 @@ import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
-defineLocale('en-gb', enGbLocale);
 
+defineLocale('en-gb', enGbLocale);
 
 @Component({
   templateUrl: 'search.component.html'
@@ -18,6 +18,7 @@ defineLocale('en-gb', enGbLocale);
 
 export class SearchComponent implements OnInit {
   private _queryParams: Params;
+  private _urlSerializer: DefaultUrlSerializer;
   public searchValue: string;
   public bProcessing = false;
   public bHasResults?: boolean;
@@ -40,10 +41,16 @@ export class SearchComponent implements OnInit {
   public traceModal: ModalDirective;
   public traceObject: string;
   public traceName: string;
-  constructor(private _queryService: QueryService, private _activatedRoute: ActivatedRoute, private _router: Router, private _codeMirror: CodemirrorService, private localeService: BsLocaleService) {}
+
+  constructor(private _queryService: QueryService,
+    private _activatedRoute: ActivatedRoute,
+    private _router: Router,
+    private _codeMirror: CodemirrorService,
+    private localeService: BsLocaleService) {}
 
   // Public Methods
   ngOnInit() {
+    this._urlSerializer = new DefaultUrlSerializer();
     const initialDate = [ moment().subtract(14, 'd').toDate(), moment().toDate() ];
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
 
@@ -78,8 +85,24 @@ export class SearchComponent implements OnInit {
     }
     this.bHasResults = null;
     this.bProcessing = true;
+    let searchVal = this.searchValue;
 
-    this._queryService.apiQueryByEnvironmentSearchBySearchTermGet(environment.name, this.searchValue, this.bsValue[0], this.bsValue[1]).subscribe(data => {
+    if (searchVal != null && (searchVal.startsWith("http://") || searchVal.startsWith("HTTP://"))) {
+      var regex1 = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+      var regex2 = /[0-9a-f]{8}[0-9a-f]{4}[1-5][0-9a-f]{3}[89ab][0-9a-f]{3}[0-9a-f]{12}/i;
+      var regex1Result = regex1.exec(searchVal);
+      var regex2Result = regex2.exec(searchVal);
+      var finalRes = [];
+      if (regex1Result !== null) {
+        finalRes = finalRes.concat(regex1Result);
+      }
+      if (regex2Result !== null) {
+        finalRes = finalRes.concat(regex2Result);
+      }
+      searchVal = finalRes.join(' ');
+    }
+
+    this._queryService.apiQueryByEnvironmentSearchBySearchTermGet(environment.name, searchVal, this.bsValue[0], this.bsValue[1]).subscribe(data => {
       this.bProcessing = false;
       if (data == null || (data.logs.length === 0 && data.traces.length === 0)) {
         this.bHasResults = false;
