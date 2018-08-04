@@ -1,4 +1,4 @@
-import { ActivatedRoute, Params, Router, DefaultUrlSerializer } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
@@ -9,8 +9,8 @@ import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
-
 defineLocale('en-gb', enGbLocale);
+
 
 @Component({
   templateUrl: 'search.component.html'
@@ -18,7 +18,6 @@ defineLocale('en-gb', enGbLocale);
 
 export class SearchComponent implements OnInit {
   private _queryParams: Params;
-  private _urlSerializer: DefaultUrlSerializer;
   public searchValue: string;
   public bProcessing = false;
   public bHasResults?: boolean;
@@ -50,7 +49,6 @@ export class SearchComponent implements OnInit {
 
   // Public Methods
   ngOnInit() {
-    this._urlSerializer = new DefaultUrlSerializer();
     const initialDate = [ moment().subtract(14, 'd').toDate(), moment().toDate() ];
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
 
