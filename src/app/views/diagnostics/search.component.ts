@@ -128,7 +128,7 @@ export class SearchComponent implements OnInit {
         }));
       }
 
-      const groupObject = this.groupBy(items, 'group');
+      const groupObject = this.traceGroupBy(items, 'group');
       this.searchTraces = [];
       for (const groupItem in groupObject) {
         if (groupObject.hasOwnProperty(groupItem)) {
@@ -142,7 +142,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  groupBy(value: any[], key: string): { [index: string]: Array<INodeTraceItemExt> } {
+  traceGroupBy(value: any[], key: string): { [index: string]: Array<INodeTraceItemExt> } {
     const resObj = {} as { [index: string]: Array<INodeTraceItemExt> };
     for (let i = 0; i < value.length; i++) {
         const item = value[i] !== undefined ? value[i] : null;
