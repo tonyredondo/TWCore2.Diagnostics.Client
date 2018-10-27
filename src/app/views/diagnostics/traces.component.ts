@@ -16,7 +16,7 @@ import { moment } from 'ngx-bootstrap/chronos/test/chain';
 export class TracesComponent implements OnInit {
   private _queryParams: Params;
   private _currentPage = 0;
-  private _pageSize = 25;
+  private _pageSize = 50;
   public totalPagesArray: number[];
   public traceData: PagedListTraceResult;
   public bsConfig: Partial<BsDatepickerConfig>;
@@ -89,8 +89,11 @@ export class TracesComponent implements OnInit {
     this.updateData();
   }
 
-  getTimeDiff(end: Date, start: Date): Number {
-    return (moment(end).valueOf() - moment(start).valueOf()) / 1000;
+  getTimeDiff(end: Date, start: Date): string {
+    let timeInSeconds = (moment(end).valueOf() - moment(start).valueOf()) / 1000;
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = Math.round(timeInSeconds - (minutes * 60));
+    return (minutes > 9 ? minutes : "0" + minutes) + ":" + (seconds > 9 ? seconds : "0" + seconds);
   }
 
   // Private Methods

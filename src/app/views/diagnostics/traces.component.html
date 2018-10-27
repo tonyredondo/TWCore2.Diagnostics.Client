@@ -42,7 +42,7 @@
               <tr>
                 <th style="width: 165px;">Start</th>
                 <th style="width: 165px;">End</th>
-                <th style="width: 100px;">Time in Sec</th>
+                <th style="width: 100px;">Time</th>
                 <th style="width: max-content;">Group name</th>
                 <th style="width: 90px;">Quantity</th>
                 <th style="width: 90px;"></th>
@@ -52,7 +52,7 @@
               <tr *ngFor="let dataItem of traceData?.data">
                 <td>{{dataItem.start | date:'dd/MM/yy HH:mm:ss.SSS'}}</td>
                 <td>{{dataItem.end | date:'dd/MM/yy HH:mm:ss.SSS'}}</td>
-                <td>{{ getTimeDiff(dataItem.end, dataItem.start) | number : '2.3-3' }}</td>
+                <td>{{ getTimeDiff(dataItem.end, dataItem.start) }}</td>
                 <td class="breakWord">{{dataItem.group}}</td>
                 <td>{{dataItem.count}}</td>
                 <td>
