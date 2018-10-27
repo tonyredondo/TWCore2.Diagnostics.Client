@@ -25,6 +25,7 @@ export class SearchComponent implements OnInit {
   public bsValue: Date[];
   public searchResults: SearchResults;
   public searchTraces: Array<INodeGroup>;
+  public groupResults: Array<NodeGroup>;
   public applications: string[] = [];
   public logCollapsed = false;
   // Exception Viewer
@@ -195,6 +196,7 @@ export class SearchComponent implements OnInit {
           appItem.items.sort((a, b) => a.timestamp < b.timestamp ? -1 : 1);
         }
       }
+      this.groupResults = groupArray;
       console.log(groupArray);
       // ***********************+***********************+***********************+***********************+***********************+
 
