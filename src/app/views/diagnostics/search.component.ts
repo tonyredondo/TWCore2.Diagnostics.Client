@@ -108,6 +108,95 @@ export class SearchComponent implements OnInit {
       }
       this.bHasResults = true;
       this.searchResults = data;
+      console.log(data);
+
+      // ***********************+***********************+***********************+***********************+
+      // New model
+      let groupArray = Array<NodeGroup>();
+      if (this.searchResults !== null) {
+        if (this.searchResults.logs !== null) {
+
+          for (let i = 0; i < this.searchResults.logs.length; i++) {
+            const aItem = this.searchResults.logs[i];
+
+            let groupItem = groupArray.find(i => i.groupName == aItem.group);
+            if (groupItem === undefined) {
+              groupItem = {
+                groupName: aItem.group,
+                items: []
+              };
+              groupArray.push(groupItem);
+            }
+
+            let appItem = groupItem.items.find(i => i.appName == aItem.application);
+            if (appItem === undefined) {
+              appItem = {
+                appName: aItem.application,
+                items: []
+              };
+              groupItem.items.push(appItem);
+            }
+
+            let nodeItem: NodeItem = {
+              assembly: aItem.assembly,
+              code: aItem.code,
+              exception: aItem.exception,
+              id: aItem.id,
+              instanceId: aItem.instanceId,
+              level: aItem.level,
+              logId: aItem.logId,
+              machine: aItem.machine,
+              message: aItem.message,
+              timestamp: aItem.timestamp,
+              type: aItem.type
+            };
+            appItem.items.push(nodeItem);
+          }
+        }
+        if (this.searchResults.traces !== null) {
+          for (let i = 0; i < this.searchResults.traces.length; i++) {
+            const aItem = this.searchResults.traces[i];
+
+            let groupItem = groupArray.find(i => i.groupName == aItem.group);
+            if (groupItem === undefined) {
+              groupItem = {
+                groupName: aItem.group,
+                items: []
+              };
+              groupArray.push(groupItem);
+            }
+
+            let appItem = groupItem.items.find(i => i.appName == aItem.application);
+            if (appItem === undefined) {
+              appItem = {
+                appName: aItem.application,
+                items: []
+              };
+              groupItem.items.push(appItem);
+            }
+
+            let nodeItem: NodeItem = {
+              id: aItem.id,
+              instanceId: aItem.instanceId,
+              machine: aItem.machine,
+              timestamp: aItem.timestamp,
+              traceId: aItem.traceId,
+              tags: aItem.tags,
+              name: aItem.name
+            };
+            appItem.items.push(nodeItem);
+          }
+        }
+      }
+      for(var i = 0; i < groupArray.length; i++) {
+        const groupItem = groupArray[i];
+        for(var j = 0; j < groupItem.items.length; j++) {
+          const appItem = groupItem.items[j];
+          appItem.items.sort((a, b) => a.timestamp < b.timestamp ? -1 : 1);
+        }
+      }
+      console.log(groupArray);
+      // ***********************+***********************+***********************+***********************+***********************+
 
       this.applications.length = 0;
       const items = [];
@@ -267,4 +356,33 @@ interface INodeTraceItemExt extends NodeTraceItem {
 interface TagItem {
   key: string;
   value: string;
+}
+
+
+//*********************************/
+interface NodeGroup {
+  groupName: string;
+  items: NodeApp[];
+}
+interface NodeApp {
+  appName: string;
+  items: NodeItem[];
+}
+interface NodeItem {
+  id?: string;
+  machine?: string;
+  timestamp?: Date;
+  instanceId?: string;
+
+  logId?: string;
+  assembly?: string;
+  type?: string;
+  code?: string;
+  level?: NodeLogItem.LevelEnum;
+  message?: string;
+  exception?: SerializableException;
+
+  traceId?: string;
+  tags?: string;
+  name?: string;
 }
