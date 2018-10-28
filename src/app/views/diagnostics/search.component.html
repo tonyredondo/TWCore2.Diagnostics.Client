@@ -74,8 +74,8 @@
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.traceId != null">
                   <div class="dvButtons">
-                    <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
-                    <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
+                      <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
+                      <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
                   </div>
                   <div class="dvButtons">
                     <ng-container *ngFor="let tag of rowItem.tagsArray">

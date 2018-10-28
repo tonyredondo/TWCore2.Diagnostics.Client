@@ -46,6 +46,9 @@
   color: #fff;
   background-color: #4dbd74 !important;
   cursor: pointer;
+  &:hover {
+    background-color: #1f9a4a !important;
+  }
 }
 .button-error {
   font-size: 95%;
@@ -53,6 +56,9 @@
   color: #fff;
   background-color: #f86c6b !important;
   cursor: pointer;
+  &:hover {
+    background-color: #e21b19 !important;
+  }
 }
 .button-info {
   font-size: 95%;
@@ -60,6 +66,9 @@
   color: #fff;
   background-color: #03A9F4 !important;
   cursor: pointer;
+  &:hover {
+    background-color: #0a78ab !important
+  }
 }
 .button-ser {
   font-size: 95%;
@@ -694,20 +703,25 @@
     margin-left: 5px;
   }
   .btn {
-    margin: 1px 2px 1px 0px;
-    padding: 2px 5px 0px;
+    //margin: 1px 2px 1px 0px;
+    padding: 2px 7px 0px;
     font-size: 11px;
     font-weight: 700;
-    border: 1px solid #628cde;
-    background-color: #1246ab;
+    //border: 1px solid #628cde;
+    border-radius: 0px;
+    background-color: #7185ab;
     color: #ffffff;
+    &:hover {
+      background-color: #2e71f3;
+    }
   }
   .dvButtons {
-    border-left: solid 1px;
-    border-right: solid 1px;
-    padding: 0px 5px;
+    border-left: solid 2px;
+    border-right: solid 2px;
+    //padding: 0px 5px;
     display: inline;
     border-color: #85aefe;
+    margin: -1px -1px;
   }
   .dvText {
     flex: 5;
@@ -739,7 +753,7 @@
   border-top: 1px solid #0554ff52 !important;
   border-radius: 15px;
   margin: 2px 0px;
-  padding: 2px 20px;
+  padding: 1px 20px;
   .dvMessageCol {
     display: flex;
   }
