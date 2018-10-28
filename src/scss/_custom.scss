@@ -28,7 +28,7 @@
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #f86c6b;
+  background-color: #f86c6b !important;
   cursor: pointer;
   margin:2px;
 }
@@ -36,7 +36,7 @@
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #03A9F4;
+  background-color: #03A9F4 !important;
   cursor: pointer;
   margin:2px;
 }
@@ -44,28 +44,28 @@
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #4dbd74;
+  background-color: #4dbd74 !important;
   cursor: pointer;
 }
 .button-error {
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #f86c6b;
+  background-color: #f86c6b !important;
   cursor: pointer;
 }
 .button-info {
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #03A9F4;
+  background-color: #03A9F4 !important;
   cursor: pointer;
 }
 .button-ser {
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #009688;
+  background-color: #009688 !important;
   cursor: pointer;
 }
 .logButtons {
@@ -698,8 +698,8 @@
     padding: 2px 5px 0px;
     font-size: 11px;
     font-weight: 700;
-    border: 1px solid #669aff;
-    background-color: #85aefe;
+    border: 1px solid #628cde;
+    background-color: #1246ab;
     color: #ffffff;
   }
   .dvButtons {
@@ -708,6 +708,12 @@
     padding: 0px 5px;
     display: inline;
     border-color: #85aefe;
+  }
+  .dvText {
+    flex: 5;
+    text-align: right;
+    align-self: center;
+    font-weight: bold
   }
 }
 
@@ -732,6 +738,9 @@
   border-bottom: 1px solid #0554ff52;
   border-top: 1px solid #0554ff52 !important;
   border-radius: 15px;
-  margin: 1px 0px;
+  margin: 2px 0px;
   padding: 2px 20px;
+  .dvMessageCol {
+    display: flex;
+  }
 }

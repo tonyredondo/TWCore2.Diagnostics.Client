@@ -51,7 +51,7 @@
       <tab *ngFor="let groupItem of groupResults" class="tab-search">
         <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}}</ng-template>
 
-        <div class="card card-search" *ngFor="let appItem of groupItem.items">
+        <div class="card card-search" *ngFor="let appItem of groupItem.items" [ngStyle]="{ 'border-top' : appItem.hasError ? '4px solid #f86c6b' : '' }">
           <div class="card-header" (click)="appItem.hidden = !appItem.hidden">
             <div class="title"><i class="fa fa-spin fa-gear"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
             <div class="counter">{{appItem.items.length}} items</div>
@@ -77,8 +77,20 @@
                     <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
                     <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
                   </div>
-                    <i class="fa fa-file-code-o" style="font-size:14px"></i>
-                    Trace Name: {{rowItem.name}}
+                  <div class="dvButtons">
+                    <ng-container *ngFor="let tag of rowItem.tagsArray">
+                        <button class="btn" [ngClass]="{
+                          'button-info' : tag.key != 'Status',
+                          'button-success' : tag.key == 'Status' && tag.value == 'Success',
+                          'button-warning' : tag.key == 'Status' && tag.value == 'Warning',
+                          'button-error' : tag.key == 'Status' && tag.value == 'Error'
+                        }" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
+                    </ng-container>
+                  </div>
+                  <div class="dvText">
+                      {{rowItem.name}}
+                      <i class="fa fa-file-code-o" style="font-size:14px"></i>
+                  </div>
                 </div>
               </div>
             </div>

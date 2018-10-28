@@ -133,6 +133,9 @@ export class SearchComponent implements OnInit {
             if (appItem === undefined) {
               appItem = {
                 appName: aItem.application,
+                hidden: false,
+                hasError: false,
+                hasWarning: false,
                 items: []
               };
               groupItem.items.push(appItem);
@@ -149,8 +152,18 @@ export class SearchComponent implements OnInit {
               machine: aItem.machine,
               message: aItem.message,
               timestamp: aItem.timestamp,
-              type: aItem.type
+              type: aItem.type,
+              tags : null,
+              tagsArray: null,
+              name: null,
+              traceId: null
             };
+            if (nodeItem.level === NodeLogItem.LevelEnum.Error) {
+              appItem.hasError = true;
+            }
+            if (nodeItem.level === NodeLogItem.LevelEnum.Warning) {
+              appItem.hasWarning = true;
+            }
             appItem.items.push(nodeItem);
           }
         }
@@ -171,11 +184,19 @@ export class SearchComponent implements OnInit {
             if (appItem === undefined) {
               appItem = {
                 appName: aItem.application,
+                hidden: false,
+                hasError: false,
+                hasWarning: false,
                 items: []
               };
               groupItem.items.push(appItem);
             }
-
+            const itemTags = aItem.tags.split(', ');
+            const tags = [] as TagItem[];
+            for (let it = 0; it < itemTags.length; it++) {
+              const itemTagItem = itemTags[it].split(': ');
+              tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
+            }
             let nodeItem: NodeItem = {
               id: aItem.id,
               instanceId: aItem.instanceId,
@@ -183,8 +204,13 @@ export class SearchComponent implements OnInit {
               timestamp: aItem.timestamp,
               traceId: aItem.traceId,
               tags: aItem.tags,
-              name: aItem.name
+              name: aItem.name,
+              tagsArray: tags
             };
+            console.log(nodeItem);
+            if (nodeItem.tags.indexOf('Status: Error') > -1) {
+              appItem.hasError = true;
+            }
             appItem.items.push(nodeItem);
           }
         }
@@ -355,6 +381,8 @@ interface INodeTraceItemExt extends NodeTraceItem {
   tagsArray: TagItem[];
   cssClass: string;
 }
+
+
 interface TagItem {
   key: string;
   value: string;
@@ -390,4 +418,6 @@ interface NodeItem {
   traceId?: string;
   tags?: string;
   name?: string;
+
+  tagsArray: TagItem[];
 }
