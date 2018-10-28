@@ -368,6 +368,7 @@ interface NodeGroup {
 }
 interface NodeApp {
   appName: string;
+  hidden: boolean;
   items: NodeItem[];
 }
 interface NodeItem {

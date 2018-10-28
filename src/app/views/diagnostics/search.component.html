@@ -48,40 +48,40 @@
   <div *ngIf="bHasResults == true">
 
     <tabset>
-      <tab *ngFor="let groupItem of groupResults">
+      <tab *ngFor="let groupItem of groupResults" class="tab-search">
         <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}}</ng-template>
 
-        <div class="card" *ngFor="let appItem of groupItem.items">
-          <div class="card-header" style="display:flex; justify-items: center">
+        <div class="card card-search" *ngFor="let appItem of groupItem.items">
+          <div class="card-header" (click)="appItem.hidden = !appItem.hidden">
             <div style="flex:5"><i class="fa fa-spin fa-gear"></i> {{appItem.appName}}</div>
             <div style="flex:1; text-align: right">{{appItem.items.length}} items</div>
           </div>
-          <div class="card-body">
-              <table class="table table-sm table-striped table-log table-log-search">
-                  <tbody>
-                      <tr *ngFor="let dataItem of appItem.items" [ngClass]="{
-                        'tr-level-error': dataItem.level == 'Error',
-                        'tr-level-warning': dataItem.level == 'Warning',
-                        'tr-level-success': dataItem.level == 'Stats',
-                        'tr-level-trace' : dataItem.traceId != null
-                      }">
-                        <td style="width: 95px">
-                          <strong>{{dataItem.timestamp | date:'HH:mm:ss.SSS'}}</strong>
-                        </td>
-                        <td class="breakWord" style="width: max-content;" *ngIf="dataItem.logId != null">
-                          <span *ngIf="dataItem.type != null">&lt;{{dataItem.type}}&gt;</span>
-                          {{dataItem.message}}
-                          <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception">Show Exception</span>
-                        </td>
-                        <td class="breakWord" style="width: max-content;" *ngIf="dataItem.traceId != null">
-                            <button class="btn badge badge-tag" (click)="showJsonData(dataItem.id, dataItem.name)">Json</button>
-                            <button class="btn badge badge-tag" (click)="showXmlData(dataItem.id, dataItem.name)">Xml</button>
-                            <i class="fa fa-file-code-o" style="font-size:14px"></i>
-                            Trace Name: {{dataItem.name}}
-                          </td>
-                      </tr>
-                    </tbody>
-              </table>
+          <div class="card-body" [collapse]="appItem.hidden">
+            <div class="dvData">
+              <div *ngFor="let rowItem of appItem.items" class="dvRow"  [ngClass]="{
+                'dv-level-error': rowItem.level == 'Error',
+                'dv-level-warning': rowItem.level == 'Warning',
+                'dv-level-success': rowItem.level == 'Stats',
+                'dv-level-trace' : rowItem.traceId != null
+              }">
+                <div class="dvTimeCol">
+                  {{rowItem.timestamp | date:'HH:mm:ss.SSS'}}
+                </div>
+                <div class="dvMessageCol" *ngIf="rowItem.logId != null">
+                    <span *ngIf="rowItem.type != null">&lt;{{rowItem.type}}&gt;</span>
+                    {{rowItem.message}}
+                    <span *ngIf="rowItem.exception != null" (click)="showException(rowItem)" class="badge button-exception">Show Exception</span>
+                </div>
+                <div class="dvMessageCol" *ngIf="rowItem.traceId != null">
+                  <div class="dvButtons">
+                    <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
+                    <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
+                  </div>
+                    <i class="fa fa-file-code-o" style="font-size:14px"></i>
+                    Trace Name: {{rowItem.name}}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

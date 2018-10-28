@@ -211,23 +211,7 @@
 }
 
 
-.tr-level-error {
-  background-color: #f86c6b44 !important;
-  border-bottom: 1px solid #f86c6b44;
-}
-.tr-level-warning {
-  background-color: #ffc10744 !important;
-  border-bottom: 1px solid #ffc10744;
-}
-.tr-level-success {
-  background-color: #4dbd7444 !important;
-  border-bottom: 1px solid #4dbd7444;
-}
-.tr-level-trace {
-  background-color: #0572f347 !important;
-  border-bottom: 2px solid #0554ff52;
-  border-top: 2px solid #0554ff52 !important;
-}
+
 
 .td-app {
   font-size:10px !important;
@@ -633,3 +617,102 @@
 }
 
 
+.tab-search {
+  padding: 1rem 0px !important;
+  padding-bottom: 0px !important;
+}
+.card-search{
+  margin-bottom: 15px;
+  border-right: 0px;
+  border-left: 0px;
+  border-bottom: 0px;
+  border-radius: 0px;
+  .card-header {
+    display:flex;
+    justify-items: center;
+    cursor: pointer;
+  }
+  .card-body{
+    padding: 15px;
+    padding-bottom: 0px;
+  }
+}
+.dvData {
+  // :first-child {
+  //   border-top-left-radius: 5px;
+  //   border-top-right-radius: 5px;
+  // }
+  // :last-child {
+  //   border-bottom-left-radius: 5px;
+  //   border-bottom-right-radius: 5px;
+  // }
+}
+.dvRow {
+  font-family: Consolas, 'Courier New', Courier, monospace;
+  font-size: 12px;
+  display: flex;
+  flex-direction: row;
+  padding: 0px 10px;
+  margin: 0px 10px;
+  border-radius: 2px;
+}
+.dvTimeCol {
+  flex: 1;
+  justify-content: center;
+  font-weight: bold;
+  text-align: left;
+  align-self: center;
+}
+.dvMessageCol {
+  flex: 10;
+  padding-left: 10px;
+  justify-content: center;
+  white-space: pre-wrap;
+  word-break: break-all;
+  i {
+    font-size: 14px;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+  .btn {
+    margin: 1px 2px 1px 0px;
+    padding: 2px 5px 0px;
+    font-size: 11px;
+    font-weight: 700;
+    border: 1px solid #669aff;
+    background-color: #85aefe;
+    color: #ffffff;
+  }
+  .dvButtons {
+    border-left: solid 1px;
+    border-right: solid 1px;
+    padding: 0px 5px;
+    display: inline;
+    border-color: #85aefe;
+  }
+}
+
+.dv-level-error {
+  background-color: #f86c6b44 !important;
+  border-bottom: 1px solid #f86c6b44;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.dv-level-warning {
+  background-color: #ffc10744 !important;
+  border-bottom: 1px solid #ffc10744;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.dv-level-success {
+  background-color: #4dbd7444 !important;
+  border-bottom: 1px solid #4dbd7444;
+}
+.dv-level-trace {
+  background-color: #0572f347 !important;
+  border-bottom: 1px solid #0554ff52;
+  border-top: 1px solid #0554ff52 !important;
+  border-radius: 15px;
+  margin: 1px 0px;
+  padding: 3px 20px;
+}
