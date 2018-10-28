@@ -637,10 +637,23 @@
     display:flex;
     justify-items: center;
     cursor: pointer;
+    .title {
+      flex: 5;
+      font-weight: 600;
+      padding: 0px;
+      font-size: 13px;
+    }
+    .counter {
+      flex: 1;
+      text-align: right;
+      align-self: center;
+      font-size: 11px;
+      font-weight: 600;
+    }
   }
   .card-body{
-    padding: 15px;
-    padding-bottom: 0px;
+    padding: 20px 15px 25px 15px;
+    padding-bottom: 10px;
   }
 }
 .dvData {
@@ -720,5 +733,5 @@
   border-top: 1px solid #0554ff52 !important;
   border-radius: 15px;
   margin: 1px 0px;
-  padding: 3px 20px;
+  padding: 2px 20px;
 }

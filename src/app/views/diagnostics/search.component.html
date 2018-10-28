@@ -53,8 +53,8 @@
 
         <div class="card card-search" *ngFor="let appItem of groupItem.items">
           <div class="card-header" (click)="appItem.hidden = !appItem.hidden">
-            <div style="flex:5"><i class="fa fa-spin fa-gear"></i> {{appItem.appName}}</div>
-            <div style="flex:1; text-align: right">{{appItem.items.length}} items</div>
+            <div class="title"><i class="fa fa-spin fa-gear"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
+            <div class="counter">{{appItem.items.length}} items</div>
           </div>
           <div class="card-body" [collapse]="appItem.hidden">
             <div class="dvData">
