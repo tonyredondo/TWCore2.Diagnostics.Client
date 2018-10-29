@@ -51,8 +51,8 @@
       <tab *ngFor="let groupItem of groupResults" class="tab-search">
         <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}}</ng-template>
 
-        <div class="card card-search" *ngFor="let appItem of groupItem.items" [ngStyle]="{ 'border-top' : appItem.hasError ? '4px solid #f86c6b' : '' }">
-          <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : '' }">
+        <div class="card card-search" *ngFor="let appItem of groupItem.items" [ngStyle]="{ 'border-top' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffdc82' : '' }">
+          <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffdc82' : '' }">
             <div class="title"><i class="fa fa-gear"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
             <div class="counter">{{appItem.items.length}} items</div>
           </div>
@@ -100,124 +100,7 @@
 
       </tab>
     </tabset>
-
-
-
-
-
     <br/>
-
-    <div class="card" *ngIf="searchResults.logs.length > 0 && 1==0">
-      <div class="card-header">
-        <table class="card-table" (click)="logCollapsed = !logCollapsed">
-          <tr>
-            <td class="td-icon">
-              <i class="fa fa-reorder"></i>
-            </td>
-            <td class="td-title">Logs at {{searchResults.logs[0].timestamp | date}}</td>
-            <td class="td-level">
-              <span>{{searchResults.logs.length}} items &nbsp;</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div class="card-body" [collapse]="logCollapsed">
-
-        <table class="table table-sm table-striped table-log table-log-search">
-          <thead>
-            <tr>
-              <th style="width: 95px">Time</th>
-              <th style="width: 165px">Application</th>
-              <th style="width: max-content;">Message</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let dataItem of searchResults.logs" [ngClass]="{
-              'tr-level-error': dataItem.level == 'Error',
-              'tr-level-warning': dataItem.level == 'Warning',
-              'tr-level-success': dataItem.level == 'Stats'
-            }">
-              <td>
-                <strong>{{dataItem.timestamp | date:'HH:mm:ss.SSS'}}</strong>
-              </td>
-              <td class="breakWord td-app">
-                {{dataItem.application}}
-              </td>
-              <td class="breakWord">
-                <span *ngIf="dataItem.type != null">&lt;{{dataItem.type}}&gt;</span>
-                {{dataItem.message}}
-                <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception">Show Exception</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-
-      </div>
-    </div>
-
-    <div *ngIf="1==0">
-      <div *ngFor="let group of searchTraces" class="card">
-        <div class="card-header">
-          <table class="card-table" (click)="group.collapsed = !group.collapsed">
-            <tr>
-              <td class="td-icon">
-                <i class="fa fa-cubes"></i>
-              </td>
-              <td class="td-title"><strong>Traces from group: </strong>{{group.data[0].group}} at {{group.data[0].timestamp | date}}</td>
-              <td class="td-level">
-                <span>{{group.data.length}} items &nbsp;</span>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="card-body" [collapse]="group.collapsed">
-
-          <table class="table table-sm table-striped table-trace">
-              <thead>
-                <tr>
-                  <th style="width: 5px"></th>
-                  <th style="width: max-content;">Name</th>
-                  <th style="width: 300px">Application</th>
-                  <th style="width: 90px">Machine</th>
-                  <th style="width: 180px">Tags</th>
-                  <th style="width: 90px">Timestamp</th>
-                  <th style="width: 80px"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of group.data">
-                  <td>
-                      <i class="fa fa-big" [ngClass]="item.application.indexOf('Api') > -1 ? 'fa-cloud' :
-                          item.application.indexOf('Engine') > -1 ? 'fa-cog' :
-                          item.application.indexOf('Provider') > -1 ? 'fa-plane' :
-                          'fa-cube'"></i>
-                  </td>
-                  <td class="breakWord">{{item.name}}</td>
-                  <td class="breakWord trace-td-app" [ngClass]="item.cssClass"><span>{{item.application}}</span></td>
-                  <td>{{item.machine}}</td>
-                  <td>
-                    <button *ngFor="let tag of item.tagsArray" class="btn badge badge-tag" [ngClass]="{
-                        'button-info' : tag.key != 'Status',
-                        'button-success' : tag.key == 'Status' && tag.value == 'Success',
-                        'button-warning' : tag.key == 'Status' && tag.value == 'Warning',
-                        'button-error' : tag.key == 'Status' && tag.value == 'Error'
-                      }" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">
-                      {{tag.key}}
-                    </button>
-                  </td>
-                  <td><strong>{{item.timestamp | date:'HH:mm:ss.SSS'}}</strong></td>
-                  <td [ngClass]="item.cssClass">
-                    <button class="btn badge badge-tag button-ser" (click)="showJsonData(item.id, item.name)">Json</button>
-                    <button class="btn badge badge-tag button-ser" (click)="showXmlData(item.id, item.name)">Xml</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-        </div>
-      </div>
-    </div>
 
   </div>
 

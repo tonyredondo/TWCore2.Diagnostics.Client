@@ -30,6 +30,7 @@
   color: #fff;
   background-color: #f86c6b !important;
   cursor: pointer;
+  margin:2px;
 }
 .button-group {
   font-size: 95%;
@@ -690,7 +691,6 @@
   font-weight: bold;
   text-align: left;
   align-self: center;
-  max-width: 85px;
   min-width: 85px;
   &.addTime {
     color: #555555;
@@ -747,6 +747,9 @@
     margin-right: -10px;
     font-size: 10px;
     font-weight: bold;
+  }
+  .button-exception{
+    margin:0px !important;
   }
 }
 

@@ -86,12 +86,12 @@ export class SearchComponent implements OnInit {
     this.bProcessing = true;
     let searchVal = this.searchValue;
 
-    if (searchVal != null && (searchVal.startsWith("http://") || searchVal.startsWith("HTTP://"))) {
-      var regex1 = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
-      var regex2 = /[0-9a-f]{8}[0-9a-f]{4}[1-5][0-9a-f]{3}[89ab][0-9a-f]{3}[0-9a-f]{12}/i;
-      var regex1Result = regex1.exec(searchVal);
-      var regex2Result = regex2.exec(searchVal);
-      var finalRes = [];
+    if (searchVal != null && (searchVal.startsWith('http://') || searchVal.startsWith('HTTP://'))) {
+      const regex1 = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
+      const regex2 = /[0-9a-f]{8}[0-9a-f]{4}[1-5][0-9a-f]{3}[89ab][0-9a-f]{3}[0-9a-f]{12}/i;
+      const regex1Result = regex1.exec(searchVal);
+      const regex2Result = regex2.exec(searchVal);
+      let finalRes = [];
       if (regex1Result !== null) {
         finalRes = finalRes.concat(regex1Result);
       }
@@ -109,10 +109,7 @@ export class SearchComponent implements OnInit {
       }
       this.bHasResults = true;
       this.searchResults = data;
-      console.log(data);
 
-      // ***********************+***********************+***********************+***********************+
-      // New model
       const groupArray = Array<NodeGroup>();
       if (this.searchResults !== null) {
         if (this.searchResults.logs !== null) {
@@ -133,7 +130,7 @@ export class SearchComponent implements OnInit {
             if (appItem === undefined) {
               appItem = {
                 appName: aItem.application,
-                hidden: false,
+                hidden: true,
                 hasError: false,
                 hasWarning: false,
                 items: []
@@ -160,9 +157,11 @@ export class SearchComponent implements OnInit {
             };
             if (nodeItem.level === NodeLogItem.LevelEnum.Error) {
               appItem.hasError = true;
+              appItem.hidden = false;
             }
             if (nodeItem.level === NodeLogItem.LevelEnum.Warning) {
               appItem.hasWarning = true;
+              appItem.hidden = false;
             }
             appItem.items.push(nodeItem);
           }
@@ -257,64 +256,8 @@ export class SearchComponent implements OnInit {
       }
       this.groupResults = groupArray;
       console.log(groupArray);
-      // ***********************+***********************+***********************+***********************+***********************+
 
-      this.applications.length = 0;
-      const items = [];
-      for (let i = 0; i < this.searchResults.traces.length; i++) {
-        const item = this.searchResults.traces[i];
-        const itemTags = item.tags.split(', ');
-        const tags = [] as TagItem[];
-        for (let it = 0; it < itemTags.length; it++) {
-          const itemTagItem = itemTags[it].split(': ');
-          tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
-        }
-        if (this.applications.indexOf(item.application) === -1) {
-          this.applications.push(item.application);
-        }
-        items.push(Object.assign(item, {
-          tagsArray : tags,
-          cssClass : 'trace-application-bgcolor' + this.applications.indexOf(item.application)
-        }));
-      }
-
-      const groupObject = this.traceGroupBy(items, 'group');
-      this.searchTraces = [];
-      for (const groupItem in groupObject) {
-        if (groupObject.hasOwnProperty(groupItem)) {
-          this.searchTraces.push({
-            collapsed: false,
-            data: groupObject[groupItem]
-          });
-        }
-      }
-      console.log(this.searchTraces);
     });
-  }
-
-  traceGroupBy(value: any[], key: string): { [index: string]: Array<INodeTraceItemExt> } {
-    const resObj = {} as { [index: string]: Array<INodeTraceItemExt> };
-    for (let i = 0; i < value.length; i++) {
-        const item = value[i] !== undefined ? value[i] : null;
-        if (item != null) {
-            let currentKey = ' ';
-            if (item[key] !== undefined) {
-                currentKey = item[key];
-            }
-
-            if (resObj[currentKey] !== undefined) {
-              const rObjItem = resObj[currentKey];
-              if (Array.isArray(rObjItem)) {
-                  resObj[currentKey].push(item);
-              } else {
-                  resObj[currentKey] = [resObj[currentKey], item];
-              }
-            } else {
-                resObj[currentKey] = [item];
-            }
-        }
-    }
-    return resObj;
   }
 
   showException(item: NodeLogItem) {
