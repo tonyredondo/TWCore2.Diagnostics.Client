@@ -781,7 +781,12 @@
     font-weight: bold;
   }
   .button-exception{
-    margin:0px !important;
+    margin: 5px -5px 0px 0px !important;
+    font-family: sans-serif;
+    padding: 8px;
+    &:hover {
+      background-color: #ec5a59 !important;
+    }
   }
 }
 
@@ -791,7 +796,7 @@
   border-top: 0px solid #f86c6b44;
   padding-top: 6px;
   padding-bottom: 6px;
-  box-shadow: 0px 1px 7px -3px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.75);
 
   .dvMessageType {
     // border-bottom: solid 1px #b78484;
@@ -806,7 +811,7 @@
   border-top: 0px solid #ffc10744;
   padding-top: 6px;
   padding-bottom: 6px;
-  box-shadow: 0px 1px 7px -3px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.75);
 
   .dvMessageType {
     // border-bottom: solid 1px #bda871;
