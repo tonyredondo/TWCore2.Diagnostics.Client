@@ -53,22 +53,25 @@
 
         <div class="card card-search" *ngFor="let appItem of groupItem.items" [ngStyle]="{ 'border-top' : appItem.hasError ? '4px solid #f86c6b' : '' }">
           <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : '' }">
-            <div class="title"><i class="fa fa-spin fa-gear"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
+            <div class="title"><i class="fa fa-gear"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
             <div class="counter">{{appItem.items.length}} items</div>
           </div>
           <div class="card-body" [collapse]="appItem.hidden">
             <div class="dvData">
-              <div *ngFor="let rowItem of appItem.items" class="dvRow"  [ngClass]="{
+              <div *ngFor="let rowItem of appItem.items; let isFirst = first" class="dvRow"  [ngClass]="{
                 'dv-level-error': rowItem.level == 'Error',
                 'dv-level-warning': rowItem.level == 'Warning',
                 'dv-level-success': rowItem.level == 'Stats',
                 'dv-level-trace' : rowItem.traceId != null
               }">
-                <div class="dvTimeCol">
+                <div class="dvTimeCol" *ngIf="isFirst">
                   {{rowItem.timestamp | date:'HH:mm:ss.SSS'}}
                 </div>
+                <div class="dvTimeCol addTime" *ngIf="!isFirst">
+                  {{rowItem.diffTime}}
+                </div>
                 <div class="dvMessageCol" *ngIf="rowItem.logId != null">
-                    <span *ngIf="rowItem.type != null">&lt;{{rowItem.type}}&gt;</span>
+                    <span class="dvMessageType" *ngIf="rowItem.type != null">{{rowItem.type}}</span>
                     {{rowItem.message}}
                     <span *ngIf="rowItem.exception != null" (click)="showException(rowItem)" class="badge button-exception">Show Exception</span>
                 </div>

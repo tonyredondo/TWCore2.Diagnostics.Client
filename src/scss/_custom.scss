@@ -30,7 +30,6 @@
   color: #fff;
   background-color: #f86c6b !important;
   cursor: pointer;
-  margin:2px;
 }
 .button-group {
   font-size: 95%;
@@ -683,6 +682,7 @@
   padding: 0px 10px;
   margin: 0px 10px;
   border-radius: 2px;
+  line-height: 1.4;
 }
 .dvTimeCol {
   flex: 1;
@@ -690,6 +690,12 @@
   font-weight: bold;
   text-align: left;
   align-self: center;
+  max-width: 85px;
+  min-width: 85px;
+  &.addTime {
+    color: #555555;
+    font-size: 11px;
+  }
 }
 .dvMessageCol {
   flex: 10;
@@ -723,6 +729,7 @@
     //padding: 0px 5px;
     display: inline;
     border-color: #85aefe;
+    height: 20px;
     //margin: -1px -1px;
   }
   .dvText {
@@ -733,23 +740,51 @@
     font-style: italic;
     color: #484848;
   }
+  .dvMessageType {
+    padding: 0px 5px;
+    border-bottom-left-radius: 5px;
+    float: right;
+    margin-right: -10px;
+    font-size: 10px;
+    font-weight: bold;
+  }
 }
 
 .dv-level-error {
   background-color: #f86c6b44 !important;
   border-bottom: 1px solid #f86c6b44;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
+  .dvMessageType {
+    // border-bottom: solid 1px #b78484;
+    // border-left: solid 1px #b78484;
+    background-color: #f86c6b44;
+    margin-top: -6px;
+  }
 }
 .dv-level-warning {
   background-color: #ffc10744 !important;
   border-bottom: 1px solid #ffc10744;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+
+  .dvMessageType {
+    // border-bottom: solid 1px #bda871;
+    // border-left: solid 1px #bda871;
+    background-color: #ffc10744;
+    margin-top: -6px;
+  }
 }
 .dv-level-success {
   background-color: #4dbd7444 !important;
   border-bottom: 1px solid #4dbd7444;
+
+  .dvMessageType {
+    // border-bottom: solid 1px #5ea975;
+    // border-left: solid 1px #5ea975;
+    background-color: #b2e2c1;
+  }
 }
 .dv-level-trace {
   background-color: #0572f32e !important;

@@ -113,14 +113,14 @@ export class SearchComponent implements OnInit {
 
       // ***********************+***********************+***********************+***********************+
       // New model
-      let groupArray = Array<NodeGroup>();
+      const groupArray = Array<NodeGroup>();
       if (this.searchResults !== null) {
         if (this.searchResults.logs !== null) {
 
           for (let i = 0; i < this.searchResults.logs.length; i++) {
             const aItem = this.searchResults.logs[i];
 
-            let groupItem = groupArray.find(i => i.groupName == aItem.group);
+            let groupItem = groupArray.find(item => item.groupName === aItem.group);
             if (groupItem === undefined) {
               groupItem = {
                 groupName: aItem.group,
@@ -129,7 +129,7 @@ export class SearchComponent implements OnInit {
               groupArray.push(groupItem);
             }
 
-            let appItem = groupItem.items.find(i => i.appName == aItem.application);
+            let appItem = groupItem.items.find(item => item.appName === aItem.application);
             if (appItem === undefined) {
               appItem = {
                 appName: aItem.application,
@@ -141,7 +141,7 @@ export class SearchComponent implements OnInit {
               groupItem.items.push(appItem);
             }
 
-            let nodeItem: NodeItem = {
+            const nodeItem: NodeItem = {
               assembly: aItem.assembly,
               code: aItem.code,
               exception: aItem.exception,
@@ -171,7 +171,7 @@ export class SearchComponent implements OnInit {
           for (let i = 0; i < this.searchResults.traces.length; i++) {
             const aItem = this.searchResults.traces[i];
 
-            let groupItem = groupArray.find(i => i.groupName == aItem.group);
+            let groupItem = groupArray.find(item => item.groupName === aItem.group);
             if (groupItem === undefined) {
               groupItem = {
                 groupName: aItem.group,
@@ -180,7 +180,7 @@ export class SearchComponent implements OnInit {
               groupArray.push(groupItem);
             }
 
-            let appItem = groupItem.items.find(i => i.appName == aItem.application);
+            let appItem = groupItem.items.find(item => item.appName === aItem.application);
             if (appItem === undefined) {
               appItem = {
                 appName: aItem.application,
@@ -197,7 +197,7 @@ export class SearchComponent implements OnInit {
               const itemTagItem = itemTags[it].split(': ');
               tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
             }
-            let nodeItem: NodeItem = {
+            const nodeItem: NodeItem = {
               id: aItem.id,
               instanceId: aItem.instanceId,
               machine: aItem.machine,
@@ -207,7 +207,6 @@ export class SearchComponent implements OnInit {
               name: aItem.name,
               tagsArray: tags
             };
-            console.log(nodeItem);
             if (nodeItem.tags.indexOf('Status: Error') > -1) {
               appItem.hasError = true;
             }
@@ -215,11 +214,45 @@ export class SearchComponent implements OnInit {
           }
         }
       }
-      for(var i = 0; i < groupArray.length; i++) {
+      for (let i = 0; i < groupArray.length; i++) {
         const groupItem = groupArray[i];
-        for(var j = 0; j < groupItem.items.length; j++) {
+        for (let j = 0; j < groupItem.items.length; j++) {
           const appItem = groupItem.items[j];
           appItem.items.sort((a, b) => a.timestamp < b.timestamp ? -1 : 1);
+          for (let n = 1; n < appItem.items.length; n++) {
+            const nodeItem = appItem.items[n];
+            const oldNodeItem = appItem.items[0];
+            const duration = moment(nodeItem.timestamp).diff(oldNodeItem.timestamp);
+            const minutes = Math.floor(duration / 1000 / 60);
+            const seconds = Math.floor((duration / 1000) - (minutes * 60));
+            const milliseconds = duration - (Math.floor(duration / 1000) * 1000);
+            let diffTime = '+ ';
+            if (minutes > 0) {
+              diffTime += minutes + 'min';
+              if (seconds > 0 || milliseconds > 0) {
+                diffTime += ', ';
+              }
+            }
+            if (seconds > 0) {
+              diffTime += seconds + 's';
+              if (milliseconds > 0) {
+                diffTime += ', ';
+              }
+            }
+            diffTime += milliseconds + 'ms';
+            nodeItem.diffTime = diffTime;
+            /*
+            const minutesString = minutes > 9 ? minutes : '0' + minutes;
+            const secondsString = seconds > 9 ? seconds : '0' + seconds;
+            const millisecondsString = milliseconds > 99 ? milliseconds : milliseconds > 9 ? '0' + milliseconds : '00' + milliseconds;
+            let diffTime = '+' + minutesString + ':' + secondsString + '.' + millisecondsString;
+            if (diffTime === '+00:00.000') {
+              diffTime = '';
+            }
+            nodeItem.diffTime = diffTime;
+            */
+            console.log(nodeItem.diffTime);
+          }
         }
       }
       this.groupResults = groupArray;
@@ -389,7 +422,7 @@ interface TagItem {
 }
 
 
-//*********************************/
+/*********************************/
 interface NodeGroup {
   groupName: string;
   items: NodeApp[];
@@ -405,6 +438,7 @@ interface NodeItem {
   id?: string;
   machine?: string;
   timestamp?: Date;
+  diffTime?: string;
   instanceId?: string;
 
   logId?: string;
