@@ -687,13 +687,13 @@
 
   &.messageEnd {
     margin-bottom: 5px;
-    border-bottom-width: 4px;
+    border-bottom-width: 6px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }
   &.messageStart {
     margin-top: 5px;
-    border-top-width: 4px;
+    border-top-width: 6px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
   }
@@ -817,5 +817,8 @@
   padding: 0px 14px;
   .dvMessageCol {
     display: flex;
+    .dvText {
+      font-size: 90%;
+    }
   }
 }
