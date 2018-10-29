@@ -637,7 +637,7 @@
   padding-bottom: 0px !important;
 }
 .card-search{
-  margin-bottom: 15px;
+  //margin-bottom: 15px;
   border-right: 0px;
   border-left: 0px;
   border-bottom: 0px;
@@ -687,17 +687,25 @@
 
   &.messageEnd {
     margin-bottom: 5px;
-    border-bottom-width: 6px;
+    border-bottom-width: 2px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     font-weight: bold;
+    &.dv-level-success {
+      border-bottom-color: #afe1be;
+      background-color: #afe1be  !important;
+    }
   }
   &.messageStart {
     margin-top: 5px;
-    border-top-width: 6px;
+    border-top-width: 2px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     font-weight: bold;
+    &.dv-level-success {
+      border-top-color: #afe1be;
+      background-color: #afe1be  !important;
+    }
   }
 }
 .dvTimeCol {
