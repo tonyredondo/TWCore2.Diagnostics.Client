@@ -76,8 +76,6 @@
                   <div class="dvButtons">
                       <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
                       <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
-                  </div>
-                  <div class="dvButtons">
                     <ng-container *ngFor="let tag of rowItem.tagsArray">
                         <button class="btn" [ngClass]="{
                           'button-info' : tag.key != 'Status',

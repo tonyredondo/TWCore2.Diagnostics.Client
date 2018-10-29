@@ -700,7 +700,9 @@
   i {
     font-size: 14px;
     vertical-align: middle;
-    margin-left: 5px;
+    //margin-left: 5px;
+    margin-right: -17px;
+    color: #7185aa;
   }
   .btn {
     //margin: 1px 2px 1px 0px;
@@ -721,13 +723,15 @@
     //padding: 0px 5px;
     display: inline;
     border-color: #85aefe;
-    margin: -1px -1px;
+    //margin: -1px -1px;
   }
   .dvText {
     flex: 5;
     text-align: right;
     align-self: center;
-    font-weight: bold
+    font-weight: bold;
+    font-style: italic;
+    color: #484848;
   }
 }
 
@@ -748,12 +752,12 @@
   border-bottom: 1px solid #4dbd7444;
 }
 .dv-level-trace {
-  background-color: #0572f347 !important;
-  border-bottom: 1px solid #0554ff52;
-  border-top: 1px solid #0554ff52 !important;
-  border-radius: 15px;
+  background-color: #0572f32e !important;
+  //border-bottom: 1px solid #0554ff52;
+  border: 1px solid #0554ff52 !important;
+  border-radius: 5px;
   margin: 2px 0px;
-  padding: 1px 20px;
+  padding: 0px 20px;
   .dvMessageCol {
     display: flex;
   }
