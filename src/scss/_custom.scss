@@ -345,7 +345,7 @@
 
 @media (min-width: 576px) {
   .modal-dialog {
-    max-width: 1400px !important;
+    max-width: initial;
   }
 }
 
@@ -430,6 +430,7 @@
 .CodeMirror {
   font-size:14px;
   border-radius: 0.5rem;
+  height: calc(100vh - 110px) !important;
 }
 
 .modal-code {
@@ -448,6 +449,8 @@
 .modal-code .modal-content {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
+  width: calc(100vw - 100px);
+  left: 50px;
 }
 .modal-exception .modal-body {
   padding:0rem;

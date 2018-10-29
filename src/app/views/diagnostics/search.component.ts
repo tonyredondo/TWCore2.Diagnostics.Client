@@ -299,7 +299,7 @@ export class SearchComponent implements OnInit {
           'Alt-F': 'findPersistent'
         });
         editor.setValue(this.traceObject);
-        editor.setSize('100%', '700px');
+        //editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
         editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
         editor.scrollTo(0, 0);
@@ -327,7 +327,7 @@ export class SearchComponent implements OnInit {
           'Alt-F': 'findPersistent'
         });
         editor.setValue(this.traceObject);
-        editor.setSize('100%', '700px');
+        //editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
         editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
         editor.scrollTo(0, 0);
@@ -359,11 +359,6 @@ interface INodeTraceItemExt extends NodeTraceItem {
   cssClass: string;
 }
 
-
-interface TagItem {
-  key: string;
-  value: string;
-}
 
 
 /*********************************/
@@ -398,4 +393,8 @@ interface NodeItem {
   name?: string;
 
   tagsArray: TagItem[];
+}
+interface TagItem {
+  key: string;
+  value: string;
 }
