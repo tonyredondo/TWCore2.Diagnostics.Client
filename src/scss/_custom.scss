@@ -633,7 +633,7 @@
 
 
 .tab-search {
-  padding: 1rem 0px !important;
+  //padding: 1rem 0px !important;
   padding-bottom: 0px !important;
 }
 .card-search{
@@ -641,7 +641,8 @@
   border-right: 0px;
   border-left: 0px;
   border-bottom: 0px;
-  border-radius: 0px;
+  overflow: hidden;
+  border-radius: 8px;
   .card-header {
     display:flex;
     justify-items: center;
@@ -661,8 +662,8 @@
     }
   }
   .card-body{
-    padding: 20px 20px 25px 20px;
-    padding-bottom: 10px;
+    //padding: 20px 20px 25px 20px;
+    //padding-bottom: 10px;
   }
 }
 .dvData {

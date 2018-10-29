@@ -51,8 +51,8 @@
       <tab *ngFor="let groupItem of groupResults" class="tab-search">
         <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}}</ng-template>
 
-        <div class="card card-search" *ngFor="let appItem of groupItem.items" [ngStyle]="{ 'border-top' : appItem.hasError ? '2px solid #f86c6b' : appItem.hasWarning ? '2px solid #ffdc82' : '' }">
-          <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '2px solid #f86c6b' : appItem.hasWarning ? '2px solid #ffdc82' : '' }">
+        <div class="card card-search" *ngFor="let appItem of groupItem.items" >
+          <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffc421' : '' }">
             <div class="title"><i class="fa fa-gear"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
             <div class="counter">{{appItem.items.length}} items</div>
           </div>
