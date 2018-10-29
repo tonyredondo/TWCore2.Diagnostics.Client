@@ -64,7 +64,7 @@
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #03A9F4 !important;
+  background-color: #0c8ac3 !important;
   cursor: pointer;
   &:hover {
     background-color: #0a78ab !important
@@ -681,9 +681,22 @@
   display: flex;
   flex-direction: row;
   padding: 0px 10px;
-  margin: 0px 10px;
-  border-radius: 2px;
+  margin: 0px 5px;
+  //border-radius: 2px;
   line-height: 1.4;
+
+  &.messageEnd {
+    margin-bottom: 5px;
+    border-bottom-width: 4px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+  &.messageStart {
+    margin-top: 5px;
+    border-top-width: 4px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
 }
 .dvTimeCol {
   flex: 1;
@@ -707,9 +720,9 @@
   i {
     font-size: 14px;
     vertical-align: middle;
-    //margin-left: 5px;
-    margin-right: -17px;
+    margin-right: -10px;
     color: #7185aa;
+    margin-top: -2px;
   }
   .btn {
     //margin: 1px 2px 1px 0px;
@@ -718,20 +731,22 @@
     font-weight: 700;
     //border: 1px solid #628cde;
     border-radius: 0px;
-    background-color: #7185ab;
+    background-color: #20a8d8;
     color: #ffffff;
     &:hover {
-      background-color: #2e71f3;
+      background-color: #0a78ab;
     }
   }
   .dvButtons {
-    border-left: solid 2px;
-    border-right: solid 2px;
+    // border-left: solid 2px;
+    // border-right: solid 2px;
     //padding: 0px 5px;
     display: inline;
     border-color: #85aefe;
     height: 20px;
     //margin: -1px -1px;
+    border-radius: 2px;
+    overflow: hidden;
   }
   .dvText {
     flex: 5;
@@ -757,6 +772,7 @@
 .dv-level-error {
   background-color: #f86c6b44 !important;
   border-bottom: 1px solid #f86c6b44;
+  border-top: 0px solid #f86c6b44;
   padding-top: 6px;
   padding-bottom: 6px;
 
@@ -770,6 +786,7 @@
 .dv-level-warning {
   background-color: #ffc10744 !important;
   border-bottom: 1px solid #ffc10744;
+  border-top: 0px solid #ffc10744;
   padding-top: 6px;
   padding-bottom: 6px;
 
@@ -783,6 +800,7 @@
 .dv-level-success {
   background-color: #4dbd7444 !important;
   border-bottom: 1px solid #4dbd7444;
+  border-top: 0px solid #4dbd7444;
 
   .dvMessageType {
     // border-bottom: solid 1px #5ea975;
@@ -794,9 +812,9 @@
   background-color: #0572f32e !important;
   //border-bottom: 1px solid #0554ff52;
   border: 1px solid #0554ff52 !important;
-  border-radius: 5px;
-  margin: 2px 0px;
-  padding: 0px 20px;
+  border-radius: 4px;
+  margin: 1px 0px;
+  padding: 0px 14px;
   .dvMessageCol {
     display: flex;
   }

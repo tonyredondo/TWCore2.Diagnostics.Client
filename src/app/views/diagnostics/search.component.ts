@@ -217,7 +217,8 @@ export class SearchComponent implements OnInit {
         const groupItem = groupArray[i];
         for (let j = 0; j < groupItem.items.length; j++) {
           const appItem = groupItem.items[j];
-          appItem.items.sort((a, b) => a.timestamp < b.timestamp ? -1 : 1);
+          appItem.items.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp === b.timestamp && a.logId !== null ? -1 : 1 );
+
           for (let n = 1; n < appItem.items.length; n++) {
             const nodeItem = appItem.items[n];
             const oldNodeItem = appItem.items[0];

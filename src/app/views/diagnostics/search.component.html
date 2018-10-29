@@ -62,12 +62,14 @@
                 'dv-level-error': rowItem.level == 'Error',
                 'dv-level-warning': rowItem.level == 'Warning',
                 'dv-level-success': rowItem.level == 'Stats',
-                'dv-level-trace' : rowItem.traceId != null
+                'dv-level-trace' : rowItem.traceId != null,
+                'messageEnd' : rowItem.message && rowItem.message.indexOf('[END') > -1,
+                'messageStart' : rowItem.message && rowItem.message.indexOf('[START') > -1
               }">
                 <div class="dvTimeCol" *ngIf="isFirst">
                   {{rowItem.timestamp | date:'HH:mm:ss.SSS'}}
                 </div>
-                <div class="dvTimeCol addTime" *ngIf="!isFirst">
+                <div class="dvTimeCol addTime" *ngIf="!isFirst" [tooltip]="rowItem.timestamp | date:'HH:mm:ss.SSS'">
                   {{rowItem.diffTime}}
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.logId != null">
@@ -85,7 +87,7 @@
                           'button-success' : tag.key == 'Status' && tag.value == 'Success',
                           'button-warning' : tag.key == 'Status' && tag.value == 'Warning',
                           'button-error' : tag.key == 'Status' && tag.value == 'Error'
-                        }" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
+                        }" [tooltip]="tag.value" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
                     </ng-container>
                   </div>
                   <div class="dvText">
