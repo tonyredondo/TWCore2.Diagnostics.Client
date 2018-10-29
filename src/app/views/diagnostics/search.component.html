@@ -78,9 +78,11 @@
                     <span *ngIf="rowItem.exception != null" (click)="showException(rowItem)" class="badge button-exception">Show Exception</span>
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.traceId != null">
+                  <div class="dvText">
+                    <i class="fa fa-file-code-o" style="font-size:14px"></i>
+                    {{rowItem.name}}
+                  </div>
                   <div class="dvButtons">
-                      <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
-                      <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
                     <ng-container *ngFor="let tag of rowItem.tagsArray">
                         <button class="btn" [ngClass]="{
                           'button-info' : tag.key != 'Status',
@@ -89,10 +91,9 @@
                           'button-error' : tag.key == 'Status' && tag.value == 'Error'
                         }" [tooltip]="tag.value" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
                     </ng-container>
-                  </div>
-                  <div class="dvText">
-                      {{rowItem.name}}
-                      <i class="fa fa-file-code-o" style="font-size:14px"></i>
+                    <div class="separator"></div>
+                    <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
+                    <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
                   </div>
                 </div>
               </div>

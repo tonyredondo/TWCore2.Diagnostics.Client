@@ -661,7 +661,7 @@
     }
   }
   .card-body{
-    padding: 20px 15px 25px 15px;
+    padding: 20px 20px 25px 20px;
     padding-bottom: 10px;
   }
 }
@@ -681,7 +681,7 @@
   display: flex;
   flex-direction: row;
   padding: 0px 10px;
-  margin: 0px 5px;
+  margin: 0px;
   //border-radius: 2px;
   line-height: 1.4;
 
@@ -690,12 +690,14 @@
     border-bottom-width: 6px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+    font-weight: bold;
   }
   &.messageStart {
     margin-top: 5px;
     border-top-width: 6px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    font-weight: bold;
   }
 }
 .dvTimeCol {
@@ -720,7 +722,6 @@
   i {
     font-size: 14px;
     vertical-align: middle;
-    margin-right: -10px;
     color: #7185aa;
     margin-top: -2px;
   }
@@ -741,16 +742,22 @@
     // border-left: solid 2px;
     // border-right: solid 2px;
     //padding: 0px 5px;
-    display: inline;
+    //display: inline;
     border-color: #85aefe;
     height: 20px;
     //margin: -1px -1px;
     border-radius: 2px;
     overflow: hidden;
+    margin-right: -10px;
+
+    .separator {
+      display: inline-block;
+      width: 2px;
+    }
   }
   .dvText {
     flex: 5;
-    text-align: right;
+    text-align: left;
     align-self: center;
     font-weight: bold;
     font-style: italic;
@@ -775,6 +782,7 @@
   border-top: 0px solid #f86c6b44;
   padding-top: 6px;
   padding-bottom: 6px;
+  box-shadow: 0px 1px 7px -3px rgba(0,0,0,0.75);
 
   .dvMessageType {
     // border-bottom: solid 1px #b78484;
@@ -789,6 +797,7 @@
   border-top: 0px solid #ffc10744;
   padding-top: 6px;
   padding-bottom: 6px;
+  box-shadow: 0px 1px 7px -3px rgba(0,0,0,0.75);
 
   .dvMessageType {
     // border-bottom: solid 1px #bda871;
@@ -814,11 +823,13 @@
   border: 1px solid #0554ff52 !important;
   border-radius: 4px;
   margin: 1px 0px;
-  padding: 0px 14px;
   .dvMessageCol {
     display: flex;
     .dvText {
       font-size: 90%;
+    }
+    .button-info, .button-success, .button-warning, .button-error {
+      float: initial !important;
     }
   }
 }
