@@ -798,6 +798,8 @@
   padding-top: 6px;
   padding-bottom: 6px;
   box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.75);
+  margin: 2px 0px;
+  border-radius: 4px;
 
   .dvMessageType {
     // border-bottom: solid 1px #b78484;
@@ -813,6 +815,8 @@
   padding-top: 6px;
   padding-bottom: 6px;
   box-shadow: 0px 0px 12px -4px rgba(0, 0, 0, 0.75);
+  margin: 2px 0px;
+  border-radius: 4px;
 
   .dvMessageType {
     // border-bottom: solid 1px #bda871;
@@ -835,7 +839,7 @@
 .dv-level-trace {
   background-color: #0572f32e !important;
   //border-bottom: 1px solid #0554ff52;
-  border: 1px solid #0554ff52 !important;
+  //border: 1px solid #0554ff52 !important;
   border-radius: 4px;
   margin: 1px 0px;
   .dvMessageCol {
