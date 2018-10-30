@@ -143,6 +143,7 @@ export class SearchComponent implements OnInit {
               code: aItem.code,
               exception: aItem.exception,
               id: aItem.id,
+              application: aItem.application,
               instanceId: aItem.instanceId,
               level: aItem.level,
               logId: aItem.logId,
@@ -198,6 +199,7 @@ export class SearchComponent implements OnInit {
             }
             const nodeItem: NodeItem = {
               id: aItem.id,
+              application: aItem.application,
               instanceId: aItem.instanceId,
               machine: aItem.machine,
               timestamp: aItem.timestamp,
@@ -375,6 +377,7 @@ interface NodeApp {
 }
 interface NodeItem {
   id?: string;
+  application?: string;
   machine?: string;
   timestamp?: Date;
   diffTime?: string;

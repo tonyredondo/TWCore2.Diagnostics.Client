@@ -73,9 +73,11 @@
                   {{rowItem.diffTime}}
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.logId != null">
-                    <span class="dvMessageType" *ngIf="rowItem.type != null">{{rowItem.type}}</span>
-                    {{rowItem.message}}
-                    <span *ngIf="rowItem.exception != null" (click)="showException(rowItem)" class="badge button-exception">Show Exception</span>
+                    <div class="rightSide">
+                      <span class="dvMessageType" *ngIf="rowItem.type != null">{{rowItem.type}}</span>
+                      <span *ngIf="rowItem.exception != null" (click)="showException(rowItem)" class="badge button-exception">Show Exception</span>
+                    </div>
+                    <span class="spanMessage">{{rowItem.message}}</span>
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.traceId != null">
                   <div class="dvText">
