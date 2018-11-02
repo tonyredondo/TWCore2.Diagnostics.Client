@@ -82,10 +82,7 @@
                     <span class="spanMessage">{{rowItem.message}}</span>
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.traceId != null">
-                  <div class="dvText">
-                    <i class="fa fa-file-code-o" style="font-size:14px"></i>
-                    {{rowItem.name}}
-                  </div>
+                  <div class="dvText"><!-- <i class="fa fa-file-code-o" style="font-size:14px"></i> -->{{rowItem.name}}</div>
                   <div class="dvButtons">
                     <ng-container *ngFor="let tag of rowItem.tagsArray">
                         <button class="btn" [ngClass]="{
@@ -96,8 +93,8 @@
                         }" [tooltip]="tag.value" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
                     </ng-container>
                     <div class="separator"></div>
-                    <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">Xml</button>
-                    <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">Json</button>
+                    <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">XML</button>
+                    <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">JSON</button>
                   </div>
                 </div>
               </div>

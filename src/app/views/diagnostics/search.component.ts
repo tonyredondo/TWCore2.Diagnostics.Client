@@ -149,7 +149,7 @@ export class SearchComponent implements OnInit {
               logId: aItem.logId,
               machine: aItem.machine,
               message: aItem.message,
-              timestamp: aItem.timestamp,
+              timestamp: new Date(aItem.timestamp),
               type: aItem.type,
               tags : null,
               tagsArray: null,
@@ -204,7 +204,7 @@ export class SearchComponent implements OnInit {
               application: aItem.application,
               instanceId: aItem.instanceId,
               machine: aItem.machine,
-              timestamp: aItem.timestamp,
+              timestamp: new Date(aItem.timestamp),
               traceId: aItem.traceId,
               tags: aItem.tags,
               name: aItem.name,
@@ -223,7 +223,35 @@ export class SearchComponent implements OnInit {
         const groupItem = groupArray[i];
         for (let j = 0; j < groupItem.items.length; j++) {
           const appItem = groupItem.items[j];
-          appItem.items.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp === b.timestamp && a.logId !== null ? -1 : 1 );
+          appItem.items.sort(function(a, b) {
+            const aNumber = a.timestamp.valueOf();
+            const bNumber = b.timestamp.valueOf();
+            if (aNumber === bNumber) {
+              if (a.logId !== null && a.message != null) {
+                if (b.logId !== null && b.message != null) {
+                  if (b.message.indexOf('[START') > -1) {
+                    return 1;
+                  }
+                  if (b.message.indexOf('[END') > -1) {
+                    return -1;
+                  }
+                  if (a.message.indexOf('[START') > -1) {
+                    return -1;
+                  }
+                  if (a.message.indexOf('[END') > -1) {
+                    return 1;
+                  }
+                }
+                if (b.traceId !== null) {
+                  return -1;
+                }
+              }
+            }
+            if (a.timestamp < b.timestamp) {
+              return -1;
+            }
+            return 1;
+          });
 
           for (let n = 0; n < appItem.items.length; n++) {
             const nodeItem = appItem.items[n];
