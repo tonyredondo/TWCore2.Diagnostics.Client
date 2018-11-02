@@ -126,84 +126,72 @@
       </div>
       <div class="modal-body">
 
-
-        <table class="table table-sm table-striped table-log">
-          <thead>
-            <tr>
-              <th style="width: 100px">Name</th>
-              <th style="width: max-content;">Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Timestamp</td>
-              <td class="breakWord font-weight-bold">{{exceptionTimestamp | date:'dd/MM/yy HH:mm:ss.SSS'}}</td>
-            </tr>
-            <tr>
-              <td>Application</td>
-              <td class="breakWord font-weight-bold">{{exceptionApplication}}</td>
-            </tr>
-            <tr>
-              <td>Machine</td>
-              <td class="breakWord font-weight-bold">{{exceptionMachine}}</td>
-            </tr>
-            <tr>
-              <td>Type</td>
-              <td class="breakWord font-weight-bold">{{exceptionData?.exceptionType}}</td>
-            </tr>
-            <tr>
-              <td>Source</td>
-              <td class="breakWord font-weight-bold">{{exceptionData?.source}}</td>
-            </tr>
-            <tr>
-              <td>Message</td>
-              <td class="breakWord font-weight-bold error-message">{{exceptionData?.message}}</td>
-            </tr>
-            <tr *ngFor="let itemData of exceptionData?.data">
-              <td>Data.{{itemData.key}}</td>
-              <td class="breakWord font-weight-bold blue-color">{{itemData.value}}</td>
-            </tr>
-            <tr>
-              <td>Stacktrace</td>
-              <td class="breakWord"><div class="stacktrace">{{exceptionData?.stackTrace}}</div></td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div *ngFor="let innerException of innerExceptionsData">
-          <div class="font-weight-bold inner-exception-title">Inner Exception:</div>
-          <table class="table table-sm table-striped table-log">
-            <thead>
-              <tr>
-                <th style="width: 100px">Name</th>
-                <th style="width: max-content;">Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Type</td>
-                <td class="breakWord font-weight-bold">{{innerException.exceptionType}}</td>
-              </tr>
-              <tr>
-                <td>Source</td>
-                <td class="breakWord font-weight-bold">{{innerException.source}}</td>
-              </tr>
-              <tr>
-                <td>Message</td>
-                <td class="breakWord font-weight-bold error-message">{{innerException.message}}</td>
-              </tr>
-              <tr *ngFor="let itemData of innerException.data">
-                <td>Data.{{itemData.key}}</td>
-                <td class="breakWord font-weight-bold blue-color">{{itemData.value}}</td>
-              </tr>
-              <tr>
-                <td>Stacktrace</td>
-                <td class="breakWord"><div class="stacktrace">{{innerException.stackTrace}}</div></td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="exceptionHeader">
+          <div class="headerRow">
+            <div>Timestamp</div>
+            <div>Application</div>
+            <div>Machine</div>
+          </div>
+          <div class="valueRow">
+            <div>{{exceptionTimestamp | date:'dd/MM/yy HH:mm:ss.SSS'}}</div>
+            <div>{{exceptionApplication}}</div>
+            <div>{{exceptionMachine}}</div>
+          </div>
         </div>
-
+        <div class="exceptionBody">
+          <div class="item" *ngIf="exceptionData?.exceptionType">
+            <div class="key">Type</div>
+            <div class="value">{{exceptionData?.exceptionType}}</div>
+          </div>
+          <div class="item" *ngIf="exceptionData?.source">
+            <div class="key">Source</div>
+            <div class="value">{{exceptionData?.source}}</div>
+          </div>
+          <div class="item">
+            <div class="key">Message</div>
+            <div class="value important">{{exceptionData?.message}}</div>
+          </div>
+          <div class="data" *ngIf="exceptionData?.data && exceptionData.data.length > 0">
+            <div class="item" *ngFor="let itemData of exceptionData?.data">
+              <div class="key">{{itemData.key}}</div>
+              <div class="value important">{{itemData.value}}</div>
+            </div>
+          </div>
+          <div class="exceptionStacktrace">
+              <div class="title">Stacktrace</div>
+              <div class="data">
+                <div class="content" *ngIf="exceptionData?.stackTrace">{{exceptionData?.stackTrace}}</div>
+                <div class="content" *ngIf="!(exceptionData?.stackTrace)">Stacktrace data is not available</div>
+              </div>
+          </div>
+        </div>
+        <div class="exceptionBody inner" *ngFor="let innerException of innerExceptionsData">
+          <div class="item" *ngIf="innerException?.exceptionType">
+            <div class="key">Type</div>
+            <div class="value">{{innerException?.exceptionType}}</div>
+          </div>
+          <div class="item" *ngIf="innerException?.source">
+            <div class="key">Source</div>
+            <div class="value">{{innerException?.source}}</div>
+          </div>
+          <div class="item">
+            <div class="key">Message</div>
+            <div class="value important">{{innerException?.message}}</div>
+          </div>
+          <div class="data" *ngIf="innerException?.data && innerException.data.length > 0">
+            <div class="item" *ngFor="let itemData of innerException?.data">
+              <div class="key">{{itemData.key}}</div>
+              <div class="value important">{{itemData.value}}</div>
+            </div>
+          </div>
+          <div class="exceptionStacktrace">
+              <div class="title">Stacktrace</div>
+              <div class="data">
+                <div class="content" *ngIf="innerException?.stackTrace">{{innerException?.stackTrace}}</div>
+                <div class="content" *ngIf="!(innerException?.stackTrace)">Stacktrace data is not available</div>
+              </div>
+          </div>
+        </div>
 
       </div>
       <div class="modal-footer">

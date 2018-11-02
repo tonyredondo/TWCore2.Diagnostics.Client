@@ -457,7 +457,7 @@
   left: 50px;
 }
 .modal-exception .modal-body {
-  padding:0rem;
+  padding:0.3rem;
 }
 
 .breadcrumb-body {
@@ -798,7 +798,7 @@
     margin: 5px -5px 0px 0px !important;
     font-family: sans-serif;
     padding: 8px;
-    float: initial !important;
+    //float: initial !important;
     display: block;
     &:hover {
       background-color: #ec5a59 !important;
@@ -874,6 +874,155 @@
     }
     .button-info, .button-success, .button-warning, .button-error {
       float: initial !important;
+    }
+  }
+}
+
+
+
+//***Exception View
+.exceptionHeader {
+  padding: 3px;
+  border: solid 1px #cacaca;
+  background-color: #efefef;
+  border-radius: 5px;
+  margin: 5px 5px;
+
+  .headerRow {
+    display: flex;
+    font-weight: bold;
+    cursor: default;
+    div {
+      flex: 1;
+      text-align: center;
+    }
+  }
+  .valueRow {
+    display: flex;
+    font-family: sans-serif;
+    div {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}
+.exceptionBody {
+  margin-top:5px;
+  padding:5px;
+  font-size: 95%;
+
+  &.inner {
+    margin: 10px 10px 10px 20px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    border: solid 1px #cecece;
+  }
+
+  .item {
+    display: flex;
+    //font-size: 90%;
+
+    &:first-child {
+      .key {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+    }
+    &:last-child {
+      .key {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
+
+    .key {
+      padding: 5px 10px;
+      width: 120px;
+      //font-weight: bold;
+      background-color: #ff4e4c;
+      color: #fff;
+      font-family: sans-serif;
+      border-bottom: solid 1px#ff9093;
+      cursor: default;
+    }
+    .value {
+      font-family: sans-serif;
+      flex: auto;
+      padding: 5px 10px;
+      //font-family: Consolas, 'Courier New', Courier, monospace;
+
+      &.important {
+        color:red;
+        font-weight: bold;
+      }
+    }
+  }
+  .data {
+    .item {
+      display: flex;
+      font-size: 90%;
+  
+      &:first-child {
+        .key {
+          border-top-left-radius: 0px;
+          border-top-right-radius: 0px;
+        }
+      }
+      &:last-child {
+        .key {
+          border-bottom-left-radius: 0px;
+          border-bottom-right-radius: 0px;
+        }
+      }
+
+      .key {
+        padding: 5px 10px;
+        width: 120px;
+        //font-weight: bold;
+        background-color: #2255f3;
+        color: #fff;
+        font-family: sans-serif; 
+        border-bottom: solid 1px#577fff;       
+      }
+      .value {
+        font-family: sans-serif;
+        flex: auto;
+        padding: 5px 10px;
+        //font-family: Consolas, 'Courier New', Courier, monospace;
+  
+        &.important {
+          color:#2156f3;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+.exceptionStacktrace {
+  .title {
+    padding: 5px 10px;
+    width: 120px;
+    background-color: #000000;
+    color: #fff;
+    font-family: sans-serif;
+    cursor: default;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+  }
+  .data {
+    background-color: black;
+    color: red;
+    padding: 15px 10px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-right-radius: 8px;
+    font-family: Consolas, 'Courier New', Courier, monospace;
+    overflow: auto;
+    font-weight: bold;
+    .content {
+      white-space: pre;
     }
   }
 }
