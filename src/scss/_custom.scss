@@ -449,9 +449,15 @@
 .modal-code .modal-content {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  width: calc(100vw - 100px);
-  left: 50px;
+  width: calc(100vw - 50px);
+  left: 25px;
 }
+.modal-backdrop {
+  &.show {
+    opacity:0.8 !important;
+  }
+}
+
 .exception-view {
   width: calc(100vw - 100px);
   left: 50px;
@@ -694,7 +700,7 @@
   line-height: 1.4;
 
   &.messageEnd {
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     border-bottom-width: 2px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -705,7 +711,7 @@
     }
   }
   &.messageStart {
-    margin-top: 5px;
+    margin-top: 2px;
     border-top-width: 2px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -859,7 +865,12 @@
     // border-left: solid 1px #5ea975;
     background-color: #b2e2c1;
   }
-
+  &.nextIsStart {
+    margin-bottom: 15px;
+    &.prevIsEnd {
+      margin-bottom:  0px;
+    }
+  }
 }
 .dv-level-trace {
   background-color: #0572f32e !important;
@@ -875,6 +886,22 @@
     .button-info, .button-success, .button-warning, .button-error {
       float: initial !important;
     }
+  }
+  &.nextIsStart {
+    margin-top: 15px;
+    border-top: dashed 1px #0e8ac3;
+    padding-top: 1px;
+    
+    &.prevIsEnd {
+      margin-bottom:  0px;
+      border-bottom: 0px;
+      padding-bottom: 0px;
+    }
+  }
+  &.prevIsEnd {
+    margin-bottom: 15px;
+    border-bottom: dashed 1px #0e8ac3;
+    padding-bottom: 1px;
   }
 }
 

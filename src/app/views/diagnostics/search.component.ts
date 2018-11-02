@@ -154,7 +154,9 @@ export class SearchComponent implements OnInit {
               tags : null,
               tagsArray: null,
               name: null,
-              traceId: null
+              traceId: null,
+              nextIsStart: false,
+              prevIsEnd: false
             };
             if (nodeItem.level === NodeLogItem.LevelEnum.Error) {
               appItem.hasError = true;
@@ -206,7 +208,9 @@ export class SearchComponent implements OnInit {
               traceId: aItem.traceId,
               tags: aItem.tags,
               name: aItem.name,
-              tagsArray: tags
+              tagsArray: tags,
+              nextIsStart: false,
+              prevIsEnd: false
             };
             if (nodeItem.tags.indexOf('Status: Error') > -1) {
               appItem.hasError = true;
@@ -221,39 +225,42 @@ export class SearchComponent implements OnInit {
           const appItem = groupItem.items[j];
           appItem.items.sort((a, b) => a.timestamp < b.timestamp ? -1 : a.timestamp === b.timestamp && a.logId !== null ? -1 : 1 );
 
-          for (let n = 1; n < appItem.items.length; n++) {
+          for (let n = 0; n < appItem.items.length; n++) {
             const nodeItem = appItem.items[n];
-            const oldNodeItem = appItem.items[0];
-            const duration = moment(nodeItem.timestamp).diff(oldNodeItem.timestamp);
-            const minutes = Math.floor(duration / 1000 / 60);
-            const seconds = Math.floor((duration / 1000) - (minutes * 60));
-            const milliseconds = duration - (Math.floor(duration / 1000) * 1000);
-            let diffTime = '+ ';
-            if (minutes > 0) {
-              diffTime += minutes + 'min';
-              if (seconds > 0 || milliseconds > 0) {
-                diffTime += ', ';
+            if (n > 0) {
+              const oldNodeItem = appItem.items[0];
+              const duration = moment(nodeItem.timestamp).diff(oldNodeItem.timestamp);
+              const minutes = Math.floor(duration / 1000 / 60);
+              const seconds = Math.floor((duration / 1000) - (minutes * 60));
+              const milliseconds = duration - (Math.floor(duration / 1000) * 1000);
+              let diffTime = '+ ';
+              if (minutes > 0) {
+                diffTime += minutes + 'min';
+                if (seconds > 0 || milliseconds > 0) {
+                  diffTime += ', ';
+                }
+              }
+              if (seconds > 0) {
+                diffTime += seconds + 's';
+                if (milliseconds > 0) {
+                  diffTime += ', ';
+                }
+              }
+              diffTime += milliseconds + 'ms';
+              nodeItem.diffTime = diffTime;
+              console.log(nodeItem.diffTime);
+
+              const prevItem = appItem.items[n - 1];
+              if (prevItem.message && prevItem.message.indexOf('[END') > -1) {
+                nodeItem.prevIsEnd = true;
               }
             }
-            if (seconds > 0) {
-              diffTime += seconds + 's';
-              if (milliseconds > 0) {
-                diffTime += ', ';
+            if (n + 1 < appItem.items.length) {
+              const nextItem = appItem.items[n + 1];
+              if (nextItem.message && nextItem.message.indexOf('[START') > -1) {
+                nodeItem.nextIsStart = true;
               }
             }
-            diffTime += milliseconds + 'ms';
-            nodeItem.diffTime = diffTime;
-            /*
-            const minutesString = minutes > 9 ? minutes : '0' + minutes;
-            const secondsString = seconds > 9 ? seconds : '0' + seconds;
-            const millisecondsString = milliseconds > 99 ? milliseconds : milliseconds > 9 ? '0' + milliseconds : '00' + milliseconds;
-            let diffTime = '+' + minutesString + ':' + secondsString + '.' + millisecondsString;
-            if (diffTime === '+00:00.000') {
-              diffTime = '';
-            }
-            nodeItem.diffTime = diffTime;
-            */
-            console.log(nodeItem.diffTime);
           }
         }
       }
@@ -298,10 +305,10 @@ export class SearchComponent implements OnInit {
         editor.setOption('foldGutter', true);
         editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
         editor.setOption('extraKeys', {
-          'Alt-F': 'findPersistent'
+          'Ctrl-F': 'findPersistent'
         });
         editor.setValue(this.traceObject);
-        //editor.setSize('100%', '700px');
+        // editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
         editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
         editor.scrollTo(0, 0);
@@ -326,10 +333,10 @@ export class SearchComponent implements OnInit {
         editor.setOption('foldGutter', true);
         editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
         editor.setOption('extraKeys', {
-          'Alt-F': 'findPersistent'
+          'Ctrl-F': 'findPersistent'
         });
         editor.setValue(this.traceObject);
-        //editor.setSize('100%', '700px');
+        // editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
         editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
         editor.scrollTo(0, 0);
@@ -396,6 +403,9 @@ interface NodeItem {
   name?: string;
 
   tagsArray: TagItem[];
+
+  nextIsStart: boolean;
+  prevIsEnd: boolean;
 }
 interface TagItem {
   key: string;
