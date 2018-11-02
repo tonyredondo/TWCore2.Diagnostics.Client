@@ -246,12 +246,18 @@ export class SearchComponent implements OnInit {
                   if (a.message.indexOf('[END') > -1) {
                     return 1;
                   }
+                  if (a.message.indexOf('[START') > -1) {
+                    return 1;
+                  }
                   return -1;
                 }
               }
               if (b.logId !== null && b.message != null) {
                 if (a.traceId !== null) {
                   if (b.message.indexOf('[END') > -1) {
+                    return -1;
+                  }
+                  if (b.message.indexOf('[START') > -1) {
                     return -1;
                   }
                   return 1;
