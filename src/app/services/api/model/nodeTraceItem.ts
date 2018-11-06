@@ -22,4 +22,5 @@ export interface NodeTraceItem {
     environment?: string;
     machine?: string;
     application?: string;
+    formats?: string[];
 }

@@ -733,6 +733,58 @@ export class QueryService {
     /**
      *
      *
+     * @param environment
+     * @param id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryByEnvironmentTracesTxtByIdGet(environment: string, id: string, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public apiQueryByEnvironmentTracesTxtByIdGet(environment: string, id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public apiQueryByEnvironmentTracesTxtByIdGet(environment: string, id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public apiQueryByEnvironmentTracesTxtByIdGet(environment: string, id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentTracesXmlByIdGet.');
+        }
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiQueryByEnvironmentTracesXmlByIdGet.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<string>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/traces/txt/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

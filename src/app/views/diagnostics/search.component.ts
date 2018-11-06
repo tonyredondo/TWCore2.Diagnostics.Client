@@ -156,7 +156,10 @@ export class SearchComponent implements OnInit {
               name: null,
               traceId: null,
               nextIsStart: false,
-              prevIsEnd: false
+              prevIsEnd: false,
+              hasXml: false,
+              hasJson: false,
+              hasTxt: false
             };
             if (nodeItem.level === NodeLogItem.LevelEnum.Error) {
               appItem.hasError = true;
@@ -210,7 +213,10 @@ export class SearchComponent implements OnInit {
               name: aItem.name,
               tagsArray: tags,
               nextIsStart: false,
-              prevIsEnd: false
+              prevIsEnd: false,
+              hasXml: ((aItem.formats !== null && aItem.formats.indexOf('XML') > -1) || aItem.formats === null),
+              hasJson: ((aItem.formats !== null && aItem.formats.indexOf('JSON') > -1) || aItem.formats === null),
+              hasTxt: (aItem.formats !== null && aItem.formats.indexOf('TXT') > -1)
             };
             if (nodeItem.tags.indexOf('Status: Error') > -1) {
               appItem.hasError = true;
@@ -333,6 +339,8 @@ export class SearchComponent implements OnInit {
     this.innerExceptionsData.push(item);
     this.createInnerExceptionData(item.innerException);
   }
+
+
   showXmlData(id: string, name: string) {
     this.traceName = name;
     this.traceModal.show();
@@ -353,7 +361,6 @@ export class SearchComponent implements OnInit {
           'Ctrl-F': 'findPersistent'
         });
         editor.setValue(this.traceObject);
-        // editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
         editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
         editor.scrollTo(0, 0);
@@ -381,7 +388,6 @@ export class SearchComponent implements OnInit {
           'Ctrl-F': 'findPersistent'
         });
         editor.setValue(this.traceObject);
-        // editor.setSize('100%', '700px');
         editor.getDoc().setCursor({ line: 0, ch: 0});
         editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
         editor.scrollTo(0, 0);
@@ -389,6 +395,34 @@ export class SearchComponent implements OnInit {
       });
     });
   }
+  showTxtData(id: string, name: string) {
+    this.traceName = name;
+    this.traceModal.show();
+    this._queryService.apiQueryByEnvironmentTracesTxtByIdGet(environment.name, id).subscribe(x => {
+      this.traceObject = x;
+      this._codeMirror.instance$.subscribe(editor => {
+        editor.setOption('mode', 'text/plain');
+        if (x.startsWith('<?xml')) {
+          editor.setOption('mode', 'application/xml');
+        }
+        editor.setOption('theme', 'material');
+        editor.setOption('readOnly', true);
+        editor.setOption('lineNumbers', true);
+        editor.setOption('matchBrackets', true);
+        editor.setOption('foldGutter', true);
+        editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+        editor.setOption('extraKeys', {
+          'Ctrl-F': 'findPersistent'
+        });
+        editor.setValue(this.traceObject);
+        editor.getDoc().setCursor({ line: 0, ch: 0});
+        editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
+        editor.scrollTo(0, 0);
+        setTimeout(() => editor.refresh(), 200);
+      });
+    });
+  }
+
 
   // Private Methods
   private updateParams() {
@@ -451,6 +485,10 @@ interface NodeItem {
 
   nextIsStart: boolean;
   prevIsEnd: boolean;
+
+  hasXml: boolean;
+  hasJson: boolean;
+  hasTxt: boolean;
 }
 interface TagItem {
   key: string;

@@ -93,8 +93,9 @@
                         }" [tooltip]="tag.value" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
                     </ng-container>
                     <div class="separator"></div>
-                    <button class="btn" (click)="showXmlData(rowItem.id, rowItem.name)">XML</button>
-                    <button class="btn" (click)="showJsonData(rowItem.id, rowItem.name)">JSON</button>
+                    <button class="btn" *ngIf="rowItem.hasXml" (click)="showXmlData(rowItem.id, rowItem.name)">XML</button>
+                    <button class="btn" *ngIf="rowItem.hasJson" (click)="showJsonData(rowItem.id, rowItem.name)">JSON</button>
+                    <button class="btn" *ngIf="rowItem.hasTxt" (click)="showTxtData(rowItem.id, rowItem.name)">TXT</button>
                   </div>
                 </div>
               </div>
