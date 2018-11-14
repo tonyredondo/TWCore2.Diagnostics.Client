@@ -876,7 +876,7 @@
   background-color: #0572f32e !important;
   //border-bottom: 1px solid #0554ff52;
   border-bottom: 1px solid #85abff52 !important;
-  
+
 
   .dvMessageCol {
     display: flex;
@@ -1012,7 +1012,7 @@
     .item {
       display: flex;
       font-size: 90%;
-  
+
       &:first-child {
         .key {
           border-top-left-radius: 0px;
@@ -1032,15 +1032,15 @@
         //font-weight: bold;
         background-color: #2255f3;
         color: #fff;
-        font-family: sans-serif; 
-        border-bottom: solid 1px#577fff;       
+        font-family: sans-serif;
+        border-bottom: solid 1px#577fff;
       }
       .value {
         font-family: sans-serif;
         flex: auto;
         padding: 5px 10px;
         //font-family: Consolas, 'Courier New', Courier, monospace;
-  
+
         &.important {
           color:#2156f3;
           font-weight: bold;
@@ -1075,4 +1075,14 @@
       white-space: pre;
     }
   }
+}
+.goToClass {
+  background: #e4e5e6;
+  color: #4a4a4a;
+  padding: 6px 10px;
+  border-radius: 6px;
+  margin-right: -9px;
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 12px;
 }
