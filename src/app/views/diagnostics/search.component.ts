@@ -78,6 +78,11 @@ export class SearchComponent implements OnInit {
     this.getData();
   }
 
+  goToGroup(groupName: string) {
+    this.searchValue = groupName;
+    this.doSearch();
+  }
+
   getData() {
     if (this.searchValue === undefined || this.searchValue === null || this.searchValue.length === 0) {
       return;

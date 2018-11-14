@@ -49,7 +49,7 @@
 
     <tabset>
       <tab *ngFor="let groupItem of groupResults" class="tab-search">
-        <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}}</ng-template>
+        <ng-template tabHeading><span (click)="goToGroup(groupItem.groupName)"><i class="icon-tag"></i> Group: {{groupItem.groupName}}</span></ng-template>
 
         <div class="card card-search" *ngFor="let appItem of groupItem.items" >
           <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffc421' : '' }">
