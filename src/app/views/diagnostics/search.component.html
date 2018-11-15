@@ -86,10 +86,10 @@
                   <div class="dvButtons">
                     <ng-container *ngFor="let tag of rowItem.tagsArray">
                         <button class="btn" [ngClass]="{
-                          'button-info' : tag.key != 'Status',
-                          'button-success' : tag.key == 'Status' && tag.value == 'Success',
-                          'button-warning' : tag.key == 'Status' && tag.value == 'Warning',
-                          'button-error' : tag.key == 'Status' && tag.value == 'Error'
+                          'button-info' : tag.key.indexOf('Status') == -1,
+                          'button-success' : tag.key.indexOf('Status') > -1 && tag.value == 'Success',
+                          'button-warning' : tag.key.indexOf('Status') > -1 && tag.value == 'Warning',
+                          'button-error' : tag.key.indexOf('Status') > -1 && tag.value == 'Error'
                         }" [tooltip]="tag.value" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
                     </ng-container>
                     <div class="separator"></div>
