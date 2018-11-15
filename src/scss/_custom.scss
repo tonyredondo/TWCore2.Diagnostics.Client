@@ -428,9 +428,9 @@
 }
 
 .CodeMirror {
-  font-size:14px;
+  font-size:12px;
   border-radius: 0.5rem;
-  height: calc(100vh - 110px) !important;
+  height: calc(100vh - 210px) !important;
 }
 
 .modal-code {
@@ -449,8 +449,9 @@
 .modal-code .modal-content {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 0px;
-  width: calc(100vw - 50px);
-  left: 25px;
+  width: calc(100vw - 200px);
+  top: 25px;
+  left: 100px;
 }
 .modal-backdrop {
   &.show {
@@ -459,8 +460,9 @@
 }
 
 .exception-view {
-  width: calc(100vw - 100px);
-  left: 50px;
+  width: calc(100vw - 200px);
+  left: 100px;
+  top: 25px;
 }
 .modal-exception .modal-body {
   padding:0.3rem;
