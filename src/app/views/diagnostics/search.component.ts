@@ -168,11 +168,11 @@ export class SearchComponent implements OnInit {
             };
             if (nodeItem.level === NodeLogItem.LevelEnum.Error) {
               appItem.hasError = true;
-              appItem.hidden = false;
+              // appItem.hidden = false;
             }
             if (nodeItem.level === NodeLogItem.LevelEnum.Warning) {
               appItem.hasWarning = true;
-              appItem.hidden = false;
+              // appItem.hidden = false;
             }
             appItem.items.push(nodeItem);
           }
@@ -194,7 +194,7 @@ export class SearchComponent implements OnInit {
             if (appItem === undefined) {
               appItem = {
                 appName: aItem.application,
-                hidden: false,
+                hidden: true,
                 hasError: false,
                 hasWarning: false,
                 items: []
