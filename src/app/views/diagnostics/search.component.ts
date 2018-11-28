@@ -9,6 +9,7 @@ import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
+import { KeyValue } from '../../services/api/model/keyValue';
 defineLocale('en-gb', enGbLocale);
 
 
@@ -126,8 +127,17 @@ export class SearchComponent implements OnInit {
             if (groupItem === undefined) {
               groupItem = {
                 groupName: aItem.group,
-                items: []
+                items: [],
+                metadata: []
               };
+              // Buscar los metadatas del grupo.
+              if (groupItem.groupName) {
+                this._queryService.apiQueryGetGroupMetadata(environment.name, groupItem.groupName).subscribe(metadata => {
+                  if (metadata) {
+                    groupItem.metadata = metadata.filter(mitem => mitem.value !== null && mitem.value !== '');
+                  }
+                });
+              }
               groupArray.push(groupItem);
             }
 
@@ -185,8 +195,17 @@ export class SearchComponent implements OnInit {
             if (groupItem === undefined) {
               groupItem = {
                 groupName: aItem.group,
-                items: []
+                items: [],
+                metadata: []
               };
+              // Buscar los metadatas del grupo.
+              if (groupItem.groupName) {
+                this._queryService.apiQueryGetGroupMetadata(environment.name, groupItem.groupName).subscribe(metadata => {
+                  if (metadata) {
+                    groupItem.metadata = metadata.filter(mitem => mitem.value !== null && mitem.value !== '');
+                  }
+                });
+              }
               groupArray.push(groupItem);
             }
 
@@ -304,7 +323,7 @@ export class SearchComponent implements OnInit {
               }
               diffTime += milliseconds + 'ms';
               nodeItem.diffTime = diffTime;
-              console.log(nodeItem.diffTime);
+              // console.log(nodeItem.diffTime);
 
               const prevItem = appItem.items[n - 1];
               if (prevItem.message && prevItem.message.indexOf('[END') > -1) {
@@ -458,6 +477,7 @@ interface INodeTraceItemExt extends NodeTraceItem {
 interface NodeGroup {
   groupName: string;
   items: NodeApp[];
+  metadata: KeyValue[];
 }
 interface NodeApp {
   appName: string;

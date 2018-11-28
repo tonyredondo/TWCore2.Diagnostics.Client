@@ -31,6 +31,7 @@ import { SerializedObject } from '../model/serializedObject';
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 import { environment } from '../../../../environments/environment';
+import { KeyValue } from '../model/keyValue';
 
 
 @Injectable()
@@ -788,6 +789,52 @@ export class QueryService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public apiQueryGetGroupMetadata(environment: string, groupName: string, observe?: 'body', reportProgress?: boolean): Observable<Array<KeyValue>>;
+    public apiQueryGetGroupMetadata(environment: string, groupName: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<KeyValue>>>;
+    public apiQueryGetGroupMetadata(environment: string, groupName: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<KeyValue>>>;
+    public apiQueryGetGroupMetadata(environment: string, groupName: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<KeyValue>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/metadata/${encodeURIComponent(String(groupName))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+
+
+    /**
+     *
+     *
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public apiQueryGet(observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
     public apiQueryGet(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
     public apiQueryGet(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
@@ -825,5 +872,4 @@ export class QueryService {
             }
         );
     }
-
 }

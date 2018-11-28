@@ -11,8 +11,7 @@
  */
 
 
-export interface BasicInfo {
-    environment?: string;
-    machine?: string;
-    application?: string;
+export interface KeyValue {
+  key?: string;
+  value?: string;
 }
