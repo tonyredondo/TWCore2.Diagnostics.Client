@@ -1124,3 +1124,29 @@
     }
   }
 }
+
+.counter-page {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+  text-align: center;
+  .counter-card {
+    //float:left;
+    display: inline-block;
+    width:400px;
+    margin:0.5rem;
+    .counter-body {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      .chart-wrapper {
+        flex: 1;
+        height:200px;
+        max-height: 200px;
+        .chart {
+          height:200px;
+          max-height: 200px;
+        }
+      }
+    }
+  }
+}
