@@ -220,6 +220,9 @@ export class SearchComponent implements OnInit {
               };
               groupItem.items.push(appItem);
             }
+            if (aItem.tags === null || aItem.tags === undefined) {
+              aItem.tags = '';
+            }
             const itemTags = aItem.tags.split(', ');
             const tags = [] as TagItem[];
             for (let it = 0; it < itemTags.length; it++) {
