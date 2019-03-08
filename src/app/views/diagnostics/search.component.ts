@@ -423,6 +423,29 @@ export class SearchComponent implements OnInit {
   }
 
 
+  downloadXmlData(id: string, name: string) {
+    this._queryService.apiQueryByEnvironmentTracesXmlByIdGet(environment.name, id).subscribe(data => {
+      if (data) {
+        this.downloadFile(data, name + '.xml', 'application/xml');
+      }
+    });
+  }
+  downloadJsonData(id: string, name: string) {
+    this._queryService.apiQueryByEnvironmentTracesJsonByIdGet(environment.name, id).subscribe(data => {
+      if (data) {
+        this.downloadFile(data, name + '.json', 'application/json');
+      }
+    });
+  }
+  downloadTxtData(id: string, name: string) {
+    this._queryService.apiQueryByEnvironmentTracesTxtByIdGet(environment.name, id).subscribe(data => {
+      if (data) {
+        this.downloadFile(data, name + '.txt');
+      }
+    });
+  }
+
+
   // Private Methods
   private updateParams() {
     this._queryParams.env = environment.name;
@@ -434,6 +457,29 @@ export class SearchComponent implements OnInit {
       queryParams: this._queryParams,
       replaceUrl: true
     });
+  }
+
+  //Download methods
+  public downloadFile(data, fileName, type="text/plain") {
+    // Create an invisible A element
+    const a = document.createElement("a");
+    a.style.display = "none";
+    document.body.appendChild(a);
+
+    // Set the HREF to a Blob representation of the data to be downloaded
+    a.href = window.URL.createObjectURL(
+      new Blob([data], { type })
+    );
+
+    // Use download attribute to set set desired file name
+    a.setAttribute("download", fileName);
+
+    // Trigger the download by simulating click
+    a.click();
+
+    // Cleanup
+    window.URL.revokeObjectURL(a.href);
+    document.body.removeChild(a);
   }
 }
 
