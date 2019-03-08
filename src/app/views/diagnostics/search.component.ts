@@ -109,7 +109,7 @@ export class SearchComponent implements OnInit {
 
     this._queryService.apiQueryByEnvironmentSearchBySearchTermGet(environment.name, searchVal, this.bsValue[0], this.bsValue[1]).subscribe(data => {
       this.bProcessing = false;
-      if (data == null || (data.logs.length === 0 && data.traces.length === 0)) {
+      if (data == null || data.data == null || data.data.length === 0) {
         this.bHasResults = false;
         return;
       }
