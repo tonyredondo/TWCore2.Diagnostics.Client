@@ -1172,3 +1172,30 @@
     }
   }
 }
+
+button {
+  &:hover {
+    ul {
+      display: block;
+      opacity: 1;
+    }
+  }
+  ul {
+    position: absolute;
+    background-color: #0a78ab;
+    margin: 1px -40px;
+    padding: 10px;
+    text-align: initial;
+    display: none;
+    opacity: 0;
+    width: 90px;
+    transition: opacity 0.15s ease-in-out;
+    li {
+      padding: 5px;
+      border-radius: 5px;
+      &:hover {
+        background-color: #0089c5;
+      }
+    }
+  }
+}

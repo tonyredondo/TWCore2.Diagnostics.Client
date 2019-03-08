@@ -342,83 +342,89 @@ export class SearchComponent implements OnInit {
 
   showXmlData(id: string, name: string) {
     this.traceName = name;
-    this.traceModal.show();
     this._queryService.apiQueryByEnvironmentTracesXmlByIdGet(environment.name, id).subscribe(x => {
-      this.traceObject = x;
-      this._codeMirror.instance$.subscribe(editor => {
-        editor.setOption('mode', 'application/xml');
-        if (x.startsWith('{')) {
-          editor.setOption('mode', 'application/json');
-        }
-        editor.setOption('theme', 'material');
-        editor.setOption('readOnly', true);
-        editor.setOption('lineNumbers', true);
-        editor.setOption('matchBrackets', true);
-        editor.setOption('foldGutter', true);
-        editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-        editor.setOption('extraKeys', {
-          'Ctrl-F': 'findPersistent'
+      if (x) {
+        this.traceModal.show();
+        this.traceObject = x;
+        this._codeMirror.instance$.subscribe(editor => {
+          editor.setOption('mode', 'application/xml');
+          if (x.startsWith('{')) {
+            editor.setOption('mode', 'application/json');
+          }
+          editor.setOption('theme', 'material');
+          editor.setOption('readOnly', true);
+          editor.setOption('lineNumbers', true);
+          editor.setOption('matchBrackets', true);
+          editor.setOption('foldGutter', true);
+          editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+          editor.setOption('extraKeys', {
+            'Ctrl-F': 'findPersistent'
+          });
+          editor.setValue(this.traceObject);
+          editor.getDoc().setCursor({ line: 0, ch: 0});
+          editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
+          editor.scrollTo(0, 0);
+          setTimeout(() => editor.refresh(), 200);
         });
-        editor.setValue(this.traceObject);
-        editor.getDoc().setCursor({ line: 0, ch: 0});
-        editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
-        editor.scrollTo(0, 0);
-        setTimeout(() => editor.refresh(), 200);
-      });
+      }
     });
   }
   showJsonData(id: string, name: string) {
     this.traceName = name;
-    this.traceModal.show();
     this._queryService.apiQueryByEnvironmentTracesJsonByIdGet(environment.name, id).subscribe(x => {
-      this.traceObject = x;
-      this._codeMirror.instance$.subscribe(editor => {
-        editor.setOption('mode', 'application/json');
-        if (x.startsWith('<?xml')) {
-          editor.setOption('mode', 'application/xml');
-        }
-        editor.setOption('theme', 'material');
-        editor.setOption('readOnly', true);
-        editor.setOption('lineNumbers', true);
-        editor.setOption('matchBrackets', true);
-        editor.setOption('foldGutter', true);
-        editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-        editor.setOption('extraKeys', {
-          'Ctrl-F': 'findPersistent'
+      if (x) {
+        this.traceModal.show();
+        this.traceObject = x;
+        this._codeMirror.instance$.subscribe(editor => {
+          editor.setOption('mode', 'application/json');
+          if (x.startsWith('<?xml')) {
+            editor.setOption('mode', 'application/xml');
+          }
+          editor.setOption('theme', 'material');
+          editor.setOption('readOnly', true);
+          editor.setOption('lineNumbers', true);
+          editor.setOption('matchBrackets', true);
+          editor.setOption('foldGutter', true);
+          editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+          editor.setOption('extraKeys', {
+            'Ctrl-F': 'findPersistent'
+          });
+          editor.setValue(this.traceObject);
+          editor.getDoc().setCursor({ line: 0, ch: 0});
+          editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
+          editor.scrollTo(0, 0);
+          setTimeout(() => editor.refresh(), 200);
         });
-        editor.setValue(this.traceObject);
-        editor.getDoc().setCursor({ line: 0, ch: 0});
-        editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
-        editor.scrollTo(0, 0);
-        setTimeout(() => editor.refresh(), 200);
-      });
+      }
     });
   }
   showTxtData(id: string, name: string) {
     this.traceName = name;
-    this.traceModal.show();
     this._queryService.apiQueryByEnvironmentTracesTxtByIdGet(environment.name, id).subscribe(x => {
-      this.traceObject = x;
-      this._codeMirror.instance$.subscribe(editor => {
-        editor.setOption('mode', 'text/plain');
-        if (x.startsWith('<?xml')) {
-          editor.setOption('mode', 'application/xml');
-        }
-        editor.setOption('theme', 'material');
-        editor.setOption('readOnly', true);
-        editor.setOption('lineNumbers', true);
-        editor.setOption('matchBrackets', true);
-        editor.setOption('foldGutter', true);
-        editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-        editor.setOption('extraKeys', {
-          'Ctrl-F': 'findPersistent'
+      if (x) {
+        this.traceModal.show();
+        this.traceObject = x;
+        this._codeMirror.instance$.subscribe(editor => {
+          editor.setOption('mode', 'text/plain');
+          if (x.startsWith('<?xml')) {
+            editor.setOption('mode', 'application/xml');
+          }
+          editor.setOption('theme', 'material');
+          editor.setOption('readOnly', true);
+          editor.setOption('lineNumbers', true);
+          editor.setOption('matchBrackets', true);
+          editor.setOption('foldGutter', true);
+          editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
+          editor.setOption('extraKeys', {
+            'Ctrl-F': 'findPersistent'
+          });
+          editor.setValue(this.traceObject);
+          editor.getDoc().setCursor({ line: 0, ch: 0});
+          editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
+          editor.scrollTo(0, 0);
+          setTimeout(() => editor.refresh(), 200);
         });
-        editor.setValue(this.traceObject);
-        editor.getDoc().setCursor({ line: 0, ch: 0});
-        editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
-        editor.scrollTo(0, 0);
-        setTimeout(() => editor.refresh(), 200);
-      });
+      }
     });
   }
 
