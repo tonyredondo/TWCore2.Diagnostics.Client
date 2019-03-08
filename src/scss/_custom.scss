@@ -658,10 +658,12 @@
   border-bottom: 0px;
   overflow: hidden;
   border-radius: 8px;
+  border-top: 0px;
   .card-header {
     display:flex;
     justify-items: center;
     cursor: pointer;
+    border-bottom: 0px;
     .title {
       flex: 5;
       font-weight: 600;
@@ -700,9 +702,9 @@
   margin: 0px;
   //border-radius: 2px;
   line-height: 1.4;
-
   &.messageEnd {
     margin-bottom: 2px;
+    margin-top:0px;
     border-bottom-width: 2px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -711,9 +713,13 @@
       border-bottom-color: #afe1be;
       background-color: #afe1be  !important;
     }
+    &.noDiff {
+      margin-bottom: 10px;
+    }
   }
   &.messageStart {
     margin-top: 2px;
+    margin-bottom: 0px;
     border-top-width: 2px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -722,7 +728,14 @@
       border-top-color: #afe1be;
       background-color: #afe1be  !important;
     }
+    &.noDiff {
+      margin-top: 10px;
+    }
   }
+  &.prevIsEnd {
+    margin-top:30px !important;
+  }
+
 }
 .dvTimeCol {
   flex: 1;
@@ -835,6 +848,9 @@
   .rightSide{
     margin-top: -6px;
   }
+  &.noDiff {
+    margin: 10px 0px;
+  }
 }
 .dv-level-warning {
   background-color: #ffc10744 !important;
@@ -856,6 +872,9 @@
   .rightSide{
     margin-top: -6px;
   }
+  &.noDiff {
+    margin: 10px 0px;
+  }
 }
 .dv-level-success {
   background-color: #4dbd7444 !important;
@@ -867,12 +886,12 @@
     // border-left: solid 1px #5ea975;
     background-color: #b2e2c1;
   }
-  &.nextIsStart {
-    margin-bottom: 20px;
-    &.prevIsEnd {
-      margin-bottom:  0px;
-    }
-  }
+  // &.nextIsStart {
+  //   margin-bottom: 20px;
+  //   &.prevIsEnd {
+  //     margin-bottom:  0px;
+  //   }
+  // }
 }
 .dv-level-trace {
   background-color: #0572f32e !important;
@@ -889,44 +908,47 @@
       float: initial !important;
     }
   }
-  &.nextIsStart {
-    border-bottom-width: 0px;
-    border-radius: 4px;
-    margin-top: 20px;
-    //border-top: dashed 1px #0e8ac3  !important;
-    //padding-top: 1px;
-    //border-top-left-radius: 10px;
-    //border-top-right-radius: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: -1px;
-
-    &.prevIsEnd {
-      margin-top: 20px;
-      margin-bottom: -1px;
-      //border-bottom-width: 0px !important;
-      padding-bottom: 0px;
-
-      //border-top-left-radius: 10px;
-      //border-top-right-radius: 10px;
-      overflow: hidden;
-      //border-bottom-left-radius: 0px;
-      //border-bottom-right-radius: 0px;
-      border-radius: 10px;
-    }
+  &.noDiff {
+    margin: 10px 0px;
   }
-  &.prevIsEnd {
-    border-bottom-width: 0px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    //border-bottom: dashed 1px #0e8ac3 !important;
-    //padding-bottom: 1px;
-    //border-bottom-left-radius: 10px;
-    //border-bottom-right-radius: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: -1px;
-  }
+  // &.nextIsStart {
+  //   border-bottom-width: 0px;
+  //   border-radius: 4px;
+  //   margin-top: 20px;
+  //   //border-top: dashed 1px #0e8ac3  !important;
+  //   //padding-top: 1px;
+  //   //border-top-left-radius: 10px;
+  //   //border-top-right-radius: 10px;
+  //   // border-radius: 10px;
+  //   overflow: hidden;
+  //   margin-bottom: -1px;
+
+  //   &.prevIsEnd {
+  //     margin-top: 20px;
+  //     margin-bottom: -1px;
+  //     //border-bottom-width: 0px !important;
+  //     padding-bottom: 0px;
+
+  //     //border-top-left-radius: 10px;
+  //     //border-top-right-radius: 10px;
+  //     overflow: hidden;
+  //     //border-bottom-left-radius: 0px;
+  //     //border-bottom-right-radius: 0px;
+  //     border-radius: 10px;
+  //   }
+  // }
+  // &.prevIsEnd {
+  //   border-bottom-width: 0px;
+  //   border-radius: 4px;
+  //   margin-bottom: 20px;
+  //   //border-bottom: dashed 1px #0e8ac3 !important;
+  //   //padding-bottom: 1px;
+  //   //border-bottom-left-radius: 10px;
+  //   //border-bottom-right-radius: 10px;
+  //   border-radius: 10px;
+  //   overflow: hidden;
+  //   margin-top: -1px;
+  // }
 }
 
 

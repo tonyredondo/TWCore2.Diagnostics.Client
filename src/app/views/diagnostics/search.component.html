@@ -73,12 +73,13 @@
                 'messageEnd' : rowItem.message && rowItem.message.indexOf('[END') > -1,
                 'messageStart' : rowItem.message && rowItem.message.indexOf('[START') > -1,
                 'nextIsStart' : rowItem.nextIsStart,
-                'prevIsEnd' : rowItem.prevIsEnd
+                'prevIsEnd' : rowItem.prevIsEnd,
+                'noDiff' : !rowItem.diffTime
               }">
-                <div class="dvTimeCol" *ngIf="isFirst">
+                <div class="dvTimeCol" *ngIf="!rowItem.diffTime">
                   {{rowItem.timestamp | date:'HH:mm:ss.SSS'}}
                 </div>
-                <div class="dvTimeCol addTime" *ngIf="!isFirst" [tooltip]="rowItem.timestamp | date:'HH:mm:ss.SSS'">
+                <div class="dvTimeCol addTime" *ngIf="rowItem.diffTime" [tooltip]="rowItem.timestamp | date:'HH:mm:ss.SSS'">
                   {{rowItem.diffTime}}
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.logId != null">

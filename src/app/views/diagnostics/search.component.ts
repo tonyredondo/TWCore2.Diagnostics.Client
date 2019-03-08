@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
-import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem } from '../../services/api';
+import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem, NodeStatusItemValue } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
@@ -118,15 +118,15 @@ export class SearchComponent implements OnInit {
 
       const groupArray = Array<NodeGroup>();
       if (this.searchResults !== null) {
-        if (this.searchResults.logs !== null) {
 
-          for (let i = 0; i < this.searchResults.logs.length; i++) {
-            const aItem = this.searchResults.logs[i];
+        if (this.searchResults.data !== null) {
+          for (let i = 0; i < this.searchResults.data.length; i++) {
+            const dataItem = this.searchResults.data[i];
 
-            let groupItem = groupArray.find(item => item.groupName === aItem.group);
+            let groupItem = groupArray.find(item => item.groupName === dataItem.group);
             if (groupItem === undefined) {
               groupItem = {
-                groupName: aItem.group,
+                groupName: dataItem.group,
                 items: [],
                 metadata: []
               };
@@ -141,10 +141,10 @@ export class SearchComponent implements OnInit {
               groupArray.push(groupItem);
             }
 
-            let appItem = groupItem.items.find(item => item.appName === aItem.application);
+            let appItem = groupItem.items.find(item => item.appName === dataItem.application);
             if (appItem === undefined) {
               appItem = {
-                appName: aItem.application,
+                appName: dataItem.application,
                 hidden: true,
                 hasError: false,
                 hasWarning: false,
@@ -152,30 +152,54 @@ export class SearchComponent implements OnInit {
               };
               groupItem.items.push(appItem);
             }
+            if (dataItem.tags === null || dataItem.tags === undefined) {
+              dataItem.tags = '';
+            }
+            if (dataItem.traceId === undefined) {
+              dataItem.traceId = null;
+            }
+            if (dataItem.name === undefined) {
+              dataItem.name = null;
+            }
+            if (dataItem.type === undefined) {
+              dataItem.type = null;
+            }
+            if (dataItem.formats === undefined) {
+              dataItem.formats = null;
+            }
+            const itemTags = dataItem.tags.split(', ');
+            const tags = [] as TagItem[];
+            for (let it = 0; it < itemTags.length; it++) {
+              const itemTagItem = itemTags[it].split(': ');
+              tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
+            }
 
             const nodeItem: NodeItem = {
-              assembly: aItem.assembly,
-              code: aItem.code,
-              exception: aItem.exception,
-              id: aItem.id,
-              application: aItem.application,
-              instanceId: aItem.instanceId,
-              level: aItem.level,
-              logId: aItem.logId,
-              machine: aItem.machine,
-              message: aItem.message,
-              timestamp: new Date(aItem.timestamp),
-              type: aItem.type,
-              tags : null,
-              tagsArray: null,
-              name: null,
-              traceId: null,
+              assembly: dataItem.assembly,
+              code: dataItem.code,
+              exception: dataItem.exception,
+              id: dataItem.id,
+              application: dataItem.application,
+              instanceId: dataItem.instanceId,
+              level: dataItem.level,
+              logId: dataItem.logId,
+              machine: dataItem.machine,
+              message: dataItem.message,
+              timestamp: new Date(dataItem.timestamp),
+              type: dataItem.type,
+              tags : dataItem.tags,
+              tagsArray: tags,
+              name: dataItem.name,
+              traceId: dataItem.traceId,
               nextIsStart: false,
               prevIsEnd: false,
-              hasXml: false,
-              hasJson: false,
-              hasTxt: false
+              hasXml: ((dataItem.formats !== null && dataItem.formats.indexOf('XML') > -1) || dataItem.formats === null),
+              hasJson: ((dataItem.formats !== null && dataItem.formats.indexOf('JSON') > -1) || dataItem.formats === null),
+              hasTxt: (dataItem.formats !== null && dataItem.formats.indexOf('TXT') > -1)
             };
+            if (nodeItem.tags.indexOf('Status: Error') > -1) {
+              appItem.hasError = true;
+            }
             if (nodeItem.level === NodeLogItem.LevelEnum.Error) {
               appItem.hasError = true;
               // appItem.hidden = false;
@@ -185,72 +209,10 @@ export class SearchComponent implements OnInit {
               // appItem.hidden = false;
             }
             appItem.items.push(nodeItem);
+
           }
         }
-        if (this.searchResults.traces !== null) {
-          for (let i = 0; i < this.searchResults.traces.length; i++) {
-            const aItem = this.searchResults.traces[i];
 
-            let groupItem = groupArray.find(item => item.groupName === aItem.group);
-            if (groupItem === undefined) {
-              groupItem = {
-                groupName: aItem.group,
-                items: [],
-                metadata: []
-              };
-              // Buscar los metadatas del grupo.
-              if (groupItem.groupName) {
-                this._queryService.apiQueryGetGroupMetadata(environment.name, groupItem.groupName).subscribe(metadata => {
-                  if (metadata) {
-                    groupItem.metadata = metadata.filter(mitem => mitem.value !== null && mitem.value !== '');
-                  }
-                });
-              }
-              groupArray.push(groupItem);
-            }
-
-            let appItem = groupItem.items.find(item => item.appName === aItem.application);
-            if (appItem === undefined) {
-              appItem = {
-                appName: aItem.application,
-                hidden: true,
-                hasError: false,
-                hasWarning: false,
-                items: []
-              };
-              groupItem.items.push(appItem);
-            }
-            if (aItem.tags === null || aItem.tags === undefined) {
-              aItem.tags = '';
-            }
-            const itemTags = aItem.tags.split(', ');
-            const tags = [] as TagItem[];
-            for (let it = 0; it < itemTags.length; it++) {
-              const itemTagItem = itemTags[it].split(': ');
-              tags.push({ key: itemTagItem[0], value: itemTagItem[1] });
-            }
-            const nodeItem: NodeItem = {
-              id: aItem.id,
-              application: aItem.application,
-              instanceId: aItem.instanceId,
-              machine: aItem.machine,
-              timestamp: new Date(aItem.timestamp),
-              traceId: aItem.traceId,
-              tags: aItem.tags,
-              name: aItem.name,
-              tagsArray: tags,
-              nextIsStart: false,
-              prevIsEnd: false,
-              hasXml: ((aItem.formats !== null && aItem.formats.indexOf('XML') > -1) || aItem.formats === null),
-              hasJson: ((aItem.formats !== null && aItem.formats.indexOf('JSON') > -1) || aItem.formats === null),
-              hasTxt: (aItem.formats !== null && aItem.formats.indexOf('TXT') > -1)
-            };
-            if (nodeItem.tags.indexOf('Status: Error') > -1) {
-              appItem.hasError = true;
-            }
-            appItem.items.push(nodeItem);
-          }
-        }
       }
       for (let i = 0; i < groupArray.length; i++) {
         const groupItem = groupArray[i];
@@ -303,41 +265,51 @@ export class SearchComponent implements OnInit {
             return 1;
           });
 
+          const startIndex = [];
           for (let n = 0; n < appItem.items.length; n++) {
             const nodeItem = appItem.items[n];
+            const isStart = nodeItem.message && nodeItem.message.indexOf('[START') > -1;
+            const isEnd = nodeItem.message && nodeItem.message.indexOf('[END') > -1;
+            if (isStart) {
+              startIndex.push(n);
+            }
+            const started = startIndex.length > 0;
+            const startedIndex = started ? startIndex[startIndex.length - 1] : -1;
             if (n > 0) {
-              const oldNodeItem = appItem.items[0];
-              const duration = moment(nodeItem.timestamp).diff(oldNodeItem.timestamp);
-              const minutes = Math.floor(duration / 1000 / 60);
-              const seconds = Math.floor((duration / 1000) - (minutes * 60));
-              const milliseconds = duration - (Math.floor(duration / 1000) * 1000);
-              let diffTime = '+ ';
-              if (minutes > 0) {
-                diffTime += minutes + 'min';
-                if (seconds > 0 || milliseconds > 0) {
-                  diffTime += ', ';
+              if (started && startedIndex !== n) {
+                const oldNodeItem = appItem.items[startedIndex];
+                const duration = moment(nodeItem.timestamp).diff(oldNodeItem.timestamp);
+                const minutes = Math.floor(duration / 1000 / 60);
+                const seconds = Math.floor((duration / 1000) - (minutes * 60));
+                const milliseconds = duration - (Math.floor(duration / 1000) * 1000);
+                let diffTime = '+ ';
+                if (minutes > 0) {
+                  diffTime += minutes + 'min';
+                  if (seconds > 0 || milliseconds > 0) {
+                    diffTime += ', ';
+                  }
                 }
-              }
-              if (seconds > 0) {
-                diffTime += seconds + 's';
-                if (milliseconds > 0) {
-                  diffTime += ', ';
+                if (seconds > 0) {
+                  diffTime += seconds + 's';
+                  if (milliseconds > 0) {
+                    diffTime += ', ';
+                  }
                 }
+                diffTime += milliseconds + 'ms';
+                nodeItem.diffTime = diffTime;
+                // console.log(nodeItem.diffTime);
               }
-              diffTime += milliseconds + 'ms';
-              nodeItem.diffTime = diffTime;
-              // console.log(nodeItem.diffTime);
 
               const prevItem = appItem.items[n - 1];
-              if (prevItem.message && prevItem.message.indexOf('[END') > -1) {
-                nodeItem.prevIsEnd = true;
+              if (prevItem) {
+                const prevDuration = moment(nodeItem.timestamp).diff(prevItem.timestamp);
+                if (prevDuration > 5000 && !started) {
+                  nodeItem.prevIsEnd = true;
+                }
               }
             }
-            if (n + 1 < appItem.items.length) {
-              const nextItem = appItem.items[n + 1];
-              if (nextItem.message && nextItem.message.indexOf('[START') > -1) {
-                nodeItem.nextIsStart = true;
-              }
+            if (isEnd) {
+              startIndex.pop();
             }
           }
         }
