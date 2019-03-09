@@ -1165,31 +1165,6 @@
   }
 }
 
-.counter-page {
-  margin-left: -1.5rem;
-  margin-right: -1.5rem;
-  text-align: center;
-  .counter-card {
-    //float:left;
-    display: inline-block;
-    width:400px;
-    margin:0.5rem;
-    .counter-body {
-      display: flex;
-      align-items: center;
-      padding: 0.5rem;
-      .chart-wrapper {
-        flex: 1;
-        height:200px;
-        max-height: 200px;
-        .chart {
-          height:200px;
-          max-height: 200px;
-        }
-      }
-    }
-  }
-}
 
 button {
   &.drop {
@@ -1230,32 +1205,120 @@ button {
 
 
 /* COUNTERS */
+
+.counter-page {
+  margin-top: -21px;
+  margin-left: -30px;
+  text-align: center;
+  .counter-card {
+    //float:left;
+    display: inline-block;
+    width:400px;
+    margin:0.5rem;
+    .counter-body {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem;
+      .chart-wrapper {
+        flex: 1;
+        height:200px;
+        max-height: 200px;
+        .chart {
+          height:200px;
+          max-height: 200px;
+        }
+      }
+    }
+  }
+}
+
 .countersViewport {
   display: flex;
 
   .countersSidebar {
     text-align: left;
     font-size:12px;
-    background-color: rgba(9, 11, 12, 0.85);
-    color:#fff;
+    background-color: #2f353a;
+    border-left: 1px solid #262a2e;
+    color:#e4e7ea;
     padding: 10px;
-    border-radius: 10px;
-    height: 500px;
+    height: calc(100% - 55px);
     overflow: auto;
     overflow-x: hidden;
-    position: fixed;
+    position: absolute;
     z-index: 1000;
+    padding: 10px 15px;
+    //width: 400px;
+    span {
+      text-transform: uppercase;
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      display: block;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      background: #262a2e;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      cursor: default;
+    }
     .appCounter {
-      padding-left:5px;
+      display: flex;
+      flex-direction: column;
+      padding: 5px 0px;
+      span {
+        font-weight: bold;
+        text-transform: uppercase;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size:12px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+        background: inherit;
+        border-radius: 0px;
+        margin-bottom: 0px;
+        cursor: pointer;
+        i {
+          padding-right: 5px;
+        }
+      }
       .kindCounter {
-        padding-left:10px;
-
+        background-color: #262a2e;
+        padding: 5px 15px;
+        &:first-of-type {
+          margin-top: 5px;
+        }
+        &.hide {
+          display:none;
+        }
+        span {
+          text-transform: uppercase;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+        }
         .categoryCounter {
-          padding-left:10px;
-
+          background-color: #2f353a;
+          padding: 5px 10px;
+          &:first-of-type {
+            margin-top: 5px;
+          }
+          &.hide {
+            display:none;
+          }
           .counterItem {
-            padding-left:10px;
-
+            background-color: #262a2e;
+            padding: 5px 10px;
+            &:first-of-type {
+              margin-top: 5px;
+            }
+            &.hide {
+              display:none;
+            }
+            span {
+              font-size:11px;
+            }
           }
 
         }
@@ -1267,5 +1330,6 @@ button {
   }
   .countersContent {
     flex:4;
+    margin: 0.5rem;
   }
 }

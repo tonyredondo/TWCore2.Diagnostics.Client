@@ -21,6 +21,7 @@ export class StatusComponent implements OnInit {
   private _queryParams: Params;
   public noData?: boolean;
   public counters: Array<AppCounters>;
+  public selectedCounters: Array<string> = [];
 
   // barChart
   public barChartOptions: any = {
@@ -68,6 +69,26 @@ export class StatusComponent implements OnInit {
     });
   }
 
+  public toggleVisible(item : any) {
+    console.log(item);
+    item.itemsVisible = !item.itemsVisible;
+  }
+  public toggleSelect(item: CounterItem) {
+    item.selected = !item.selected;
+    if (item.selected) {
+      this.selectedCounters.push(item.countersId);
+    } else {
+      const nSelected = new Array<string>();
+      for(let i = 0; i < this.selectedCounters.length; i++) {
+        if (this.selectedCounters[i] !== item.countersId) {
+          nSelected.push(this.selectedCounters[i]);
+        }
+      }
+      this.selectedCounters = nSelected;
+    }
+    console.log(this.selectedCounters);
+  }
+
   // Private Methods
   private createCountersTree(data: NodeCountersQueryItem[]) : AppCounters[] {
     const counters = new Array<AppCounters>();
@@ -78,7 +99,8 @@ export class StatusComponent implements OnInit {
       if (appItem === undefined) {
         appItem = {
           applicationName: currentItem.application,
-          items: new Array<KindCounters>()
+          items: new Array<KindCounters>(),
+          itemsVisible: false
         };
         counters.push(appItem);
         counters.sort((a, b) => a.applicationName < b.applicationName ? -1 : 1);
@@ -88,7 +110,8 @@ export class StatusComponent implements OnInit {
       if (kindItem === undefined) {
         kindItem = {
           kindName: currentItem.kind,
-          items: new Array<CategoryCounters>()
+          items: new Array<CategoryCounters>(),
+          itemsVisible: false
         }
         appItem.items.push(kindItem);
         appItem.items.sort((a, b) => a.kindName < b.kindName ? -1 : 1);
@@ -98,13 +121,13 @@ export class StatusComponent implements OnInit {
       if (categoryItem === undefined) {
         categoryItem = {
           categoryName: currentItem.category,
-          items: new Array<NodeCountersQueryItem>()
+          items: new Array<CounterItem>(),
+          itemsVisible: false
         }
         kindItem.items.push(categoryItem);
         kindItem.items.sort((a, b) => a.categoryName < b.categoryName ? -1 : 1);
       }
-
-      categoryItem.items.push(currentItem);
+      categoryItem.items.push(Object.assign(currentItem, { selected : false }));
     }
 
     return counters;
@@ -123,12 +146,18 @@ export class StatusComponent implements OnInit {
 class AppCounters {
   applicationName: string;
   items: Array<KindCounters>;
+  itemsVisible = false;
 }
 class KindCounters {
   kindName: string;
   items: Array<CategoryCounters>;
+  itemsVisible = false;
 }
 class CategoryCounters {
   categoryName: string;
-  items: Array<NodeCountersQueryItem>;
+  items: Array<CounterItem>;
+  itemsVisible = false;
+}
+interface CounterItem extends NodeCountersQueryItem {
+  selected: boolean;
 }

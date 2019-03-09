@@ -12,23 +12,18 @@
     <div class="countersViewport" *ngIf="noData == false">
 
       <div class="countersSidebar">
+        <span>Counters</span>
         <div class="appCounter" *ngFor="let appItem of counters">
-          {{appItem.applicationName}}
-
-          <div class="kindCounter" *ngFor="let kindItem of appItem.items">
-            {{kindItem.kindName}}
-
-            <div class="categoryCounter" *ngFor="let categoryItem of kindItem.items">
-              {{categoryItem.categoryName}}
-
-              <div class="counterItem" *ngFor="let counterItem of categoryItem.items">
-                {{counterItem.name}}
+          <span (click)="toggleVisible(appItem)"><i class="fa fa-gear"></i>{{appItem.applicationName}}</span>
+          <div class="kindCounter" [ngClass]="{'hide': !appItem.itemsVisible}" *ngFor="let kindItem of appItem.items">
+            <span (click)="toggleVisible(kindItem)"><i class="fa fa-caret-right"></i>{{kindItem.kindName}}</span>
+            <div class="categoryCounter" [ngClass]="{'hide': !kindItem.itemsVisible}" *ngFor="let categoryItem of kindItem.items">
+              <span (click)="toggleVisible(categoryItem)"><i class="fa fa-caret-right"></i>{{categoryItem.categoryName}}</span>
+              <div class="counterItem" [ngClass]="{'hide': !categoryItem.itemsVisible}" *ngFor="let counterItem of categoryItem.items">
+                <span (click)="toggleSelect(counterItem)"><i class="fa" [ngClass]="{'fa-square-o': !counterItem.selected, 'fa-square': counterItem.selected }"></i>{{counterItem.name}}</span>
               </div>
-
             </div>
-
           </div>
-
         </div>
       </div>
 
