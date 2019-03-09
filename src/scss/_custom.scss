@@ -1226,3 +1226,35 @@ button {
     }
   }
 }
+
+
+
+/* COUNTERS */
+.countersViewport {
+  display: flex;
+
+  .countersSidebar {
+    flex:1;
+    text-align: left;
+
+    .appCounter {
+
+      .kindCounter {
+
+        .categoryCounter {
+
+          .counterItem {
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+  .countersContent {
+    flex:4;
+  }
+}

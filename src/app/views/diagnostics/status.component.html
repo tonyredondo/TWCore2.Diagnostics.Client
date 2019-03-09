@@ -1,102 +1,139 @@
 <div class="counter-page">
 
-
-    <div class="card counter-card">
-      <div class="card-header">
-        Chart 1
-      </div>
-      <div class="card-body counter-body">
-        <div class="chart-wrapper">
-          <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          [chartType]="barChartType"
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-        </div>
-        <div>Data Values</div>
+    <!-- No Data Alert -->
+    <div class="card" *ngIf="noData == true">
+      <div class="card-body">
+        <alert type="info" class="no-bottom-margin-alert">
+          <strong>Ups!, there is not counters data in this environment</strong>
+        </alert>
       </div>
     </div>
 
+    <div class="countersViewport" *ngIf="noData == false">
 
-    <div class="card counter-card">
-      <div class="card-header">
-        Chart 2
-      </div>
-      <div class="card-body counter-body">
-        <div class="chart-wrapper">
-          <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          [chartType]="barChartType"
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
+      <div class="countersSidebar">
+        <div class="appCounter" *ngFor="let appItem of counters">
+          {{appItem.applicationName}}
+
+          <div class="kindCounter" *ngFor="let kindItem of appItem.items">
+            {{kindItem.kindName}}
+
+            <div class="categoryCounter" *ngFor="let categoryItem of kindItem.items">
+              {{categoryItem.categoryName}}
+
+              <div class="counterItem" *ngFor="let counterItem of categoryItem.items">
+                {{counterItem.name}}
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
-        <div>Data Values</div>
       </div>
-    </div>
 
+      <div class="countersContent">
 
-
-    <div class="card counter-card">
-      <div class="card-header">
-        Chart 3
-      </div>
-      <div class="card-body counter-body">
-        <div class="chart-wrapper">
-          <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          [chartType]="barChartType"
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
+        <div class="card counter-card">
+          <div class="card-header">
+            Chart 1
+          </div>
+          <div class="card-body counter-body">
+            <div class="chart-wrapper">
+              <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div>Data Values</div>
+          </div>
         </div>
-        <div>Data Values</div>
-      </div>
-    </div>
 
-    <div class="card counter-card">
-      <div class="card-header">
-        Chart 4
-      </div>
-      <div class="card-body counter-body">
-        <div class="chart-wrapper">
-          <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          [chartType]="barChartType"
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
-        </div>
-        <div>Data Values</div>
-      </div>
-    </div>
 
-    <div class="card counter-card">
-      <div class="card-header">
-        Chart 5
-      </div>
-      <div class="card-body counter-body">
-        <div class="chart-wrapper">
-          <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [legend]="barChartLegend"
-          [chartType]="barChartType"
-          (chartHover)="chartHovered($event)"
-          (chartClick)="chartClicked($event)"></canvas>
+        <div class="card counter-card">
+          <div class="card-header">
+            Chart 2
+          </div>
+          <div class="card-body counter-body">
+            <div class="chart-wrapper">
+              <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div>Data Values</div>
+          </div>
         </div>
-        <div>Data Values</div>
+
+
+
+        <div class="card counter-card">
+          <div class="card-header">
+            Chart 3
+          </div>
+          <div class="card-body counter-body">
+            <div class="chart-wrapper">
+              <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div>Data Values</div>
+          </div>
+        </div>
+
+        <div class="card counter-card">
+          <div class="card-header">
+            Chart 4
+          </div>
+          <div class="card-body counter-body">
+            <div class="chart-wrapper">
+              <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div>Data Values</div>
+          </div>
+        </div>
+
+        <div class="card counter-card">
+          <div class="card-header">
+            Chart 5
+          </div>
+          <div class="card-body counter-body">
+            <div class="chart-wrapper">
+              <canvas baseChart class="chart" style="height:200px; max-height: 200px;"
+              [datasets]="barChartData"
+              [labels]="barChartLabels"
+              [options]="barChartOptions"
+              [legend]="barChartLegend"
+              [chartType]="barChartType"
+              (chartHover)="chartHovered($event)"
+              (chartClick)="chartClicked($event)"></canvas>
+            </div>
+            <div>Data Values</div>
+          </div>
+        </div>
+
       </div>
+
     </div>
 
 </div>

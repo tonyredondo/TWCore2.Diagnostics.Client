@@ -10,6 +10,7 @@ import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
 import { KeyValue } from '../../services/api/model/keyValue';
+import { NodeCountersQueryItem } from '../../services/api/model/nodeCountersQueryItem';
 defineLocale('en-gb', enGbLocale);
 
 @Component({
@@ -18,6 +19,8 @@ defineLocale('en-gb', enGbLocale);
 export class StatusComponent implements OnInit {
   private _params: Params;
   private _queryParams: Params;
+  public noData?: boolean;
+  public counters: Array<AppCounters>;
 
   // barChart
   public barChartOptions: any = {
@@ -40,13 +43,92 @@ export class StatusComponent implements OnInit {
   ngOnInit() {
     this._params = Object.assign({}, this._activatedRoute.snapshot.params);
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
+    this.updateParams();
     this.getData();
   }
 
   getData() {
+    if (!environment.name) {
+      return;
+    }
     console.log(environment.name);
+    this.noData = null;
+    this.counters = null;
     this._queryService.getCounters(environment.name).subscribe(data => {
+      if (data && data.length > 0) {
+        this.noData = false;
+        this.counters = this.createCountersTree(data);
+      }
+      else {
+        this.noData = true;
+      }
       console.log(data);
+      console.log(this.noData);
+      console.log(this.counters);
     });
   }
+
+  // Private Methods
+  private createCountersTree(data: NodeCountersQueryItem[]) : AppCounters[] {
+    const counters = new Array<AppCounters>();
+
+    for(let i = 0; i < data.length; i++) {
+      const currentItem = data[i];
+      let appItem = counters.find(item => item.applicationName == currentItem.application);
+      if (appItem === undefined) {
+        appItem = {
+          applicationName: currentItem.application,
+          items: new Array<KindCounters>()
+        };
+        counters.push(appItem);
+        counters.sort((a, b) => a.applicationName < b.applicationName ? -1 : 1);
+      }
+
+      let kindItem = appItem.items.find(item => item.kindName == currentItem.kind);
+      if (kindItem === undefined) {
+        kindItem = {
+          kindName: currentItem.kind,
+          items: new Array<CategoryCounters>()
+        }
+        appItem.items.push(kindItem);
+        appItem.items.sort((a, b) => a.kindName < b.kindName ? -1 : 1);
+      }
+
+      let categoryItem = kindItem.items.find(item => item.categoryName == currentItem.category);
+      if (categoryItem === undefined) {
+        categoryItem = {
+          categoryName: currentItem.category,
+          items: new Array<NodeCountersQueryItem>()
+        }
+        kindItem.items.push(categoryItem);
+        kindItem.items.sort((a, b) => a.categoryName < b.categoryName ? -1 : 1);
+      }
+
+      categoryItem.items.push(currentItem);
+    }
+
+    return counters;
+  }
+
+  private updateParams() {
+    this._queryParams.env = environment.name;
+    this._router.navigate([], {
+      relativeTo: this._activatedRoute,
+      queryParams: this._queryParams,
+      replaceUrl: true
+    });
+  }
+}
+
+class AppCounters {
+  applicationName: string;
+  items: Array<KindCounters>;
+}
+class KindCounters {
+  kindName: string;
+  items: Array<CategoryCounters>;
+}
+class CategoryCounters {
+  categoryName: string;
+  items: Array<NodeCountersQueryItem>;
 }
