@@ -19,6 +19,8 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { LogSummary } from '../model/logSummary';
+import { NodeCountersQueryItem } from '../model/nodeCountersQueryItem';
+import { NodeCountersQueryValue } from '../model/nodeCountersQueryValue';
 import { NodeLogItem } from '../model/nodeLogItem';
 import { NodeStatusItem } from '../model/nodeStatusItem';
 import { NodeTraceItem } from '../model/nodeTraceItem';
@@ -63,6 +65,180 @@ export class QueryService {
             }
         }
         return false;
+    }
+
+
+    /**
+     *
+     *
+     * @param environment
+     * @param counterId
+     * @param fromDate
+     * @param toDate
+     * @param limit
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCounterValues(environment: string, counterId: string, fromDate?: Date, toDate?: Date, limit?: number, observe?: 'body', reportProgress?: boolean): Observable<Array<NodeCountersQueryValue>>;
+    public getCounterValues(environment: string, counterId: string, fromDate?: Date, toDate?: Date, limit?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<NodeCountersQueryValue>>>;
+    public getCounterValues(environment: string, counterId: string, fromDate?: Date, toDate?: Date, limit?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<NodeCountersQueryValue>>>;
+    public getCounterValues(environment: string, counterId: string, fromDate?: Date, toDate?: Date, limit?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling getCounterValues.');
+        }
+
+        if (counterId === null || counterId === undefined) {
+            throw new Error('Required parameter counterId was null or undefined when calling getCounterValues.');
+        }
+
+
+
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined && fromDate !== null) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined && toDate !== null) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+        if (limit !== undefined && limit !== null) {
+            queryParameters = queryParameters.set('limit', <any>limit);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<NodeCountersQueryValue>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/countervalues/${encodeURIComponent(String(counterId))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param environment
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCounters(environment: string, observe?: 'body', reportProgress?: boolean): Observable<Array<NodeCountersQueryItem>>;
+    public getCounters(environment: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<NodeCountersQueryItem>>>;
+    public getCounters(environment: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<NodeCountersQueryItem>>>;
+    public getCounters(environment: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling getCounters.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<NodeCountersQueryItem>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/counters`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param counterId
+     * @param environment
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getCounters_1(counterId: string, environment: string, observe?: 'body', reportProgress?: boolean): Observable<NodeCountersQueryItem>;
+    public getCounters_1(counterId: string, environment: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<NodeCountersQueryItem>>;
+    public getCounters_1(counterId: string, environment: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<NodeCountersQueryItem>>;
+    public getCounters_1(counterId: string, environment: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (counterId === null || counterId === undefined) {
+            throw new Error('Required parameter counterId was null or undefined when calling getCounters_1.');
+        }
+
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling getCounters_1.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<NodeCountersQueryItem>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/counters/${encodeURIComponent(String(counterId))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
 
