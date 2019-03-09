@@ -101,6 +101,33 @@ export class StatusComponent implements OnInit {
               item.barChartData[0].data.push(itemData.value);
             }
             this.shownCounters.push(item);
+            this.shownCounters.sort((a, b) => {
+              if (a.application < b.application) {
+                return -1;
+              } else if (a.application > b.application) {
+                return 1;
+              } else {
+                if (a.kind < b.kind) {
+                  return -1;
+                } else if (a.kind > b.kind) {
+                  return 1;
+                } else {
+                  if (a.category < b.category) {
+                    return -1;
+                  } else if (a.category > b.category) {
+                    return 1;
+                  } else {
+                    if (a.name < b.name) {
+                      return -1;
+                    } else if (a.name > b.name) {
+                      return 1;
+                    } else {
+                      return 0;
+                    }
+                  }
+                }
+              }
+            });
           }
           console.log(item);
         });
