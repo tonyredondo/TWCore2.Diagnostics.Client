@@ -64,10 +64,12 @@
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #0c8ac3 !important;
+  background-color: #d3e6fe !important;
+  color: #7f8388 !important;
   cursor: pointer;
   &:hover {
-    background-color: #0a78ab !important
+    background-color: #0a242f !important;
+    color: #fff !important;
   }
 }
 .button-ser {
@@ -702,6 +704,8 @@
   margin: 0px;
   //border-radius: 2px;
   line-height: 1.4;
+  background-color: #f7f8f9;
+  border-bottom: solid 1px #f0f3f5;
   &.messageEnd {
     margin-bottom: 2px;
     margin-top:0px;
