@@ -131,6 +131,12 @@ export class StatusComponent implements OnInit {
   public toggleSidebar() {
     this.showSideBar = !this.showSideBar;
   }
+  public hideSidebar() {
+    this.showSideBar = false;
+  }
+  public showSidebar() {
+    this.showSideBar = true;
+  }
 
   // Private Methods
   private createCountersTree(data: NodeCountersQueryItem[]) : AppCounters[] {

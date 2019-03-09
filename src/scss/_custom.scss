@@ -1249,7 +1249,7 @@ button {
     text-align: left;
     font-size:12px;
     background-color: #2f353a;
-    border-left: 1px solid #262a2e;
+    border-left: 2px solid #262a2e;
     color:#e4e7ea;
     padding: 10px;
     height: calc(100% - 55px);
@@ -1284,14 +1284,19 @@ button {
       padding-top: 5px;
       padding-bottom: 5px;
       background: #262a2e;
-      border-radius: 5px;
       margin-bottom: 5px;
       cursor: pointer;
+    }
+    .countersTitle {
+      margin: -10px -15px 10px -15px;
+      border-radius: 0px;
+      padding: 13px;
     }
     .appCounter {
       display: flex;
       flex-direction: column;
       padding: 5px 0px;
+      border-bottom: 1px solid #262a2e;
       span {
         font-weight: bold;
         text-transform: uppercase;
@@ -1302,7 +1307,6 @@ button {
         padding-top: 0px;
         padding-bottom: 0px;
         background: inherit;
-        border-radius: 0px;
         margin-bottom: 0px;
         cursor: pointer;
         i {
@@ -1314,6 +1318,12 @@ button {
         padding: 5px 15px;
         &:first-of-type {
           margin-top: 5px;
+          border-top-left-radius: 5px;
+          border-top-right-radius: 5px;
+        }
+        &:last-of-type {
+          border-bottom-left-radius: 5px;
+          border-bottom-right-radius: 5px;
         }
         &.hide {
           display:none;
@@ -1329,6 +1339,12 @@ button {
           padding: 5px 10px;
           &:first-of-type {
             margin-top: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+          }
+          &:last-of-type {
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
           }
           &.hide {
             display:none;
@@ -1338,6 +1354,12 @@ button {
             padding: 5px 10px;
             &:first-of-type {
               margin-top: 5px;
+              border-top-left-radius: 5px;
+              border-top-right-radius: 5px;
+            }
+            &:last-of-type {
+              border-bottom-left-radius: 5px;
+              border-bottom-right-radius: 5px;
             }
             &.hide {
               display:none;

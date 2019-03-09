@@ -15,7 +15,7 @@
           <i class="fa fa-area-chart"></i>
       </div>
       <div class="countersSidebar" [ngClass]="{'hide': !showSideBar}">
-        <span (click)="toggleSidebar()">Counters</span>
+        <span class="countersTitle" (click)="hideSidebar()">Counters</span>
         <div class="appCounter" *ngFor="let appItem of counters">
           <span (click)="toggleVisible(appItem)"><i class="fa fa-gear"></i>{{appItem.applicationName}}</span>
           <div class="kindCounter" [ngClass]="{'hide': !appItem.itemsVisible}" *ngFor="let kindItem of appItem.items">
@@ -30,9 +30,9 @@
         </div>
       </div>
 
-      <div class="title">Services Status</div>
+      <div class="title" (click)="hideSidebar()">Services Status</div>
 
-      <div class="countersContent">
+      <div class="countersContent" (click)="hideSidebar()">
 
         <div class="card counter-card" *ngFor="let counterItem of shownCounters">
           <div class="card-header">
