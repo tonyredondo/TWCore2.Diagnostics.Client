@@ -60,7 +60,7 @@
 
         <div class="card card-search" *ngFor="let appItem of groupItem.items" >
           <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffc421' : '' }">
-            <div class="title"><i class="fa fa-gear"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
+            <div class="title"><i class="fa fa-gear" [ngStyle]="{ 'color' : appItem.hasError ? '#f14948' : appItem.hasWarning ? '#ffc107' : '#383838' }"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
             <div class="counter">{{appItem.items.length}} items</div>
           </div>
           <div class="card-body" [collapse]="appItem.hidden">
@@ -101,21 +101,21 @@
                         }" [tooltip]="tag.value" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
                     </ng-container>
                     <div class="separator"></div>
-                    <button class="btn" *ngIf="rowItem.hasXml">
+                    <button class="btn drop" *ngIf="rowItem.hasXml">
                       XML
                       <ul>
                         <li (click)="showXmlData(rowItem.id, rowItem.name)">View</li>
                         <li (click)="downloadXmlData(rowItem.id, rowItem.name)">Download</li>
                       </ul>
                     </button>
-                    <button class="btn" *ngIf="rowItem.hasJson">
+                    <button class="btn drop" *ngIf="rowItem.hasJson">
                       JSON
                       <ul>
                         <li (click)="showJsonData(rowItem.id, rowItem.name)">View</li>
                         <li (click)="downloadJsonData(rowItem.id, rowItem.name)">Download</li>
                       </ul>
                     </button>
-                    <button class="btn" *ngIf="rowItem.hasTxt">
+                    <button class="btn drop" *ngIf="rowItem.hasTxt">
                       TXT
                       <ul>
                         <li (click)="showTxtData(rowItem.id, rowItem.name)">View</li>

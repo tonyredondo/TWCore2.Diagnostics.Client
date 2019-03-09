@@ -5,6 +5,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:55999',
+  apiUrl: 'http://fly-dev.centraldereservas.com:55999',
   name: ''
 };

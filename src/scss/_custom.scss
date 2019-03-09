@@ -68,7 +68,7 @@
   color: #7f8388 !important;
   cursor: pointer;
   &:hover {
-    background-color: #0a242f !important;
+    background-color: #171717 !important;
     color: #fff !important;
   }
 }
@@ -704,8 +704,8 @@
   margin: 0px;
   //border-radius: 2px;
   line-height: 1.4;
-  background-color: #f7f8f9;
-  border-bottom: solid 1px #f0f3f5;
+  background-color: #fbfbfb;
+  border-bottom: solid 1px #f0f0f0;
   &.messageEnd {
     margin-bottom: 2px;
     margin-top:0px;
@@ -914,6 +914,8 @@
   }
   &.noDiff {
     margin: 10px 0px;
+    border-radius: 5px;
+    border-bottom: 1px solid #d2e6fd !important;
   }
   // &.nextIsStart {
   //   border-bottom-width: 0px;
@@ -1123,8 +1125,20 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin: 4px 2px;
-    border: solid 1px #0e8ac3;
+    // margin: 4px 2px;
+    // border: solid 1px #0e8ac3;
+    &:first-child {
+      .itemKey {
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+      }
+    }
+    &:last-child {
+      .itemKey {
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
     .itemKey {
       flex: 0;
       padding: 3px 10px;
@@ -1178,25 +1192,34 @@
 }
 
 button {
+  &.drop {
+    width:50px;
+  }
   &:hover {
     ul {
-      display: block;
+      display: flex;
       opacity: 1;
     }
   }
   ul {
     position: absolute;
     background-color: #0a78ab;
-    margin: 1px -40px;
-    padding: 10px;
+    margin: 2px -71px;
+    padding: 5px;
     text-align: initial;
     display: none;
     opacity: 0;
-    width: 90px;
+    width: 110px;
     transition: opacity 0.15s ease-in-out;
+    list-style-type: none;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    flex-direction: row-reverse;
     li {
-      padding: 5px;
-      border-radius: 5px;
+      padding: 3px 5px;
+      flex: 1;
+      text-align: center;
       &:hover {
         background-color: #0089c5;
       }
