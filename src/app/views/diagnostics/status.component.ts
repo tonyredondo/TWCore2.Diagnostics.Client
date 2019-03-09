@@ -11,6 +11,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
 import { KeyValue } from '../../services/api/model/keyValue';
 import { NodeCountersQueryItem } from '../../services/api/model/nodeCountersQueryItem';
+import { NodeCountersQueryValue } from '../../services/api/model/nodeCountersQueryValue';
 defineLocale('en-gb', enGbLocale);
 
 @Component({
@@ -23,16 +24,17 @@ export class StatusComponent implements OnInit {
   public counters: Array<AppCounters>;
   public rawCounters: { [ key: string ] : CounterItem };
   public selectedCounters: Array<string> = [];
+  public shownCounters: Array<CounterItem> = []
 
   // barChart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
     responsive: true
   };
-  public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public barChartType = 'bar';
   public barChartLegend = false;
 
+  public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   public barChartData: any[] = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
     {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
@@ -62,7 +64,7 @@ export class StatusComponent implements OnInit {
         this.counters = this.createCountersTree(data);
         this.rawCounters = {};
         for(let i = 0; i < data.length; i++) {
-          const item = Object.assign(data[i], { selected : false }) as CounterItem;
+          const item = Object.assign(data[i], { selected : false, lastData: [], barChartLabels: [], barChartData:[] }) as CounterItem;
           for(let j = 0; j < this.selectedCounters.length; j++) {
             if (this.selectedCounters[i] === item.countersId) {
               item.selected = true;
@@ -80,10 +82,28 @@ export class StatusComponent implements OnInit {
   }
 
   refreshGraphs() {
+    const yesterdayTime = new Date().getTime() - (24*60*60*1000);
+    const fromTime = new Date();
+    fromTime.setTime(yesterdayTime);
+    console.log(fromTime);
+    this.shownCounters = []
     for(let i = 0; i < this.selectedCounters.length; i++) {
       const item = this.rawCounters[this.selectedCounters[i]];
       if (item !== undefined) {
-        console.log(item);
+        this._queryService.getCounterValues(environment.name, item.countersId, fromTime).subscribe(data => {
+          if (data) {
+            item.lastData = data;
+            item.barChartLabels = [];
+            item.barChartData = [ { data: [], label: 'Values' } ];
+            for(let j = data.length - 1; j >= 0; j--) {
+              const itemData = data[j];
+              item.barChartLabels.push(moment(itemData.timestamp).format('HH:mm:ss'));
+              item.barChartData[0].data.push(itemData.value);
+            }
+            this.shownCounters.push(item);
+          }
+          console.log(item);
+        });
       }
     }
   }
@@ -106,6 +126,10 @@ export class StatusComponent implements OnInit {
       this.selectedCounters = nSelected;
     }
     this.refreshGraphs();
+  }
+  showSideBar = false;
+  public toggleSidebar() {
+    this.showSideBar = !this.showSideBar;
   }
 
   // Private Methods
@@ -146,7 +170,7 @@ export class StatusComponent implements OnInit {
         kindItem.items.push(categoryItem);
         kindItem.items.sort((a, b) => a.categoryName < b.categoryName ? -1 : 1);
       }
-      categoryItem.items.push(Object.assign(currentItem, { selected : false }));
+      categoryItem.items.push(Object.assign(currentItem, { selected : false, lastData: [], barChartLabels: [], barChartData:[] }));
     }
 
     return counters;
@@ -179,4 +203,7 @@ class CategoryCounters {
 }
 interface CounterItem extends NodeCountersQueryItem {
   selected: boolean;
+  lastData: Array<NodeCountersQueryValue>;
+  barChartLabels: string[],
+  barChartData: any[]
 }
