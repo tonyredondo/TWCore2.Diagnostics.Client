@@ -21,6 +21,7 @@ export class StatusComponent implements OnInit {
   private _queryParams: Params;
   public noData?: boolean;
   public counters: Array<AppCounters>;
+  public rawCounters: { [ key: string ] : CounterItem };
   public selectedCounters: Array<string> = [];
 
   // barChart
@@ -59,14 +60,32 @@ export class StatusComponent implements OnInit {
       if (data && data.length > 0) {
         this.noData = false;
         this.counters = this.createCountersTree(data);
+        this.rawCounters = {};
+        for(let i = 0; i < data.length; i++) {
+          const item = Object.assign(data[i], { selected : false }) as CounterItem;
+          for(let j = 0; j < this.selectedCounters.length; j++) {
+            if (this.selectedCounters[i] === item.countersId) {
+              item.selected = true;
+            }
+          }
+          this.rawCounters[data[i].countersId] = item;
+        }
       }
       else {
         this.noData = true;
       }
-      console.log(data);
-      console.log(this.noData);
       console.log(this.counters);
+      console.log(this.rawCounters);
     });
+  }
+
+  refreshGraphs() {
+    for(let i = 0; i < this.selectedCounters.length; i++) {
+      const item = this.rawCounters[this.selectedCounters[i]];
+      if (item !== undefined) {
+        console.log(item);
+      }
+    }
   }
 
   public toggleVisible(item : any) {
@@ -86,7 +105,7 @@ export class StatusComponent implements OnInit {
       }
       this.selectedCounters = nSelected;
     }
-    console.log(this.selectedCounters);
+    this.refreshGraphs();
   }
 
   // Private Methods
