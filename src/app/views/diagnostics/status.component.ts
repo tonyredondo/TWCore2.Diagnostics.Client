@@ -94,7 +94,7 @@ export class StatusComponent implements OnInit {
     for(let i = 0; i < this.selectedCounters.length; i++) {
       const item = this.rawCounters[this.selectedCounters[i]];
       if (item !== undefined) {
-        this._queryService.getLastCounterValues(item.countersId, 'Week', 100, environment.name).subscribe(data => {
+        this._queryService.getLastCounterValues(item.countersId, 'Week', 84, environment.name).subscribe(data => {
           if (data) {
             item.lastData = data;
             item.barChartLabels = [];
