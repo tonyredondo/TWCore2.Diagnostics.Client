@@ -21,6 +21,7 @@ import { Observable }                                        from 'rxjs/Observab
 import { LogSummary } from '../model/logSummary';
 import { NodeCountersQueryItem } from '../model/nodeCountersQueryItem';
 import { NodeCountersQueryValue } from '../model/nodeCountersQueryValue';
+import { NodeLastCountersValue } from '../model/nodeLastCountersValue';
 import { NodeLogItem } from '../model/nodeLogItem';
 import { NodeStatusItem } from '../model/nodeStatusItem';
 import { NodeTraceItem } from '../model/nodeTraceItem';
@@ -241,6 +242,68 @@ export class QueryService {
         );
     }
 
+
+    /**
+     *
+     *
+     * @param counterId
+     * @param valuesDivision
+     * @param samples
+     * @param environment
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getLastCounterValues(counterId: string, valuesDivision: 'QuarterDay' | 'HalfDay' | 'Day' | 'Week' | 'Month' | 'TwoMonths' | 'QuarterYear' | 'HalfYear' | 'Year', samples: number, environment: string, observe?: 'body', reportProgress?: boolean): Observable<Array<NodeLastCountersValue>>;
+    public getLastCounterValues(counterId: string, valuesDivision: 'QuarterDay' | 'HalfDay' | 'Day' | 'Week' | 'Month' | 'TwoMonths' | 'QuarterYear' | 'HalfYear' | 'Year', samples: number, environment: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<NodeLastCountersValue>>>;
+    public getLastCounterValues(counterId: string, valuesDivision: 'QuarterDay' | 'HalfDay' | 'Day' | 'Week' | 'Month' | 'TwoMonths' | 'QuarterYear' | 'HalfYear' | 'Year', samples: number, environment: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<NodeLastCountersValue>>>;
+    public getLastCounterValues(counterId: string, valuesDivision: 'QuarterDay' | 'HalfDay' | 'Day' | 'Week' | 'Month' | 'TwoMonths' | 'QuarterYear' | 'HalfYear' | 'Year', samples: number, environment: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (counterId === null || counterId === undefined) {
+            throw new Error('Required parameter counterId was null or undefined when calling getLastCounterValues.');
+        }
+
+        if (valuesDivision === null || valuesDivision === undefined) {
+            throw new Error('Required parameter valuesDivision was null or undefined when calling getLastCounterValues.');
+        }
+
+        if (samples === null || samples === undefined) {
+            throw new Error('Required parameter samples was null or undefined when calling getLastCounterValues.');
+        }
+
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling getLastCounterValues.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<NodeLastCountersValue>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/lastcountervalues/${encodeURIComponent(String(counterId))}/${encodeURIComponent(String(valuesDivision))}/${encodeURIComponent(String(samples))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
 
     /**
      *

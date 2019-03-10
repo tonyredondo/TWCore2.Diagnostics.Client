@@ -90,14 +90,16 @@ export class StatusComponent implements OnInit {
     for(let i = 0; i < this.selectedCounters.length; i++) {
       const item = this.rawCounters[this.selectedCounters[i]];
       if (item !== undefined) {
-        this._queryService.getCounterValues(environment.name, item.countersId, fromTime).subscribe(data => {
+        //this._queryService.getCounterValues(environment.name, item.countersId, fromTime)
+        this._queryService.getLastCounterValues(item.countersId, 'Week', 100, environment.name).subscribe(data => {
           if (data) {
             item.lastData = data;
             item.barChartLabels = [];
             item.barChartData = [ { data: [], label: 'Values' } ];
-            for(let j = data.length - 1; j >= 0; j--) {
+            //for(let j = data.length - 1; j >= 0; j--) {
+            for(let j = 0; j < data.length; j++) {
               const itemData = data[j];
-              item.barChartLabels.push(moment(itemData.timestamp).format('HH:mm:ss'));
+              item.barChartLabels.push(moment(itemData.timestamp).format('MM-DD (HH:mm)'));
               item.barChartData[0].data.push(itemData.value);
             }
             this.shownCounters.push(item);

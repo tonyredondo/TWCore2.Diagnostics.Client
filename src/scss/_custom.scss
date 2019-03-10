@@ -1217,7 +1217,7 @@ button {
   .counter-card {
     //float:left;
     display: inline-block;
-    width:400px;
+    width:600px;
     margin:0.5rem;
     .counter-body {
       display: flex;
@@ -1225,11 +1225,11 @@ button {
       padding: 0.5rem;
       .chart-wrapper {
         flex: 1;
-        height:200px;
-        max-height: 200px;
+        height:250px;
+        max-height: 250px;
         .chart {
-          height:200px;
-          max-height: 200px;
+          height:250px;
+          max-height: 250px;
         }
       }
     }
