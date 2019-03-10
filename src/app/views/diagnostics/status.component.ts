@@ -102,6 +102,9 @@ export class StatusComponent implements OnInit {
               item.barChartLabels.push(moment(itemData.timestamp).format('MM-DD (HH:mm)'));
               item.barChartData[0].data.push(itemData.value);
             }
+            if (this.shownCounters.findIndex(citem => citem.countersId == item.countersId) > -1) {
+              return;
+            }
             this.shownCounters.push(item);
             this.shownCounters.sort((a, b) => {
               if (a.application < b.application) {
