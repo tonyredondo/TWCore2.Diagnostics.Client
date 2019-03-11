@@ -22,23 +22,26 @@ export class StatusComponent implements OnInit {
   private _queryParams: Params;
   public noData?: boolean;
   public counters: Array<AppCounters>;
-  public rawCounters: { [ key: string ] : CounterItem };
+  public rawCounters: { [ key: string ]: CounterItem };
   public selectedCounters: Array<string> = [];
-  public shownCounters: Array<CounterItem> = []
+  public shownCounters: Array<CounterItem> = [];
+  timerValue: any;
+  showSideBar = false;
 
   // barChart
   public barChartOptions: any = {
     scaleShowVerticalLines: false,
-    responsive: true
+    responsive: true,
+    animation: false
   };
   public barChartType = 'bar';
   public barChartLegend = false;
 
-  public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartData: any[] = [
-    {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-    {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
-  ];
+  // public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+  // public barChartData: any[] = [
+  //   {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
+  //   {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
+  // ];
 
   constructor(private _queryService: QueryService,
     private _activatedRoute: ActivatedRoute,
@@ -63,17 +66,16 @@ export class StatusComponent implements OnInit {
         this.noData = false;
         this.counters = this.createCountersTree(data);
         this.rawCounters = {};
-        for(let i = 0; i < data.length; i++) {
-          const item = Object.assign(data[i], { selected : false, lastData: [], barChartLabels: [], barChartData:[] }) as CounterItem;
-          for(let j = 0; j < this.selectedCounters.length; j++) {
+        for (let i = 0; i < data.length; i++) {
+          const item = Object.assign(data[i], { selected : false, lastData: [], barChartLabels: [], barChartData: [] }) as CounterItem;
+          for (let j = 0; j < this.selectedCounters.length; j++) {
             if (this.selectedCounters[i] === item.countersId) {
               item.selected = true;
             }
           }
           this.rawCounters[data[i].countersId] = item;
         }
-      }
-      else {
+      } else {
         this.noData = true;
       }
       console.log(this.counters);
@@ -81,30 +83,46 @@ export class StatusComponent implements OnInit {
     });
   }
 
-  timerValue : any;
   refreshGraphs() {
-    if (this.timerValue)
+    if (this.timerValue) {
       clearTimeout(this.timerValue);
-
-    const yesterdayTime = new Date().getTime() - (24*60*60*1000);
+    }
+    const yesterdayTime = new Date().getTime() - (24 * 60 * 60 * 1000);
     const fromTime = new Date();
     fromTime.setTime(yesterdayTime);
     console.log(fromTime);
-    this.shownCounters = []
-    for(let i = 0; i < this.selectedCounters.length; i++) {
+    for (let i = 0; i < this.selectedCounters.length; i++) {
       const item = this.rawCounters[this.selectedCounters[i]];
       if (item !== undefined) {
-        this._queryService.getLastCounterValues(item.countersId, 'Week', 84, environment.name).subscribe(data => {
+        let lastTime = null;
+        if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {
+          lastTime = item.lastData[item.lastData.length - 1].timestamp;
+        }
+        this._queryService.getLastCounterValues(item.countersId, 'Week', environment.name, null, lastTime).subscribe(data => {
           if (data) {
-            item.lastData = data;
-            item.barChartLabels = [];
-            item.barChartData = [ { data: [], label: 'Values' } ];
-            for(let j = 0; j < data.length; j++) {
-              const itemData = data[j];
-              item.barChartLabels.push(moment(itemData.timestamp).format('MM-DD (HH:mm)'));
-              item.barChartData[0].data.push(itemData.value);
+            if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {
+              console.log(data);
+              item.lastData = item.lastData.slice(data.length - 1, item.lastData.length - data.length);
+              item.barChartLabels = item.barChartLabels.slice(data.length - 1, item.barChartLabels.length - data.length);
+              item.barChartData[0].data = item.barChartData[0].data.slice(data.length - 1, item.barChartData[0].data.length - data.length);
+              data.forEach(element => item.lastData.push(element));
+              for (let j = 0; j < data.length; j++) {
+                const itemData = data[j];
+                item.barChartLabels.push(moment(itemData.timestamp).format('MM-DD (HH:mm)'));
+                item.barChartData[0].data.push(itemData.value);
+              }
+            } else {
+              item.lastData = data;
+              item.barChartLabels = [];
+              item.barChartData = [ { data: [], label: 'Values' } ];
+              for (let j = 0; j < data.length; j++) {
+                const itemData = data[j];
+                item.barChartLabels.push(moment(itemData.timestamp).format('MM-DD (HH:mm)'));
+                item.barChartData[0].data.push(itemData.value);
+              }
             }
-            if (this.shownCounters.findIndex(citem => citem.countersId == item.countersId) > -1) {
+
+            if (this.shownCounters.findIndex(citem => citem.countersId === item.countersId) > -1) {
               return;
             }
             this.shownCounters.push(item);
@@ -145,10 +163,10 @@ export class StatusComponent implements OnInit {
     this.timerValue = setTimeout(function() {
       console.log('Refreshing');
       self.refreshGraphs();
-    }, 60000);
+    }, 10000);
   }
 
-  public toggleVisible(item : any) {
+  public toggleVisible(item: any) {
     console.log(item);
     item.itemsVisible = !item.itemsVisible;
   }
@@ -158,16 +176,16 @@ export class StatusComponent implements OnInit {
       this.selectedCounters.push(item.countersId);
     } else {
       const nSelected = new Array<string>();
-      for(let i = 0; i < this.selectedCounters.length; i++) {
+      for (let i = 0; i < this.selectedCounters.length; i++) {
         if (this.selectedCounters[i] !== item.countersId) {
           nSelected.push(this.selectedCounters[i]);
         }
       }
       this.selectedCounters = nSelected;
     }
+    this.shownCounters = [];
     this.refreshGraphs();
   }
-  showSideBar = false;
   public toggleSidebar() {
     this.showSideBar = !this.showSideBar;
   }
@@ -179,12 +197,12 @@ export class StatusComponent implements OnInit {
   }
 
   // Private Methods
-  private createCountersTree(data: NodeCountersQueryItem[]) : AppCounters[] {
+  private createCountersTree(data: NodeCountersQueryItem[]): AppCounters[] {
     const counters = new Array<AppCounters>();
 
-    for(let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       const currentItem = data[i];
-      let appItem = counters.find(item => item.applicationName == currentItem.application);
+      let appItem = counters.find(item => item.applicationName === currentItem.application);
       if (appItem === undefined) {
         appItem = {
           applicationName: currentItem.application,
@@ -195,24 +213,24 @@ export class StatusComponent implements OnInit {
         counters.sort((a, b) => a.applicationName < b.applicationName ? -1 : 1);
       }
 
-      let kindItem = appItem.items.find(item => item.kindName == currentItem.kind);
+      let kindItem = appItem.items.find(item => item.kindName === currentItem.kind);
       if (kindItem === undefined) {
         kindItem = {
           kindName: currentItem.kind,
           items: new Array<CategoryCounters>(),
           itemsVisible: false
-        }
+        };
         appItem.items.push(kindItem);
         appItem.items.sort((a, b) => a.kindName < b.kindName ? -1 : 1);
       }
 
-      let categoryItem = kindItem.items.find(item => item.categoryName == currentItem.category);
+      let categoryItem = kindItem.items.find(item => item.categoryName === currentItem.category);
       if (categoryItem === undefined) {
         categoryItem = {
           categoryName: currentItem.category,
           items: new Array<CounterItem>(),
           itemsVisible: false
-        }
+        };
         kindItem.items.push(categoryItem);
         kindItem.items.sort((a, b) => a.categoryName < b.categoryName ? -1 : 1);
       }
@@ -250,6 +268,6 @@ class CategoryCounters {
 interface CounterItem extends NodeCountersQueryItem {
   selected: boolean;
   lastData: Array<NodeCountersQueryValue>;
-  barChartLabels: string[],
-  barChartData: any[]
+  barChartLabels: string[];
+  barChartData: any[];
 }
