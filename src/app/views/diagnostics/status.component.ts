@@ -90,7 +90,7 @@ export class StatusComponent implements OnInit {
     const yesterdayTime = new Date().getTime() - (24 * 60 * 60 * 1000);
     const fromTime = new Date();
     fromTime.setTime(yesterdayTime);
-    console.log(fromTime);
+    // console.log(fromTime);
     for (let i = 0; i < this.selectedCounters.length; i++) {
       const item = this.rawCounters[this.selectedCounters[i]];
       if (item !== undefined) {
@@ -101,7 +101,7 @@ export class StatusComponent implements OnInit {
         this._queryService.getLastCounterValues(item.countersId, 'Week', environment.name, null, lastTime).subscribe(data => {
           if (data) {
             if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {
-              console.log(data);
+              // console.log(data);
               item.lastData = item.lastData.slice(data.length - 1, item.lastData.length - data.length);
               item.barChartLabels = item.barChartLabels.slice(data.length - 1, item.barChartLabels.length - data.length);
               item.barChartData[0].data = item.barChartData[0].data.slice(data.length - 1, item.barChartData[0].data.length - data.length);
@@ -194,6 +194,8 @@ export class StatusComponent implements OnInit {
   }
   public showSidebar() {
     this.showSideBar = true;
+  }
+  public chartClicked(event: Event) {
   }
 
   // Private Methods
