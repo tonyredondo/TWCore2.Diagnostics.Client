@@ -41,6 +41,7 @@
     "@coreui/coreui-plugin-chartjs-custom-tooltips": "^1.2.0",
     "@coreui/icons": "^0.2.0",
     "@nomadreservations/ngx-codemirror": "^2.0.0",
+    "adm-zip": "^0.4.11",
     "chart.js": "^2.7.2",
     "codemirror": "^5.39.0",
     "core-js": "^2.5.7",
@@ -59,6 +60,7 @@
     "rxjs-compat": "^6.2.1",
     "simple-line-icons": "^2.4.1",
     "ts-helpers": "^1.1.2",
+    "url-parse": "^1.4.3",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
