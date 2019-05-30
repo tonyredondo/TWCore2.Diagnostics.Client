@@ -49,7 +49,7 @@
     "flag-icon-css": "^3.0.0",
     "font-awesome": "^4.7.0",
     "jasmine": "^3.4.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.4.0",
     "moment": "^2.22.2",
     "mutationobserver-shim": "^0.3.2",
     "ng2-charts": "^1.6.0",
