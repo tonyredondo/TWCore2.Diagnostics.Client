@@ -41,7 +41,7 @@
           </div>
           <div class="card-body counter-body">
             <div class="chart-wrapper">
-              <canvas baseChart class="chart" style="height:250px; max-height: 250px;"
+              <canvas baseChart class="chart" style="height:300px; max-height: 300px;"
                 [datasets]="counterItem.barChartData"
                 [labels]="counterItem.barChartLabels"
                 [options]="barChartOptions"
@@ -50,7 +50,6 @@
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
-            <div>Values</div>
           </div>
         </div>
 
