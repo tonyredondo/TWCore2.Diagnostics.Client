@@ -185,7 +185,7 @@
 }
 
 .chart-wrapper {
-  height:205px;
+  height:180px;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
@@ -204,6 +204,8 @@
   vertical-align: middle;
   padding: 0.1rem 0.3rem;
 }
+
+
 
 .span-level-error {
   color: #f86c6b;
@@ -311,6 +313,17 @@
 }
 .table-trace .breakWord {
   padding-right: 15px !important;
+}
+
+.table-trace-list {
+  font-size: 12px;
+  margin-bottom: 0.5rem;
+}
+.table-trace-list td {
+  vertical-align: middle;
+  font-family: Consolas, 'Courier New', Courier, monospace;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 
 .card-range {
@@ -471,7 +484,7 @@
 }
 
 .breadcrumb-body {
-  margin: -22px -30px 22px -30px;
+  margin: -22px -20px 20px -20px;
 }
 .breadcrumb-body table {
   width:100%;
@@ -1168,7 +1181,7 @@
 
 button {
   &.drop {
-    width:50px;
+    width:60px;
   }
   &:hover {
     ul {
@@ -1179,12 +1192,12 @@ button {
   ul {
     position: absolute;
     background-color: #0a78ab;
-    margin: 2px -71px;
+    margin: 2px -101px;
     padding: 5px;
     text-align: initial;
     display: none;
     opacity: 0;
-    width: 110px;
+    width: 150px;
     transition: opacity 0.15s ease-in-out;
     list-style-type: none;
     border-bottom-left-radius: 5px;
@@ -1192,7 +1205,7 @@ button {
     border-top-left-radius: 5px;
     flex-direction: row-reverse;
     li {
-      padding: 3px 5px;
+      padding: 5px 5px;
       flex: 1;
       text-align: center;
       &:hover {
@@ -1393,4 +1406,16 @@ button {
       direction: rtl;
     }
   }
+}
+
+.scrollOverlay {
+  height: calc(100vh - 175px);
+  overflow: auto;
+}
+.p-4 {
+  padding: 1.35rem !important;
+}
+
+.main .container-fluid {
+  padding: 0 20px;
 }

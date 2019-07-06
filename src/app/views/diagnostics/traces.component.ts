@@ -93,7 +93,13 @@ export class TracesComponent implements OnInit {
     let timeInSeconds = (moment(end).valueOf() - moment(start).valueOf()) / 1000;
     let minutes = Math.floor(timeInSeconds / 60);
     let seconds = Math.round(timeInSeconds - (minutes * 60));
-    return (minutes > 9 ? minutes : "0" + minutes) + ":" + (seconds > 9 ? seconds : "0" + seconds);
+    if (minutes > 0 && seconds > 0) {
+      return minutes + " min, " + seconds + " seconds";
+    } else if (minutes > 0) {
+      return minutes + " min";
+    } else {
+      return seconds + " seconds";
+    }
   }
 
   // Private Methods

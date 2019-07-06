@@ -16,7 +16,7 @@
   </table>
 </ol>
 
-<div>
+<div class="scrollOverlay">
 
   <!-- Primer Row con Widgets -->
   <div class="row" [hidden]="!showChart">
@@ -34,21 +34,21 @@
 
     <!--/.col-->
     <div class="col-lg-3 header">
-      <div class="card">
+      <div class="card" style="margin-bottom: 0.2rem;">
         <div class="card-body p-0 clearfix">
           <i class="fa fa-bug bg-danger p-4 font-2xl mr-3 float-left"></i>
           <div class="h5 text-danger mb-0 pt-3">{{errorCount}}</div>
           <div class="text-muted text-uppercase font-weight-bold font-xs">Errors</div>
         </div>
       </div>
-      <div class="card">
+      <div class="card" style="margin-bottom: 0.2rem;">
         <div class="card-body p-0 clearfix">
           <i class="fa fa-warning bg-warning p-4 font-2xl mr-3 float-left"></i>
           <div class="h5 text-warning mb-0 pt-3">{{warningCount}}</div>
           <div class="text-muted text-uppercase font-weight-bold font-xs">Warnings</div>
         </div>
       </div>
-      <div class="card">
+      <div class="card" style="margin-bottom: 0.2rem;">
         <div class="card-body p-0 clearfix">
           <i class="fa fa-info bg-success p-4 font-2xl mr-3 float-left"></i>
           <div class="h5 text-info mb-0 pt-3">{{statsCount}}</div>
