@@ -62,12 +62,14 @@
 
 
   <!-- No Data Alert -->
-  <div class="card" *ngIf="!showChart">
-    <div class="card-body">
-      <alert type="info" class="no-bottom-margin-alert">
-        <strong>Ups!, there is not data for the selected date range.</strong>
-        <br/> Please select another range of dates to get results.
-      </alert>
+  <div class="col-lg-12" *ngIf="!showChart">
+    <div class="card">
+      <div class="card-body">
+        <alert type="info" class="no-bottom-margin-alert">
+          <strong>Ups!, there is not data for the selected date range.</strong>
+          <br/> Please select another range of dates to get results.
+        </alert>
+      </div>
     </div>
   </div>
 

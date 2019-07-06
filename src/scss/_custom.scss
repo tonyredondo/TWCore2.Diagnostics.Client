@@ -31,6 +31,7 @@
   background-color: #f86c6b !important;
   cursor: pointer;
   margin:2px;
+  font-family: sans-serif;
 }
 .button-group {
   font-size: 95%;
@@ -39,12 +40,14 @@
   background-color: #03A9F4 !important;
   cursor: pointer;
   margin:2px;
+  font-family: sans-serif;
 }
 .button-success {
   font-size: 95%;
   float: right !important;
   color: #fff;
   background-color: #4dbd74 !important;
+  font-family: sans-serif;
   cursor: pointer;
   &:hover {
     background-color: #1f9a4a !important;
@@ -55,6 +58,7 @@
   float: right !important;
   color: #fff;
   background-color: #f86c6b !important;
+  font-family: sans-serif;
   cursor: pointer;
   &:hover {
     background-color: #e21b19 !important;
@@ -64,8 +68,9 @@
   font-size: 95%;
   float: right !important;
   color: #fff;
-  background-color: #d3e6fe !important;
-  color: #7f8388 !important;
+  background-color: #bad6fb !important;
+  color: #1a3b52 !important;
+  font-family: sans-serif;
   cursor: pointer;
   &:hover {
     background-color: #171717 !important;
@@ -77,6 +82,7 @@
   float: right !important;
   color: #fff;
   background-color: #009688 !important;
+  font-family: sans-serif;
   cursor: pointer;
 }
 .logButtons {
@@ -425,8 +431,11 @@
   box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
 }
 .popover-header {
-  background-color: #607d8b !important;
+  background-color: #41769c !important;
   color: #ffffff !important;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 0.3rem 0.75rem;
 }
 
 .pre-body {
@@ -781,12 +790,13 @@
   }
   .btn {
     //margin: 1px 2px 1px 0px;
-    padding: 2px 10px 2px;
+    padding: 3px 10px 2px;
     font-size: 11px;
     font-weight: 700;
     //border: 1px solid #628cde;
     border-radius: 0px;
-    background-color: #20a8d8;
+    background-color: #0a78ab;
+    font-family: sans-serif;
     color: #ffffff;
     &:hover {
       background-color: #0a78ab;
@@ -804,7 +814,7 @@
     overflow: hidden;
     margin-right: -10px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-
+    //border-left: dotted 1px #0a78ab;
     .separator {
       display: inline-block;
       width: 0px;
@@ -815,7 +825,7 @@
     text-align: left;
     align-self: center;
     font-weight: bold;
-    color: #484848;
+    color: #1a3b52;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   }
   .rightSide {
@@ -911,7 +921,7 @@
   // }
 }
 .dv-level-trace {
-  background-color: #0572f32e !important;
+  background-color: #0572f34a !important;
   //border-bottom: 1px solid #0554ff52;
   border-bottom: 1px solid #85abff52 !important;
 
@@ -1155,10 +1165,10 @@
     .itemKey {
       flex: 0;
       padding: 3px 10px;
-      background-color: #0e8ac3;
-      border-top: solid 1px #0e8ac3;
-      border-left: solid 1px #0e8ac3;
-      border-right: solid 1px #0e8ac3;
+      background-color: #41769c;
+      border-top: solid 0px #0e8ac3;
+      border-left: solid 0px #0e8ac3;
+      border-right: solid 0px #0e8ac3;
       font-weight: 600;
       font-size: 12px;
       color: #ffffff;
@@ -1220,7 +1230,6 @@ button {
 /* COUNTERS */
 .noData {
   margin-top: 21px;
-  margin-left: 30px;
 }
 .counter-page {
   margin-top: -21px;
@@ -1253,9 +1262,8 @@ button {
 
   .title {
     font-size: 1.2rem;
-    font-weight: bold;
     padding: 10px 10px;
-    color: #20a8d8;
+    color: #366688;
     background: #fff;
   }
   .countersSidebar {
@@ -1283,7 +1291,7 @@ button {
       margin: 5px;
       border-radius: 5px;
       text-align: center;
-      background-color: #20a8d8;
+      background-color: #366688;
       color: #fff;
       cursor: pointer;
       border-left-width: 0px;
@@ -1424,4 +1432,22 @@ button {
 .row {
   margin-left: 0px;
   margin-right: 0px;
+}
+.center-search {
+  width: 100%;
+  text-align: center;
+  padding-top: calc(50vh - 150px);
+  font-size: 1rem;
+  font-weight: 500;
+}
+.sidebar {
+  background: #1b3b52;
+}
+.sidebar .nav-link.active {
+  color: #fff;
+  background: #172733;
+}
+.sidebar .nav-link:hover {
+  color: #fff;
+  background: #2b5a7b;
 }

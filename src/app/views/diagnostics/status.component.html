@@ -1,11 +1,13 @@
 <div class="counter-page">
 
     <!-- No Data Alert -->
-    <div class="card noData" *ngIf="noData == true">
-      <div class="card-body">
-        <alert type="info" class="no-bottom-margin-alert">
-          <strong>Ups!, there is not satus data in this environment</strong>
-        </alert>
+    <div class="col-lg-12" *ngIf="noData == true">
+      <div class="card noData">
+        <div class="card-body">
+          <alert type="info" class="no-bottom-margin-alert">
+            <strong>Ups!, there is not satus data in this environment</strong>
+          </alert>
+        </div>
       </div>
     </div>
 

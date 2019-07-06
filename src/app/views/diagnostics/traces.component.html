@@ -18,12 +18,14 @@
 <div>
 
   <!-- No Data Alert -->
-  <div class="card" *ngIf="traceData != null && traceData?.data.length == 0">
-    <div class="card-body">
-      <alert type="info" class="no-bottom-margin-alert">
-        <strong>Ups!, there is not data for the selected date</strong>
-        <br/> Please select another date to get results.
-      </alert>
+  <div class="col-lg-12" *ngIf="traceData != null && traceData?.data.length == 0">
+    <div class="card">
+      <div class="card-body">
+        <alert type="info" class="no-bottom-margin-alert">
+          <strong>Ups!, there is not data for the selected date</strong>
+          <br/> Please select another date to get results.
+        </alert>
+      </div>
     </div>
   </div>
 
