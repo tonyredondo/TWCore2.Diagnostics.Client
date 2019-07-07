@@ -52,12 +52,32 @@
       <tab *ngFor="let groupItem of groupResults" class="tab-search">
         <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}} <span class="goToClass" *ngIf="groupItem.groupName !== searchValue" (click)="goToGroup(groupItem.groupName)">Load Group</span></ng-template>
 
+        <div class="searchTitle">
+          <div style="width:180px;">
+            <span>Start:</span> {{groupItem.start | date:'dd/MM/yyyy HH:mm:ss'}}
+          </div>
+          <div style="width:180px;">
+            <span>End:</span> {{groupItem.end | date:'dd/MM/yyyy HH:mm:ss'}}
+          </div>
+          <div style="width:180px;">
+            <span>Duration:</span> {{ getTimeDiff(groupItem.end, groupItem.start) }}
+          </div>
+          <div style="width:80px;">
+            <span>Logs:</span> {{groupItem.logsCount}}
+          </div>
+          <div style="width:80px;">
+            <span>Traces:</span> {{groupItem.tracesCount}}
+          </div>
+        </div>
+
         <div class="metadatas" *ngIf="groupItem.metadata != null && groupItem.metadata.length > 0">
           <div class="item" *ngFor="let metaItem of groupItem.metadata">
             <div class="itemKey">{{metaItem.key}}</div>
             <div class="itemValue">{{metaItem.value}}</div>
           </div>
         </div>
+
+
 
         <div class="card card-search" *ngFor="let appItem of groupItem.items" >
           <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffc421' : '' }">

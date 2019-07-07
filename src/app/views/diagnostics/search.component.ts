@@ -128,7 +128,11 @@ export class SearchComponent implements OnInit {
               groupItem = {
                 groupName: dataItem.group,
                 items: [],
-                metadata: []
+                metadata: [],
+                tracesCount: 0,
+                logsCount: 0,
+                start: null,
+                end: null
               };
               // Buscar los metadatas del grupo.
               if (groupItem.groupName) {
@@ -209,7 +213,14 @@ export class SearchComponent implements OnInit {
               // appItem.hidden = false;
             }
             appItem.items.push(nodeItem);
-
+            if (nodeItem.traceId)
+              groupItem.tracesCount += 1;
+            if (nodeItem.logId)
+              groupItem.logsCount += 1;
+            if (groupItem.start == null || groupItem.start > nodeItem.timestamp)
+              groupItem.start = nodeItem.timestamp;
+            if (groupItem.end == null || groupItem.end < nodeItem.timestamp)
+              groupItem.end = nodeItem.timestamp;
           }
         }
 
@@ -487,6 +498,19 @@ export class SearchComponent implements OnInit {
     window.URL.revokeObjectURL(a.href);
     document.body.removeChild(a);
   }
+
+  getTimeDiff(end: Date, start: Date): string {
+    let timeInSeconds = (moment(end).valueOf() - moment(start).valueOf()) / 1000;
+    let minutes = Math.floor(timeInSeconds / 60);
+    let seconds = Math.round(timeInSeconds - (minutes * 60));
+    if (minutes > 0 && seconds > 0) {
+      return minutes + " min, " + seconds + " seconds";
+    } else if (minutes > 0) {
+      return minutes + " min";
+    } else {
+      return seconds + " seconds";
+    }
+  }
 }
 
 interface INodeGroup {
@@ -505,6 +529,10 @@ interface NodeGroup {
   groupName: string;
   items: NodeApp[];
   metadata: KeyValue[];
+  logsCount?: number;
+  tracesCount?: number;
+  start?: Date;
+  end?: Date;
 }
 interface NodeApp {
   appName: string;

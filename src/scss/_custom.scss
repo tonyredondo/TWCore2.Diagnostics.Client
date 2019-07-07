@@ -1163,14 +1163,14 @@
     // border: solid 1px #0e8ac3;
     &:first-child {
       .itemKey {
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
       }
     }
     &:last-child {
       .itemKey {
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
       }
     }
     .itemKey {
@@ -1461,4 +1461,16 @@ button {
 .sidebar .nav-link:hover {
   color: #fff;
   background: #2b5a7b;
+}
+
+.searchTitle {
+  font-size: 12px;
+  display: flex;
+  //margin: -16px -16px 20px -16px;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #f0f3f5;
+  span {
+    font-weight: 700;
+  }
 }
