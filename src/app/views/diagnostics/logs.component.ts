@@ -23,7 +23,7 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 
 export class LogsComponent implements OnInit {
   private _queryParams: Params;
-  private _defaultPageSize = 15;
+  private _defaultPageSize = 10;
   // Summary rows
   public summary: LogSummary;
   public errorCount: number;

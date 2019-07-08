@@ -3,6 +3,12 @@
   font-weight: bold;
 }
 
+.dropdown {
+  .bolder {
+    color: #366688;
+  }
+}
+
 .env-nav-link {
   padding: 0.5rem 1rem !important;
 }
@@ -199,9 +205,14 @@
 .table-log {
   font-size: 12px;
   margin-bottom: 0.5rem;
+  color: #000000;
+}
+.table-log thead th {
+  border-bottom: 2px solid #1a3b52;
 }
 .table-log td {
   font-family: Consolas, 'Courier New', Courier, monospace;
+  vertical-align: middle;
 }
 .table-log-search {
   line-height: 1.2;
@@ -409,6 +420,9 @@
 }
 .card-expanded {
   margin-bottom: 2rem;
+  margin-right: -1.1rem;
+  margin-left: -1.1rem;
+  box-shadow: 0px 0px 15px -3px #111111;
   /*margin-top: 1.5rem;*/
 }
 .card-expanded .card-header {
@@ -518,7 +532,9 @@
 .breadcrumb-title {
   text-align: center;
   padding: 0px;
-  color:#444444;
+  color: #444444;
+  font-family: sans-serif;
+  color: #366688;
 }
 .breadcrumb-title .float-right {
   margin-top: -4px;
@@ -1272,10 +1288,12 @@ button {
 .countersViewport {
 
   .title {
-    font-size: 1.2rem;
     padding: 10px 10px;
     color: #366688;
     background: #fff;
+    font-family: inherit;
+    font-weight: bolder;
+    height:45px;
   }
   .countersSidebar {
     text-align: left;
@@ -1473,4 +1491,8 @@ button {
   span {
     font-weight: 700;
   }
+}
+
+.button-log {
+  width: 75px;
 }

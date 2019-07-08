@@ -359,8 +359,9 @@ export class SearchComponent implements OnInit {
         this.traceObject = x;
         this._codeMirror.instance$.subscribe(editor => {
           editor.setOption('mode', 'application/xml');
-          if (x.startsWith('{')) {
+          if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
             editor.setOption('mode', 'application/json');
+            this.traceObject = JSON.stringify(JSON.parse(this.traceObject), null, 2);
           }
           editor.setOption('theme', 'material');
           editor.setOption('readOnly', true);
@@ -388,8 +389,10 @@ export class SearchComponent implements OnInit {
         this.traceObject = x;
         this._codeMirror.instance$.subscribe(editor => {
           editor.setOption('mode', 'application/json');
-          if (x.startsWith('<?xml')) {
+          if (this.traceObject.startsWith('<?xml')) {
             editor.setOption('mode', 'application/xml');
+          } else {
+            this.traceObject = JSON.stringify(JSON.parse(this.traceObject), null, 2);
           }
           editor.setOption('theme', 'material');
           editor.setOption('readOnly', true);
@@ -417,8 +420,14 @@ export class SearchComponent implements OnInit {
         this.traceObject = x;
         this._codeMirror.instance$.subscribe(editor => {
           editor.setOption('mode', 'text/plain');
-          if (x.startsWith('<?xml')) {
+          if (this.traceObject.startsWith('<?xml')) {
             editor.setOption('mode', 'application/xml');
+            console.log("Xml detected.");
+          }
+          if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
+            editor.setOption('mode', 'application/json');
+            this.traceObject = JSON.stringify(JSON.parse(this.traceObject), null, 2);
+            console.log("Json detected.");
           }
           editor.setOption('theme', 'material');
           editor.setOption('readOnly', true);
