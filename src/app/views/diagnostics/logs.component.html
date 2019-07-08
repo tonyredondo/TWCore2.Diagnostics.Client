@@ -125,19 +125,19 @@
             <table class="table table-sm table-striped table-log">
               <thead>
                 <tr>
-                  <th style="width: 80px">Timestamp</th>
+                  <th style="width: 120px">Timestamp</th>
                   <th style="width: max-content;">Message</th>
-                  <th style="width: 70px; text-align: center">Actions</th>
+                  <th style="width: 70px; text-align: center"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let dataItem of currentLogData(item).unwrappedData?.data">
-                  <td style="font-weight: 400; text-align: center;">{{dataItem.timestamp | date:'dd/MM/yy HH:mm:ss'}}</td>
+                  <td style="font-weight: 400;">{{dataItem.timestamp | date:'dd/MM/yy HH:mm'}}</td>
                   <td class="breakWord">
                     <span *ngIf="dataItem.type != null && dataItem.type != ''">&lt;{{dataItem.type}}&gt;</span>
                     {{dataItem.message}}
                   </td>
-                  <td>
+                  <td *ngIf="(dataItem.group != null && dataItem.group != 'AspNetCore' && dataItem.group.length > 3) || dataItem.exception != null">
                     <div class="logButtons">
                       <span *ngIf="dataItem.group != null && dataItem.group != 'AspNetCore' && dataItem.group.length > 3" class="badge button-group button-log"
                       [routerLink]="['/diagnostics/search']" [queryParams]="{
@@ -148,6 +148,9 @@
                       }">Transaction</span>
                       <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception button-log">Exception</span>
                     </div>
+                  </td>
+                  <td *ngIf="(dataItem.group == null || dataItem.group == 'AspNetCore' || dataItem.group.length <= 3) && dataItem.exception == null">
+                    {{dataItem.machine}}
                   </td>
                 </tr>
               </tbody>
