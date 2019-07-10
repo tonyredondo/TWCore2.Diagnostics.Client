@@ -18,8 +18,13 @@
 
 <div class="scrollOverlay">
 
+  <div class="center-search" *ngIf="bProcessing">
+    <img src="assets/img/loading.gif" />
+    <div>.: Loading :.</div>
+  </div>
+
   <!-- Primer Row con Widgets -->
-  <div class="row" [hidden]="!showChart">
+  <div class="row" [hidden]="!showChart || bProcessing">
 
     <div class="col-lg-9">
       <div class="card">
@@ -74,108 +79,109 @@
   </div>
 
   <!-- Tablas de Datos -->
-  <div *ngFor="let item of summary?.applications">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="card" [ngClass]="{
-            'card-accent-success': currentLogData(item).level === 'Stats',
-            'card-accent-danger': currentLogData(item).level === 'Error',
-            'card-accent-warning': currentLogData(item).level === 'Warning',
-            'card-accent-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning',
-            'card-collapsed': currentLogData(item).isCollapsed,
-            'card-expanded': !currentLogData(item).isCollapsed
-          }">
-          <div class="card-header" [ngClass]="{ 'background-white': currentLogData(item).isCollapsed }">
-            <table class="card-table">
-              <tr>
-                <td class="td-icon">
-                  <i class="fa fa-pointer" [ngClass]="{
-                      'fa-caret-right': currentLogData(item).isCollapsed,
-                      'fa-caret-down': !currentLogData(item).isCollapsed }" (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed"></i>
-                </td>
-                <td class="td-title" (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed">{{item.application}}</td>
-                <td class="td-level" >
-                  <span class="expandedSpan" *ngIf="!currentLogData(item).isCollapsed">
-                      <div class="fa-pointer" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber)">
-                        <i class="fa fa-refresh"></i>
-                        {{currentLogData(item).unwrappedData?.totalResults}} items &nbsp;
-                      </div>
-                  </span>
-                  <div class="btn-group float-right right-buttons" dropdown [isDisabled]="item.levels.length == 1" [hidden]="currentLogData(item).isCollapsed">
-                    <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
-                                  'btn-success': currentLogData(item).level === 'Stats',
-                                  'btn-danger': currentLogData(item).level === 'Error',
-                                  'btn-warning': currentLogData(item).level === 'Warning',
-                                  'btn-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
-                      {{currentLogData(item).level}}
-                      <span class="caret"></span>
-                    </button>
-                    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-                      <li role="menuitem" *ngFor="let level of item.levels">
-                        <a class="dropdown-item" (click)="changeLevel(item, level.name)">{{level.name}}</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <span *ngIf="currentLogData(item).isCollapsed">{{levelsLegend(item)}}</span>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="card-body" [collapse]="currentLogData(item).isCollapsed">
-            <table class="table table-sm table-striped table-log">
-              <thead>
+  <div *ngIf="!bProcessing" >
+    <div *ngFor="let item of summary?.applications">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" [ngClass]="{
+              'card-accent-success': currentLogData(item).level === 'Stats',
+              'card-accent-danger': currentLogData(item).level === 'Error',
+              'card-accent-warning': currentLogData(item).level === 'Warning',
+              'card-accent-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning',
+              'card-collapsed': currentLogData(item).isCollapsed,
+              'card-expanded': !currentLogData(item).isCollapsed
+            }">
+            <div class="card-header" [ngClass]="{ 'background-white': currentLogData(item).isCollapsed }">
+              <table class="card-table">
                 <tr>
-                  <th style="width: 120px">Timestamp</th>
-                  <th style="width: max-content;">Message</th>
-                  <th style="width: 70px; text-align: center"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let dataItem of currentLogData(item).unwrappedData?.data">
-                  <td style="font-weight: 400;">{{dataItem.timestamp | date:'dd/MM/yy HH:mm'}}</td>
-                  <td class="breakWord">
-                    <span *ngIf="dataItem.type != null && dataItem.type != ''">&lt;{{dataItem.type}}&gt;</span>
-                    {{dataItem.message}}
+                  <td class="td-icon">
+                    <i class="fa fa-pointer" [ngClass]="{
+                        'fa-caret-right': currentLogData(item).isCollapsed,
+                        'fa-caret-down': !currentLogData(item).isCollapsed }" (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed"></i>
                   </td>
-                  <td *ngIf="(dataItem.group != null && dataItem.group != 'AspNetCore' && dataItem.group.length > 3) || dataItem.exception != null">
-                    <div class="logButtons">
-                      <span *ngIf="dataItem.group != null && dataItem.group != 'AspNetCore' && dataItem.group.length > 3" class="badge button-group button-log"
-                      [routerLink]="['/diagnostics/search']" [queryParams]="{
-                        term: dataItem.group,
-                        env: environmentName,
-                        fromDate: dataItem.timestamp,
-                        toDate: dataItem.timestamp
-                      }">Transaction</span>
-                      <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception button-log">Exception</span>
+                  <td class="td-title" (click)="currentLogData(item).isCollapsed = !currentLogData(item).isCollapsed">{{item.application}}</td>
+                  <td class="td-level" >
+                    <span class="expandedSpan" *ngIf="!currentLogData(item).isCollapsed">
+                        <div class="fa-pointer" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber)">
+                          <i class="fa fa-refresh"></i>
+                          {{currentLogData(item).unwrappedData?.totalResults}} items &nbsp;
+                        </div>
+                    </span>
+                    <div class="btn-group float-right right-buttons" dropdown [isDisabled]="item.levels.length == 1" [hidden]="currentLogData(item).isCollapsed">
+                      <button dropdownToggle type="button" class="btn dropdown-toggle" [ngClass]="{
+                                    'btn-success': currentLogData(item).level === 'Stats',
+                                    'btn-danger': currentLogData(item).level === 'Error',
+                                    'btn-warning': currentLogData(item).level === 'Warning',
+                                    'btn-secondary': currentLogData(item).level !== 'Stats' && currentLogData(item).level !== 'Error' && currentLogData(item).level !== 'Warning'}">
+                        {{currentLogData(item).level}}
+                        <span class="caret"></span>
+                      </button>
+                      <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li role="menuitem" *ngFor="let level of item.levels">
+                          <a class="dropdown-item" (click)="changeLevel(item, level.name)">{{level.name}}</a>
+                        </li>
+                      </ul>
                     </div>
-                  </td>
-                  <td *ngIf="(dataItem.group == null || dataItem.group == 'AspNetCore' || dataItem.group.length <= 3) && dataItem.exception == null">
-                    {{dataItem.machine}}
+                    <span *ngIf="currentLogData(item).isCollapsed">{{levelsLegend(item)}}</span>
                   </td>
                 </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="card-footer" [collapse]="currentLogData(item).isCollapsed" *ngIf="currentLogData(item).unwrappedData?.totalPages > 1">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber - 1)">Prev</a>
-              </li>
-              <li *ngFor="let i of currentLogData(item).totalPagesArray" class="page-item" [ngClass]="{ 'active' : i == currentLogData(item).unwrappedData?.pageNumber }">
-                <a class="page-link" (click)="goToPage(item, i)">{{i+1}}</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber + 1)">Next</a>
-              </li>
-            </ul>
+              </table>
+            </div>
+            <div class="card-body" [collapse]="currentLogData(item).isCollapsed">
+              <table class="table table-sm table-striped table-log">
+                <thead>
+                  <tr>
+                    <th style="width: 120px">Timestamp</th>
+                    <th style="width: max-content;">Message</th>
+                    <th style="width: 70px; text-align: center"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let dataItem of currentLogData(item).unwrappedData?.data">
+                    <td style="font-weight: 400;">{{dataItem.timestamp | date:'dd/MM/yy HH:mm'}}</td>
+                    <td class="breakWord">
+                      <span *ngIf="dataItem.type != null && dataItem.type != ''">&lt;{{dataItem.type}}&gt;</span>
+                      {{dataItem.message}}
+                    </td>
+                    <td *ngIf="(dataItem.group != null && dataItem.group != 'AspNetCore' && dataItem.group.length > 3) || dataItem.exception != null">
+                      <div class="logButtons">
+                        <span *ngIf="dataItem.group != null && dataItem.group != 'AspNetCore' && dataItem.group.length > 3" class="badge button-group button-log"
+                        [routerLink]="['/diagnostics/search']" [queryParams]="{
+                          term: dataItem.group,
+                          env: environmentName,
+                          fromDate: dataItem.timestamp,
+                          toDate: dataItem.timestamp
+                        }">Transaction</span>
+                        <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception button-log">Exception</span>
+                      </div>
+                    </td>
+                    <td *ngIf="(dataItem.group == null || dataItem.group == 'AspNetCore' || dataItem.group.length <= 3) && dataItem.exception == null">
+                      {{dataItem.machine}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="card-footer" [collapse]="currentLogData(item).isCollapsed" *ngIf="currentLogData(item).unwrappedData?.totalPages > 1">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber - 1)">Prev</a>
+                </li>
+                <li *ngFor="let i of currentLogData(item).totalPagesArray" class="page-item" [ngClass]="{ 'active' : i == currentLogData(item).unwrappedData?.pageNumber }">
+                  <a class="page-link" (click)="goToPage(item, i)">{{i+1}}</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" (click)="goToPage(item, currentLogData(item).unwrappedData?.pageNumber + 1)">Next</a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="row">&nbsp;</div>
   </div>
-
-  <div class="row">&nbsp;</div>
-
 </div>
 
 <!-- Exception View -->

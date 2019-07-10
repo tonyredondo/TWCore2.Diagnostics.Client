@@ -1,5 +1,5 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { PagedListTraceResult } from '../../services/api';
@@ -17,11 +17,13 @@ export class TracesComponent implements OnInit {
   private _queryParams: Params;
   private _currentPage = 0;
   private _pageSize = 50;
+  public bProcessing = false;
   public totalPagesArray: number[];
   public traceData: PagedListTraceResult;
   public bsConfig: Partial<BsDatepickerConfig>;
   public bsValue: Date;
   public environmentName: string;
+  public withErrors: string = 'No';
   constructor(private _queryService: QueryService, private _localeService: BsLocaleService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
 
   // Public Methods
@@ -49,8 +51,10 @@ export class TracesComponent implements OnInit {
     if (environment.name === undefined || environment.name === null || environment.name.length === 0) {
       return;
     }
+    this.bProcessing = true;
     this.environmentName = environment.name;
     this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this._currentPage, this._pageSize).subscribe(item => {
+      this.bProcessing = false;
       if (item === null) {
         return;
       }

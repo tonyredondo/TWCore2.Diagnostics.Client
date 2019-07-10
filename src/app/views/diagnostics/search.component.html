@@ -53,20 +53,27 @@
         <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}} <span class="goToClass" *ngIf="groupItem.groupName !== searchValue" (click)="goToGroup(groupItem.groupName)">Load Group</span></ng-template>
 
         <div class="searchTitle">
-          <div style="width:180px;">
+          <div class="item">
             <span>Start:</span> {{groupItem.start | date:'dd/MM/yyyy HH:mm:ss'}}
           </div>
-          <div style="width:180px;">
+          <div class="item">
             <span>End:</span> {{groupItem.end | date:'dd/MM/yyyy HH:mm:ss'}}
           </div>
-          <div style="width:180px;">
+          <div class="item">
             <span>Duration:</span> {{ getTimeDiff(groupItem.end, groupItem.start) }}
           </div>
-          <div style="width:80px;">
+          <div class="item">
             <span>Logs:</span> {{groupItem.logsCount}}
           </div>
-          <div style="width:80px;">
+          <div class="item">
             <span>Traces:</span> {{groupItem.tracesCount}}
+          </div>
+          <div class="item separator"></div>
+          <div class="item">
+              <div class="btn-group" btnRadioGroup [(ngModel)]="searchView" (click)="getData()">
+                <label class="btn btn-searchview icon-layers icons" btnRadio="ByApp" tabindex="0" role="button"></label>
+                <label class="btn btn-searchview icon-list icons" btnRadio="ByTime" tabindex="0" role="button"></label>
+              </div>
           </div>
         </div>
 
@@ -76,8 +83,6 @@
             <div class="itemValue">{{metaItem.value}}</div>
           </div>
         </div>
-
-
 
         <div class="card card-search" *ngFor="let appItem of groupItem.items" >
           <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffc421' : '' }">

@@ -21,6 +21,7 @@ export class SearchComponent implements OnInit {
   private _queryParams: Params;
   public searchValue: string;
   public bProcessing = false;
+  public searchView: string = 'ByApp';
   public bHasResults?: boolean;
   public bsConfig: Partial<BsDatepickerConfig>;
   public bsValue: Date[];

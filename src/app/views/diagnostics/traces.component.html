@@ -18,7 +18,7 @@
 <div>
 
   <!-- No Data Alert -->
-  <div class="col-lg-12" *ngIf="traceData != null && traceData?.data.length == 0">
+  <div class="col-lg-12" *ngIf="!bProcessing && traceData != null && traceData?.data.length == 0">
     <div class="card">
       <div class="card-body">
         <alert type="info" class="no-bottom-margin-alert">
@@ -29,15 +29,27 @@
     </div>
   </div>
 
+  <div class="center-search" *ngIf="bProcessing">
+    <img src="assets/img/loading.gif" />
+    <div>.: Loading :.</div>
+  </div>
+
   <!-- Tablas de Datos -->
-  <div class="row" *ngIf="traceData != null && traceData.data.length > 0">
+  <div class="row" *ngIf="!bProcessing && traceData != null && traceData.data.length > 0">
     <div class="col-lg-12 scrollOverlay">
       <div class="card">
         <div class="card-body">
-
-          <span class=" float-right">
-              <span *ngIf="traceData != null">{{traceData.totalResults}} items &nbsp;</span>
-          </span>
+          <div class="tracesTitle" *ngIf="traceData != null">
+              <div class="item">
+                  <span>Show only with errors:&nbsp;&nbsp;</span>
+                  <button type="button" class="btn" [ngClass]="{'btn-error': withErrors == 'Yes', 'btn-all': withErrors == 'No'}"
+                    [(ngModel)]="withErrors" (click)="updateData()" btnCheckbox btnCheckboxTrue="Yes" btnCheckboxFalse="No">{{withErrors}}</button>
+              </div>
+              <div class="item separator">&nbsp;</div>
+              <div class="item">
+                <span>Total Traces:</span> {{traceData.totalResults}} items
+              </div>
+          </div>
 
           <table class="table table-sm table-striped table-trace-list" cellpadding="10">
             <thead>
