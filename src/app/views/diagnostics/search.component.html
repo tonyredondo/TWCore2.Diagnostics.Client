@@ -116,7 +116,7 @@
                     <span class="spanMessage">{{rowItem.message}}</span>
                 </div>
                 <div class="dvMessageCol" *ngIf="rowItem.traceId != null">
-                  <div class="dvText"><!-- <i class="fa fa-file-code-o" style="font-size:14px"></i> -->{{rowItem.name}}</div>
+                  <div class="dvText" (click)="showData(rowItem)">{{rowItem.name}}</div>
                   <div class="dvButtons">
                     <ng-container *ngFor="let tag of rowItem.tagsArray">
                         <button class="btn" [ngClass]="{

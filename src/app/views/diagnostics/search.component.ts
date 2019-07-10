@@ -351,6 +351,15 @@ export class SearchComponent implements OnInit {
     this.createInnerExceptionData(item.innerException);
   }
 
+  showData(rowItem: NodeItem) {
+    if (rowItem.hasXml) {
+      this.showXmlData(rowItem.id, rowItem.name);
+    } else if (rowItem.hasJson) {
+      this.showJsonData(rowItem.id, rowItem.name);
+    } else if (rowItem.hasTxt) {
+      this.showTxtData(rowItem.id, rowItem.name);
+    }
+  }
 
   showXmlData(id: string, name: string) {
     this.traceName = name;
