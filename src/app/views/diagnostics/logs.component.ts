@@ -119,9 +119,10 @@ export class LogsComponent implements OnInit {
   }
   getApplications() {
     this.bProcessing = true;
-    this.updateParams();
     this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name, this.bsValue[0], this.bsValue[1]).subscribe(x => {
+      this.updateParams();
       if (x === null) {
+        this.bProcessing = false;
         return;
       }
       this.dataCache = {};
