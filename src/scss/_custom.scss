@@ -1465,8 +1465,12 @@ button {
   width: 100%;
   text-align: center;
   padding-top: calc(50vh - 150px);
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
+  img {
+    width: 50px;
+    height: 50px;
+  }
 }
 .sidebar {
   background: #1b3b52;
@@ -1582,4 +1586,8 @@ button {
   &.active {
     background: #ddd;
   }
+}
+
+.noResultsCard {
+  padding: 0.6rem;
 }

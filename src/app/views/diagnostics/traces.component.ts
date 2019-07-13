@@ -48,10 +48,12 @@ export class TracesComponent implements OnInit {
     this.updateData();
   }
   updateData() {
+    this.bProcessing = true;
     if (environment.name === undefined || environment.name === null || environment.name.length === 0) {
+      this.bProcessing = false;
+      this.traceData = null;
       return;
     }
-    this.bProcessing = true;
     this.environmentName = environment.name;
     this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this._currentPage, this._pageSize).subscribe(item => {
       this.bProcessing = false;

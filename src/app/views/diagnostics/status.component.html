@@ -3,7 +3,7 @@
     <!-- No Data Alert -->
     <div class="col-lg-12" *ngIf="noData == true">
       <div class="card noData">
-        <div class="card-body">
+        <div class="card-body noResultsCard">
           <alert type="info" class="no-bottom-margin-alert">
             <strong>Ups!, there is not satus data in this environment</strong>
           </alert>
@@ -11,7 +11,12 @@
       </div>
     </div>
 
-    <div class="countersViewport" *ngIf="noData == false">
+    <div class="center-search" *ngIf="bProcessing">
+      <img src="assets/img/loading.gif" />
+      <div>.: Loading :.</div>
+    </div>
+
+    <div class="countersViewport" *ngIf="!bProcessing && noData == false">
 
       <div class="countersSidebar little" [ngClass]="{'hide': showSideBar}" (click)="toggleSidebar()">
           <i class="fa fa-area-chart"></i>

@@ -21,6 +21,7 @@ export class StatusComponent implements OnInit {
   private _params: Params;
   private _queryParams: Params;
   public noData?: boolean;
+  public bProcessing = false;
   public counters: Array<AppCounters>;
   public rawCounters: { [ key: string ]: CounterItem };
   public selectedCounters: Array<string> = [];
@@ -55,7 +56,10 @@ export class StatusComponent implements OnInit {
   }
 
   getData() {
+    this.bProcessing = true;
     if (!environment.name) {
+      this.bProcessing = false;
+      this.noData = true;
       return;
     }
     console.log(environment.name);
@@ -78,6 +82,7 @@ export class StatusComponent implements OnInit {
       } else {
         this.noData = true;
       }
+      this.bProcessing = false;
       console.log(this.counters);
       console.log(this.rawCounters);
     });
