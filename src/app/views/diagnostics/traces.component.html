@@ -18,7 +18,7 @@
 <div>
 
   <!-- No Data Alert -->
-  <div class="col-lg-12" *ngIf="!bProcessing && (traceData == null || traceData.data.length == 0)">
+  <div class="col-lg-12" *ngIf="!bProcessing && (groupData == null || groupData.data.length == 0)">
     <div class="card">
       <div class="card-body noResultsCard">
         <alert type="info" class="no-bottom-margin-alert">
@@ -35,11 +35,11 @@
   </div>
 
   <!-- Tablas de Datos -->
-  <div class="row" *ngIf="!bProcessing && traceData != null && traceData.data.length > 0">
+  <div class="row" *ngIf="!bProcessing && groupData != null && groupData.data.length > 0">
     <div class="col-lg-12 scrollOverlay">
       <div class="card">
         <div class="card-body">
-          <div class="tracesTitle" *ngIf="traceData != null">
+          <div class="tracesTitle" *ngIf="groupData != null">
               <div class="item">
                   <span>Show only with errors:&nbsp;&nbsp;</span>
                   <button type="button" class="btn" [ngClass]="{'btn-error': withErrors == 'Yes', 'btn-all': withErrors == 'No'}"
@@ -47,7 +47,7 @@
               </div>
               <div class="item separator">&nbsp;</div>
               <div class="item">
-                <span>Total Traces:</span> {{traceData.totalResults}} items
+                <span>Total Traces:</span> {{groupData.totalResults}} items
               </div>
           </div>
 
@@ -57,16 +57,18 @@
                 <th style="width: 120px;">Start</th>
                 <th style="width: 160px;">Time</th>
                 <th style="width: max-content;">Group</th>
-                <th style="width: 60px;">Count</th>
+                <th style="width: 60px;">Logs</th>
+                <th style="width: 60px;">Traces</th>
                 <th style="width: 90px;"></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let dataItem of traceData?.data">
+              <tr *ngFor="let dataItem of groupData?.data">
                 <td>{{dataItem.start | date:'HH:mm:ss.SSS'}}</td>
                 <td style="text-align: right;">{{ getTimeDiff(dataItem.end, dataItem.start) }}</td>
                 <td class="breakWord">{{dataItem.group}}</td>
-                <td>{{dataItem.count}}</td>
+                <td>{{dataItem.logsCount}}</td>
+                <td>{{dataItem.tracesCount}}</td>
                 <td>
                   <span class="badge"
                     [ngClass]="{ 'button-success': !dataItem.hasErrors, 'button-error': dataItem.hasErrors }"
@@ -81,16 +83,16 @@
             </tbody>
           </table>
         </div>
-        <div class="card-footer" *ngIf="traceData?.totalPages > 1">
+        <div class="card-footer" *ngIf="groupData?.totalPages > 1">
           <ul class="pagination">
             <li class="page-item">
-              <a class="page-link" (click)="goToPage(traceData?.pageNumber - 1)">Prev</a>
+              <a class="page-link" (click)="goToPage(groupData?.pageNumber - 1)">Prev</a>
             </li>
-            <li *ngFor="let i of totalPagesArray" class="page-item" [ngClass]="{ 'active' : i == traceData?.pageNumber }">
+            <li *ngFor="let i of totalPagesArray" class="page-item" [ngClass]="{ 'active' : i == groupData?.pageNumber }">
               <a class="page-link" (click)="goToPage(i)">{{i+1}}</a>
             </li>
             <li class="page-item">
-              <a class="page-link" (click)="goToPage(traceData?.pageNumber + 1)">Next</a>
+              <a class="page-link" (click)="goToPage(groupData?.pageNumber + 1)">Next</a>
             </li>
           </ul>
         </div>

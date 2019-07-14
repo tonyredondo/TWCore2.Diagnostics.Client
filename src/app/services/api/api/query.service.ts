@@ -28,6 +28,7 @@ import { NodeTraceItem } from '../model/nodeTraceItem';
 import { PagedListNodeLogItem } from '../model/pagedListNodeLogItem';
 import { PagedListNodeStatusItem } from '../model/pagedListNodeStatusItem';
 import { PagedListTraceResult } from '../model/pagedListTraceResult';
+import { PagedListGroupResult } from '../model/pagedListGroupResult';
 import { SearchResults } from '../model/searchResults';
 import { SerializedObject } from '../model/serializedObject';
 
@@ -765,15 +766,16 @@ export class QueryService {
      * @param environment
      * @param fromDate
      * @param toDate
+     * @param withErrorsOnly
      * @param page
      * @param pageSize
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean): Observable<PagedListTraceResult>;
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagedListTraceResult>>;
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagedListTraceResult>>;
-    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean): Observable<PagedListTraceResult>;
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagedListTraceResult>>;
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagedListTraceResult>>;
+    public apiQueryByEnvironmentTracesGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (environment === null || environment === undefined) {
             throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentTracesGet.');
         }
@@ -784,6 +786,9 @@ export class QueryService {
         }
         if (toDate !== undefined) {
             queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+        if (withErrorsOnly !== undefined) {
+            queryParameters = queryParameters.set('withErrorsOnly', <any>withErrorsOnly);
         }
         if (page !== undefined) {
             queryParameters = queryParameters.set('page', <any>page);
@@ -1116,6 +1121,78 @@ export class QueryService {
 
         return this.httpClient.get<Array<string>>(`${this.basePath}/api/query`,
             {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+
+    /**
+     *
+     *
+     * @param environment
+     * @param fromDate
+     * @param toDate
+     * @param withErrorsOnly
+     * @param page
+     * @param pageSize
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryByEnvironmentGroupsGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe?: 'body', reportProgress?: boolean): Observable<PagedListGroupResult>;
+    public apiQueryByEnvironmentGroupsGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<PagedListGroupResult>>;
+    public apiQueryByEnvironmentGroupsGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<PagedListGroupResult>>;
+    public apiQueryByEnvironmentGroupsGet(environment: string, fromDate?: Date, toDate?: Date, withErrorsOnly?: boolean, page?: number, pageSize?: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentGroupsGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+        if (withErrorsOnly !== undefined) {
+            queryParameters = queryParameters.set('withErrorsOnly', <any>withErrorsOnly);
+        }
+        if (page !== undefined) {
+            queryParameters = queryParameters.set('page', <any>page);
+        }
+        if (pageSize !== undefined) {
+            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<PagedListGroupResult>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/groups`,
+            {
+                params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

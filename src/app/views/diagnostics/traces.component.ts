@@ -2,7 +2,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
-import { PagedListTraceResult } from '../../services/api';
+import { PagedListGroupResult } from '../../services/api';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
@@ -19,7 +19,7 @@ export class TracesComponent implements OnInit {
   private _pageSize = 50;
   public bProcessing = false;
   public totalPagesArray: number[];
-  public traceData: PagedListTraceResult;
+  public groupData: PagedListGroupResult;
   public bsConfig: Partial<BsDatepickerConfig>;
   public bsValue: Date;
   public environmentName: string;
@@ -53,13 +53,18 @@ export class TracesComponent implements OnInit {
     }
     this.bProcessing = true;
     this.environmentName = environment.name;
-    this._queryService.apiQueryByEnvironmentTracesGet(environment.name, this.bsValue, this.bsValue, this._currentPage, this._pageSize).subscribe(item => {
+    this._queryService.apiQueryByEnvironmentGroupsGet(environment.name, this.bsValue, this.bsValue, this.withErrors == 'Yes', this._currentPage, this._pageSize).subscribe(item => {
       this.bProcessing = false;
       if (item === null) {
         return;
       }
       const maxPages = 10;
-      this.traceData = item;
+      this.groupData = item;
+      if (item.totalResults == 0 && this.withErrors == 'Yes') {
+        this.withErrors = 'No';
+        this.updateData();
+        return;
+      }
       if (item.totalPages < maxPages) {
         this.totalPagesArray = Array(item.totalPages).fill(0).map((a, i) => i);
       } else {
