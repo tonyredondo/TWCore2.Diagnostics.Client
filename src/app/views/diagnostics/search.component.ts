@@ -116,6 +116,7 @@ export class SearchComponent implements OnInit {
       }
       this.bHasResults = true;
       this.searchResults = data;
+      console.log(this.searchResults);
 
       const groupArray = Array<NodeGroup>();
       if (this.searchResults !== null) {
@@ -328,7 +329,6 @@ export class SearchComponent implements OnInit {
       }
       this.groupResults = groupArray;
       console.log(groupArray);
-
     });
   }
 
