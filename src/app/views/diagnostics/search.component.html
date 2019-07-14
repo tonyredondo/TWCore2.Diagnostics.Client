@@ -50,7 +50,7 @@
 
     <tabset>
       <tab *ngFor="let groupItem of groupResults" class="tab-search">
-        <ng-template tabHeading><i class="icon-tag"></i> Group: {{groupItem.groupName}} <span class="goToClass" *ngIf="groupItem.groupName !== searchValue" (click)="goToGroup(groupItem.groupName)">Load Group</span></ng-template>
+        <ng-template tabHeading><i class="icon-tag"></i>{{groupItem.groupName}} <span class="goToClass" *ngIf="groupItem.groupName !== searchValue" (click)="goToGroup(groupItem.groupName)">Load Group</span></ng-template>
 
         <div class="searchTitle">
           <div class="item">

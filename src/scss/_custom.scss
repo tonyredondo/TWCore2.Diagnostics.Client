@@ -1155,14 +1155,15 @@
   }
 }
 .goToClass {
-  background: #e4e5e6;
+  background: #f7f7f7;
   color: #4a4a4a;
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: 3px;
   margin-right: -9px;
   margin-left: 10px;
   font-weight: bold;
   font-size: 12px;
+  border: solid 1px #c8ced3;
 }
 
 .metadatas {
@@ -1597,3 +1598,18 @@ button {
   font-size: 0.9em;
   color: #444;
 }
+
+
+.nav-tabs .nav-link.active {
+  color: #2f353a;
+  background: #f0f3f5 !important;
+  border-color: #c8ced3;
+  border-bottom-color: #f0f3f5 !important;
+}
+/*
+.nav-tabs .nav-link {
+  background: #f0f3f5;
+  border-color: #c8ced3;
+  border-bottom-color: #f0f3f5;
+}
+*/
