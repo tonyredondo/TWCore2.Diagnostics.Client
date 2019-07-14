@@ -36,6 +36,9 @@ export class TracesComponent implements OnInit {
     if (this._queryParams.page !== undefined) {
       this._currentPage = parseInt(this._queryParams.page, 0);
     }
+    if (this._queryParams.withErrors !== undefined) {
+      this.withErrors = this._queryParams.withErrors;
+    }
 
     this.bsConfig = Object.assign({}, {
       containerClass: 'theme-dark-blue',
@@ -116,6 +119,7 @@ export class TracesComponent implements OnInit {
     this._queryParams.env = environment.name;
     this._queryParams.date = moment(this.bsValue).format('YYYY-MM-DD');
     this._queryParams.page = this._currentPage;
+    this._queryParams.withErrors = this.withErrors;
     this._router.navigate([], {
       relativeTo: this._activatedRoute,
       queryParams: this._queryParams,

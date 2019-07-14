@@ -43,7 +43,7 @@
               <div class="item">
                   <span>Show only with errors:&nbsp;&nbsp;</span>
                   <button type="button" class="btn" [ngClass]="{'btn-error': withErrors == 'Yes', 'btn-all': withErrors == 'No'}"
-                    [(ngModel)]="withErrors" (click)="updateData()" btnCheckbox btnCheckboxTrue="Yes" btnCheckboxFalse="No">{{withErrors}}</button>
+                    [(ngModel)]="withErrors" (click)="changeDate()" btnCheckbox btnCheckboxTrue="Yes" btnCheckboxFalse="No">{{withErrors}}</button>
               </div>
               <div class="item separator">&nbsp;</div>
               <div class="item">
