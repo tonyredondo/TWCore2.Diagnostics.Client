@@ -35,7 +35,7 @@ export class StatusComponent implements OnInit {
     responsive: true,
     animation: false
   };
-  public barChartType = 'bar';
+  public barChartType = 'line';
   public barChartLegend = false;
 
   // public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
