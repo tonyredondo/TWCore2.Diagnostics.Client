@@ -32,6 +32,7 @@ import { TracesComponent } from './traces.component';
 import { TraceDetailsComponent } from './tracedetails.component';
 import { StatusComponent } from './status.component';
 import { SearchComponent } from './search.component';
+import { ViewGroupComponent } from './viewgroup.component';
 
 @NgModule({
   imports: [
@@ -58,7 +59,8 @@ import { SearchComponent } from './search.component';
     TracesComponent,
     TraceDetailsComponent,
     StatusComponent,
-    SearchComponent
+    SearchComponent,
+    ViewGroupComponent
   ]
 })
 export class DiagnosticsModule { }

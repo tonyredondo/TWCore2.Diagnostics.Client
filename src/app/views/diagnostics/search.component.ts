@@ -352,10 +352,10 @@ export class SearchComponent implements OnInit {
   }
 
   showData(rowItem: NodeItem) {
-    if (rowItem.hasXml) {
-      this.showXmlData(rowItem.id, rowItem.name);
-    } else if (rowItem.hasJson) {
+    if (rowItem.hasJson) {
       this.showJsonData(rowItem.id, rowItem.name);
+    } else if (rowItem.hasXml) {
+      this.showXmlData(rowItem.id, rowItem.name);
     } else if (rowItem.hasTxt) {
       this.showTxtData(rowItem.id, rowItem.name);
     }
