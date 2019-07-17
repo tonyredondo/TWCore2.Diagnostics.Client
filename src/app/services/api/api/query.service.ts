@@ -36,6 +36,7 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 import { environment } from '../../../../environments/environment';
 import { KeyValue } from '../model/keyValue';
+import { GroupData } from '../model/models';
 
 
 @Injectable()
@@ -577,6 +578,132 @@ export class QueryService {
             }
         );
     }
+
+
+    /**
+     *
+     *
+     * @param environment
+     * @param searchTerm
+     * @param fromDate
+     * @param toDate
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryByEnvironmentGroupSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<string>>>;
+    public apiQueryByEnvironmentGroupSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<Array<string>>;
+    public apiQueryByEnvironmentGroupSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<string>>>;
+    public apiQueryByEnvironmentGroupSearchBySearchTermGet(environment: string, searchTerm: string, fromDate?: Date, toDate?: Date, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentGroupSearchBySearchTermGet.');
+        }
+        if (searchTerm === null || searchTerm === undefined) {
+            throw new Error('Required parameter searchTerm was null or undefined when calling apiQueryByEnvironmentGroupSearchBySearchTermGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<string>>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/groups/search/${encodeURIComponent(String(searchTerm))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+
+
+
+    /**
+     *
+     *
+     * @param environment
+     * @param searchTerm
+     * @param fromDate
+     * @param toDate
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiQueryByEnvironmentGroupLoadGet(environment: string, group: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<GroupData>>;
+    public apiQueryByEnvironmentGroupLoadGet(environment: string, group: string, observe?: 'body', reportProgress?: boolean): Observable<GroupData>;
+    public apiQueryByEnvironmentGroupLoadGet(environment: string, group: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<GroupData>>;
+    public apiQueryByEnvironmentGroupLoadGet(environment: string, group: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentGroupLoadGet.');
+        }
+        if (group === null || group === undefined) {
+            throw new Error('Required parameter searchTerm was null or undefined when calling apiQueryByEnvironmentGroupLoadGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<GroupData>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/groups/${encodeURIComponent(String(group))}`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+
+
 
     /**
      *

@@ -11,31 +11,10 @@
  */
 import { NodeLogItem } from './nodeLogItem';
 import { NodeTraceItem } from './nodeTraceItem';
-import { SerializableException } from './serializableException';
+import { NodeInfo } from './nodeInfo';
 
 export interface SearchResults {
     logs?: Array<NodeLogItem>;
     traces?: Array<NodeTraceItem>;
     data?: Array<NodeInfo>;
-}
-export interface NodeInfo {
-    logId?: string;
-    assembly?: string;
-    type?: string;
-    group?: string;
-    code?: string;
-    level?: NodeLogItem.LevelEnum;
-    message?: string;
-    exception?: SerializableException;
-    timestamp?: Date;
-    instanceId?: string;
-    id?: string;
-    environment?: string;
-    machine?: string;
-    application?: string;
-
-    traceId?: string;
-    tags?: string;
-    name?: string;
-    formats?: string[];
 }
