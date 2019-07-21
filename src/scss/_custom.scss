@@ -1697,10 +1697,10 @@ button {
         border-bottom-width: 0px;
         td {
           &:first-child {
-            border-bottom-left-radius: 5px;
+            border-bottom-left-radius: 10px;
           }
           &:last-child {
-            border-bottom-right-radius: 5px;
+            border-bottom-right-radius: 10px;
           }
         }
       }
