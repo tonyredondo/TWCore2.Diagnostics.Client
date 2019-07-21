@@ -1688,6 +1688,9 @@ button {
           font-size: 100%;
           padding: 5px 8px;
         }
+        &.traceName {
+          cursor: pointer;
+        }
       }
       &:last-child {
         border-bottom-width: 0px;
