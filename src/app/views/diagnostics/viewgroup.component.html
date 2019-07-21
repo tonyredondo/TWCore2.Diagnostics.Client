@@ -118,11 +118,11 @@
     <table class="tableDataView">
       <thead>
         <tr>
-          <th>Timestamp</th>
-          <th>Application</th>
+          <th style="width:100px;">Timestamp</th>
+          <th style="width:150px;">Application</th>
           <th>Name / Message</th>
-          <th style="width: 300px;">Tags / Type</th>
-          <th>Actions</th>
+          <th style="width:250px;">Tags / Type</th>
+          <th style="width:110px;">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -133,10 +133,41 @@
           'dv-level-trace' : dataItem.traceId != null
         }">
           <td style="font-weight: bold">{{dataItem.timestamp | date:'HH:mm:ss.SSS'}}</td>
-          <td>{{dataItem.application}}</td>
+          <td class="ellipsis" title="{{dataItem.application}}">{{dataItem.application}}</td>
           <td>{{dataItem.traceId ? dataItem.name : dataItem.message}}</td>
-          <td>{{dataItem.traceId ? dataItem.tags : dataItem.type}}</td>
-          <td></td>
+          <td *ngIf="dataItem.traceId" style="text-align: right">
+            <div *ngFor="let tag of dataItem.tags.split(', ')">
+              <span style="font-weight: bold">{{tag.split(':')[0]}}</span>
+              <span>{{tag.split(':')[1]}}</span>
+            </div>
+          </td>
+          <td *ngIf="!dataItem.traceId" style="font-style: italic; text-align: right">{{dataItem.type}}</td>
+          <td *ngIf="dataItem.logId != null">
+            <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception">Exception</span>
+          </td>
+          <td class="actions" *ngIf="dataItem.traceId != null">
+            <button class="btn drop" *ngIf="dataItem.formats !== null && dataItem.formats.indexOf('XML') > -1">
+              XML
+              <ul>
+                <li (click)="showXmlData(dataItem.traceId, dataItem.name)">View</li>
+                <li (click)="downloadXmlData(dataItem.traceId, dataItem.name)">Download</li>
+              </ul>
+            </button>
+            <button class="btn drop" *ngIf="dataItem.formats !== null && dataItem.formats.indexOf('JSON') > -1">
+              JSON
+              <ul>
+                <li (click)="showJsonData(dataItem.traceId, dataItem.name)">View</li>
+                <li (click)="downloadJsonData(dataItem.traceId, dataItem.name)">Download</li>
+              </ul>
+            </button>
+            <button class="btn drop" *ngIf="dataItem.formats !== null && dataItem.formats.indexOf('TXT') > -1">
+              TXT
+              <ul>
+                <li (click)="showTxtData(dataItem.traceId, dataItem.name)">View</li>
+                <li (click)="downloadTxtData(dataItem.traceId, dataItem.name)">Download</li>
+              </ul>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>

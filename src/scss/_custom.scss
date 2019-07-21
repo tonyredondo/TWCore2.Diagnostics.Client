@@ -1624,6 +1624,8 @@ button {
 .tableDataView {
   font-size: 11px;
   width: 100%;
+  table-layout: fixed;
+  margin-bottom: 10px;
   thead {
     tr {
       background-color: #1a3b52;
@@ -1644,13 +1646,58 @@ button {
   }
   tbody {
     tr {
+      border-bottom: solid 1px #efefef;
+      &.dv-level-error {
+        td {
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+      }
       td {
-        padding: 5px 5px;
+        padding: 0px 4px;
+        word-break: break-word;
         &:first-child {
           padding-left: 10px;
         }
         &:last-child {
           padding-right: 10px;
+        }
+        &.ellipsis {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          direction: rtl;
+        }
+        &.actions {
+          float: right;
+          button {
+            margin-top: 5px;
+            font-weight: bold;
+            font-size: 11px;
+            width: 45px;
+            padding: 2px;
+            background-color: #0a78ab;
+            color: #fff;
+            margin-right: 2px;
+            ul {
+              margin: 1px -108px;
+            }
+          }
+        }
+        .button-exception {
+          font-size: 100%;
+          padding: 5px 8px;
+        }
+      }
+      &:last-child {
+        border-bottom-width: 0px;
+        td {
+          &:first-child {
+            border-bottom-left-radius: 5px;
+          }
+          &:last-child {
+            border-bottom-right-radius: 5px;
+          }
         }
       }
     }
