@@ -293,6 +293,16 @@ export class ViewGroupComponent implements OnInit {
     }
   }
 
+  showDataTime(rowItem: any) {
+    if (rowItem.formats !== null && rowItem.formats.indexOf('JSON') > -1) {
+      this.showJsonData(rowItem.id, rowItem.name);
+    } else if (rowItem.formats !== null && rowItem.formats.indexOf('XML') > -1) {
+      this.showXmlData(rowItem.id, rowItem.name);
+    } else if (rowItem.formats !== null && rowItem.formats.indexOf('TXT') > -1) {
+      this.showTxtData(rowItem.id, rowItem.name);
+    }
+  }
+
   showXmlData(id: string, name: string) {
     this.traceName = name;
     this._queryService.apiQueryByEnvironmentTracesXmlByIdGet(environment.name, id).subscribe(x => {

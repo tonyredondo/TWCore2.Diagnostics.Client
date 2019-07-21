@@ -134,7 +134,7 @@
         }">
           <td style="font-weight: bold">{{dataItem.timestamp | date:'HH:mm:ss.SSS'}}</td>
           <td class="ellipsis" title="{{dataItem.application}}">{{dataItem.application}}</td>
-          <td *ngIf="dataItem.traceId" (click)="showData(rowItem)" class="traceName">{{dataItem.name}}</td>
+          <td *ngIf="dataItem.traceId" (click)="showDataTime(dataItem)" class="traceName">{{dataItem.name}}</td>
           <td *ngIf="!dataItem.traceId">{{dataItem.message}}</td>
           <td *ngIf="dataItem.traceId" style="text-align: right">
             <div *ngFor="let tag of dataItem.tags.split(', ')">
