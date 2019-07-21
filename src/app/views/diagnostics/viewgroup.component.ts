@@ -10,6 +10,7 @@ import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
 import { KeyValue } from '../../services/api/model/keyValue';
+import * as vkbeautify from 'vkbeautify';
 defineLocale('en-gb', enGbLocale);
 
 @Component({
@@ -300,9 +301,11 @@ export class ViewGroupComponent implements OnInit {
         this.traceObject = x;
         this._codeMirror.instance$.subscribe(editor => {
           editor.setOption('mode', 'application/xml');
-          if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
+          if (this.traceObject.startsWith('<?xml')) {
+            this.traceObject = vkbeautify.xml(this.traceObject);
+          } else if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
             editor.setOption('mode', 'application/json');
-            this.traceObject = JSON.stringify(JSON.parse(this.traceObject), null, 2);
+            this.traceObject = vkbeautify.json(this.traceObject);
           }
           editor.setOption('theme', 'material');
           editor.setOption('readOnly', true);
@@ -332,8 +335,9 @@ export class ViewGroupComponent implements OnInit {
           editor.setOption('mode', 'application/json');
           if (this.traceObject.startsWith('<?xml')) {
             editor.setOption('mode', 'application/xml');
+            this.traceObject = vkbeautify.xml(this.traceObject);
           } else {
-            this.traceObject = JSON.stringify(JSON.parse(this.traceObject), null, 2);
+            this.traceObject = vkbeautify.json(this.traceObject);
           }
           editor.setOption('theme', 'material');
           editor.setOption('readOnly', true);
@@ -363,11 +367,12 @@ export class ViewGroupComponent implements OnInit {
           editor.setOption('mode', 'text/plain');
           if (this.traceObject.startsWith('<?xml')) {
             editor.setOption('mode', 'application/xml');
+            this.traceObject = vkbeautify.xml(this.traceObject);
             console.log("Xml detected.");
           }
           if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
             editor.setOption('mode', 'application/json');
-            this.traceObject = JSON.stringify(JSON.parse(this.traceObject), null, 2);
+            this.traceObject = vkbeautify.json(this.traceObject);
             console.log("Json detected.");
           }
           editor.setOption('theme', 'material');
