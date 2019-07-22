@@ -1,5 +1,5 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
@@ -14,7 +14,8 @@ defineLocale('en-gb', enGbLocale);
 
 
 @Component({
-  templateUrl: 'search.component.html'
+  templateUrl: 'search.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class SearchComponent implements OnInit {
@@ -30,7 +31,8 @@ export class SearchComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _codeMirror: CodemirrorService,
-    private localeService: BsLocaleService) {}
+    private localeService: BsLocaleService,
+    private cdr: ChangeDetectorRef) {}
 
   // Public Methods
   ngOnInit() {
@@ -63,12 +65,14 @@ export class SearchComponent implements OnInit {
   }
 
   getData() {
+    this.cdr.detectChanges();
     if (this.searchValue === undefined || this.searchValue === null || this.searchValue.length === 0) {
       return;
     }
     this.bHasResults = null;
     this.bProcessing = true;
     let searchVal = this.searchValue;
+    this.cdr.detectChanges();
 
     if (searchVal != null && (searchVal.startsWith('http://') || searchVal.startsWith('HTTP://'))) {
       const regex1 = /[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i;
@@ -94,6 +98,7 @@ export class SearchComponent implements OnInit {
       }
       this.bHasResults = true;
       console.log(this.results);
+      this.cdr.detectChanges();
     });
   }
 

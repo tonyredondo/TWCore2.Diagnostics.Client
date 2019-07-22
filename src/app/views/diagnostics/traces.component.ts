@@ -1,5 +1,5 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { PagedListGroupResult } from '../../services/api';
@@ -10,7 +10,8 @@ defineLocale('en-gb', enGbLocale);
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 
 @Component({
-  templateUrl: 'traces.component.html'
+  templateUrl: 'traces.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class TracesComponent implements OnInit {
@@ -24,7 +25,8 @@ export class TracesComponent implements OnInit {
   public bsValue: Date;
   public environmentName: string;
   public withErrors: string = 'No';
-  constructor(private _queryService: QueryService, private _localeService: BsLocaleService, private _activatedRoute: ActivatedRoute, private _router: Router) {}
+  constructor(private _queryService: QueryService, private _localeService: BsLocaleService,
+    private _activatedRoute: ActivatedRoute, private _router: Router, private cdr: ChangeDetectorRef) {}
 
   // Public Methods
   ngOnInit() {
@@ -51,13 +53,16 @@ export class TracesComponent implements OnInit {
     this.updateData();
   }
   updateData() {
+    this.cdr.detectChanges();
     if (environment.name === undefined || environment.name === null || environment.name.length === 0) {
       return;
     }
     this.bProcessing = true;
     this.environmentName = environment.name;
+    this.cdr.detectChanges();
     this._queryService.apiQueryByEnvironmentGroupsGet(environment.name, this.bsValue, this.bsValue, this.withErrors == 'Yes', this._currentPage, this._pageSize).subscribe(item => {
       this.bProcessing = false;
+      this.cdr.detectChanges();
       if (item === null) {
         return;
       }
@@ -82,6 +87,7 @@ export class TracesComponent implements OnInit {
           this.totalPagesArray = Array(maxPages).fill(0).map((a, i) => startPoint + i);
         }
       }
+      this.cdr.detectChanges();
     });
   }
   changeDate() {

@@ -1,5 +1,5 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
@@ -15,7 +15,8 @@ defineLocale('en-gb', enGbLocale);
 
 @Component({
   selector:    'view-group',
-  templateUrl: 'viewgroup.component.html'
+  templateUrl: 'viewgroup.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewGroupComponent implements OnInit {
   private _group: string;
@@ -50,13 +51,15 @@ export class ViewGroupComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _codeMirror: CodemirrorService,
-    private localeService: BsLocaleService) {}
+    private localeService: BsLocaleService,
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
   }
 
   async loadData() {
     this.bProcessing = true;
+    this.cdr.detectChanges();
     var gData = await this._queryService.apiQueryByEnvironmentGroupLoadGet(environment.name, this._group).toPromise() as any as GroupDataExt;
     gData = gData || {
       environment: environment.name,
@@ -261,6 +264,7 @@ export class ViewGroupComponent implements OnInit {
     console.log("Extended data", gData);
     this.groupData = gData;
     this.bProcessing = false;
+    this.cdr.detectChanges();
   }
 
 
@@ -312,10 +316,15 @@ export class ViewGroupComponent implements OnInit {
         this._codeMirror.instance$.subscribe(editor => {
           editor.setOption('mode', 'application/xml');
           if (this.traceObject.startsWith('<?xml')) {
-            this.traceObject = vkbeautify.xml(this.traceObject);
+            debugger;
+            if (this.lineLessThan(this.traceObject, 5)) {
+              this.traceObject = vkbeautify.xml(this.traceObject);
+            }
           } else if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
             editor.setOption('mode', 'application/json');
-            this.traceObject = vkbeautify.json(this.traceObject);
+            if (this.lineLessThan(this.traceObject, 5)) {
+              this.traceObject = vkbeautify.json(this.traceObject);
+            }
           }
           editor.setOption('theme', 'material');
           editor.setOption('readOnly', true);
@@ -345,9 +354,13 @@ export class ViewGroupComponent implements OnInit {
           editor.setOption('mode', 'application/json');
           if (this.traceObject.startsWith('<?xml')) {
             editor.setOption('mode', 'application/xml');
-            this.traceObject = vkbeautify.xml(this.traceObject);
+            if (this.lineLessThan(this.traceObject, 5)) {
+              this.traceObject = vkbeautify.xml(this.traceObject);
+            }
           } else {
-            this.traceObject = vkbeautify.json(this.traceObject);
+            if (this.lineLessThan(this.traceObject, 5)) {
+              this.traceObject = vkbeautify.json(this.traceObject);
+            }
           }
           editor.setOption('theme', 'material');
           editor.setOption('readOnly', true);
@@ -377,12 +390,16 @@ export class ViewGroupComponent implements OnInit {
           editor.setOption('mode', 'text/plain');
           if (this.traceObject.startsWith('<?xml')) {
             editor.setOption('mode', 'application/xml');
-            this.traceObject = vkbeautify.xml(this.traceObject);
+            if (this.lineLessThan(this.traceObject, 5)) {
+              this.traceObject = vkbeautify.xml(this.traceObject);
+            }
             console.log("Xml detected.");
           }
           if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
             editor.setOption('mode', 'application/json');
-            this.traceObject = vkbeautify.json(this.traceObject);
+            if (this.lineLessThan(this.traceObject, 5)) {
+              this.traceObject = vkbeautify.json(this.traceObject);
+            }
             console.log("Json detected.");
           }
           editor.setOption('theme', 'material');
@@ -463,6 +480,22 @@ export class ViewGroupComponent implements OnInit {
     }
   }
 
+  lineLessThan(value: string, lines: number): boolean {
+    if (value === undefined) {
+      return true;
+    }
+    if (value === null) {
+      return true;
+    }
+    var idx = 0;
+    while (lines > 0 && idx < value.length - 1) {
+      idx = value.indexOf('\n', idx + 1);
+      if (idx < 1)
+        break;
+      lines--;
+    }
+    return lines > 0;
+  }
 }
 
 /*********************************/
