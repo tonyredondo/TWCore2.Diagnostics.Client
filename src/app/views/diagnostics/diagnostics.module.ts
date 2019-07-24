@@ -15,6 +15,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { CodemirrorModule } from '@nomadreservations/ngx-codemirror';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 // Components Routing
 import { DiagnosticsRoutingModule } from './diagnostics-routing.module';
@@ -31,6 +32,7 @@ import { TracesComponent } from './traces.component';
 import { TraceDetailsComponent } from './tracedetails.component';
 import { StatusComponent } from './status.component';
 import { SearchComponent } from './search.component';
+import { ViewGroupComponent } from './viewgroup.component';
 
 @NgModule({
   imports: [
@@ -49,14 +51,16 @@ import { SearchComponent } from './search.component';
     ModalModule.forRoot(),
     ChartsModule,
     AlertModule.forRoot(),
-    CodemirrorModule
+    CodemirrorModule,
+    ButtonsModule
   ],
   declarations: [
     LogsComponent,
     TracesComponent,
     TraceDetailsComponent,
     StatusComponent,
-    SearchComponent
+    SearchComponent,
+    ViewGroupComponent
   ]
 })
 export class DiagnosticsModule { }

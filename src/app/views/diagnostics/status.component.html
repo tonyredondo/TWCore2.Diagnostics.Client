@@ -1,15 +1,22 @@
 <div class="counter-page">
 
     <!-- No Data Alert -->
-    <div class="card noData" *ngIf="noData == true">
-      <div class="card-body">
-        <alert type="info" class="no-bottom-margin-alert">
-          <strong>Ups!, there is not satus data in this environment</strong>
-        </alert>
+    <div class="col-lg-12" *ngIf="noData == true">
+      <div class="card noData">
+        <div class="card-body noResultsCard">
+          <alert type="info" class="no-bottom-margin-alert">
+            <strong>Ups!, there is not satus data in this environment</strong>
+          </alert>
+        </div>
       </div>
     </div>
 
-    <div class="countersViewport" *ngIf="noData == false">
+    <div class="center-search" *ngIf="bProcessing">
+      <img src="assets/img/loading.gif" />
+      <div>.: Loading :.</div>
+    </div>
+
+    <div class="countersViewport" *ngIf="!bProcessing && noData == false">
 
       <div class="countersSidebar little" [ngClass]="{'hide': showSideBar}" (click)="toggleSidebar()">
           <i class="fa fa-area-chart"></i>
@@ -41,7 +48,7 @@
           </div>
           <div class="card-body counter-body">
             <div class="chart-wrapper">
-              <canvas baseChart class="chart" style="height:250px; max-height: 250px;"
+              <canvas baseChart class="chart" style="height:300px; max-height: 300px;"
                 [datasets]="counterItem.barChartData"
                 [labels]="counterItem.barChartLabels"
                 [options]="barChartOptions"
@@ -50,7 +57,6 @@
                 (chartHover)="chartHovered($event)"
                 (chartClick)="chartClicked($event)"></canvas>
             </div>
-            <div>Values</div>
           </div>
         </div>
 

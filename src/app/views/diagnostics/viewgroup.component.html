@@ -1,0 +1,286 @@
+<div class="center-search innerTab" *ngIf="bProcessing">
+  <img src="assets/img/loading.gif" />
+  <div>.: Loading :.</div>
+</div>
+
+<div *ngIf="groupData && !bProcessing">
+
+  <!-- Title bar -->
+  <div class="searchTitle">
+    <div class="item">
+      <span>Start:</span> {{groupData.start | date:'dd/MM/yyyy HH:mm:ss'}}
+    </div>
+    <div class="item">
+      <span>End:</span> {{groupData.end | date:'dd/MM/yyyy HH:mm:ss'}}
+    </div>
+    <div class="item">
+      <span>Duration:</span> {{ getTimeDiff(groupData.end, groupData.start) }}
+    </div>
+    <div class="item">
+      <span>Logs:</span> {{groupData.logsCount}}
+    </div>
+    <div class="item">
+      <span>Traces:</span> {{groupData.tracesCount}}
+    </div>
+    <div class="item separator"></div>
+    <div class="item">
+        <div class="btn-group searchView" btnRadioGroup [(ngModel)]="searchView">
+          <label class="btn btn-searchview icon-layers icons" btnRadio="ByApp" tabindex="0" role="button"></label>
+          <label class="btn btn-searchview icon-list icons" btnRadio="ByTime" tabindex="0" role="button"></label>
+        </div>
+    </div>
+  </div>
+
+  <!-- Metadata -->
+  <div class="metadatas" *ngIf="groupData.metadata != null && groupData.metadata.length > 0">
+    <div class="item" *ngFor="let metaItem of groupData.metadata">
+      <div class="itemKey">{{metaItem.key}}</div>
+      <div class="itemValue">{{metaItem.value}}</div>
+    </div>
+  </div>
+
+  <!-- Grouped Data View -->
+  <div *ngIf="searchView == 'ByApp'">
+    <div class="card card-search" *ngFor="let appItem of groupData.groupedData" >
+      <div class="card-header" (click)="appItem.hidden = !appItem.hidden"  [ngStyle]="{ 'border-bottom' : appItem.hasError ? '4px solid #f86c6b' : appItem.hasWarning ? '4px solid #ffc421' : '' }">
+        <div class="title"><i class="fa fa-gear" [ngStyle]="{ 'color' : appItem.hasError ? '#f14948' : appItem.hasWarning ? '#ffc107' : '#383838' }"></i>&nbsp;&nbsp;{{appItem.appName}}</div>
+        <div class="counter">{{appItem.items.length}} items</div>
+      </div>
+      <div class="card-body" [collapse]="appItem.hidden">
+        <div class="dvData">
+          <div *ngFor="let rowItem of appItem.items; let isFirst = first" class="dvRow"  [ngClass]="{
+            'dv-level-error': rowItem.level == 'Error',
+            'dv-level-warning': rowItem.level == 'Warning',
+            'dv-level-success': rowItem.level == 'Stats',
+            'dv-level-trace' : rowItem.traceId != null,
+            'messageEnd' : rowItem.message && rowItem.message.indexOf('[END') > -1,
+            'messageStart' : rowItem.message && rowItem.message.indexOf('[START') > -1,
+            'nextIsStart' : rowItem.nextIsStart,
+            'prevIsEnd' : rowItem.prevIsEnd,
+            'noDiff' : !rowItem.diffTime
+          }">
+            <div class="dvTimeCol" *ngIf="!rowItem.diffTime">
+              {{rowItem.timestamp | date:'HH:mm:ss.SSS'}}
+            </div>
+            <div class="dvTimeCol addTime" *ngIf="rowItem.diffTime" [tooltip]="rowItem.timestamp | date:'HH:mm:ss.SSS'">
+              {{rowItem.diffTime}}
+            </div>
+            <div class="dvMessageCol" *ngIf="rowItem.logId != null">
+                <div class="rightSide">
+                  <span class="dvMessageType" *ngIf="rowItem.type != null">{{rowItem.type}}</span>
+                  <span *ngIf="rowItem.exception != null" (click)="showException(rowItem)" class="badge button-exception">Show Exception</span>
+                </div>
+                <span class="spanMessage">{{rowItem.message}}</span>
+            </div>
+            <div class="dvMessageCol" *ngIf="rowItem.traceId != null">
+              <div class="dvText" (click)="showData(rowItem)">{{rowItem.name}}</div>
+              <div class="dvButtons">
+                <ng-container *ngFor="let tag of rowItem.tagsArray">
+                    <button class="btn" [ngClass]="{
+                      'button-info' : tag.key.indexOf('Status') == -1,
+                      'button-success' : tag.key.indexOf('Status') > -1 && tag.value == 'Success',
+                      'button-warning' : tag.key.indexOf('Status') > -1 && tag.value == 'Warning',
+                      'button-error' : tag.key.indexOf('Status') > -1 && tag.value == 'Error'
+                    }" [tooltip]="tag.value" [popover]="tag.value" [popoverTitle]="tag.key" placement="top" [outsideClick]="true">{{tag.key}}</button>
+                </ng-container>
+                <div class="separator"></div>
+                <button class="btn drop" *ngIf="rowItem.hasXml">
+                  XML
+                  <ul>
+                    <li (click)="showXmlData(rowItem.id, rowItem.name)">View</li>
+                    <li (click)="downloadXmlData(rowItem.id, rowItem.name)">Download</li>
+                  </ul>
+                </button>
+                <button class="btn drop" *ngIf="rowItem.hasJson">
+                  JSON
+                  <ul>
+                    <li (click)="showJsonData(rowItem.id, rowItem.name)">View</li>
+                    <li (click)="downloadJsonData(rowItem.id, rowItem.name)">Download</li>
+                  </ul>
+                </button>
+                <button class="btn drop" *ngIf="rowItem.hasTxt">
+                  TXT
+                  <ul>
+                    <li (click)="showTxtData(rowItem.id, rowItem.name)">View</li>
+                    <li (click)="downloadTxtData(rowItem.id, rowItem.name)">Download</li>
+                  </ul>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cronological Data View -->
+  <div *ngIf="searchView == 'ByTime'">
+    <table class="tableDataView">
+      <thead>
+        <tr>
+          <th style="width:100px;">Timestamp</th>
+          <th style="width:150px;">Application</th>
+          <th>Name / Message</th>
+          <th style="min-width: 250px; max-width: 300px">Tags / Type</th>
+          <th style="width:110px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dataItem of groupData.data" [ngClass]="{
+          'dv-level-error': dataItem.level == 'Error',
+          'dv-level-warning': dataItem.level == 'Warning',
+          'dv-level-success': dataItem.level == 'Stats',
+          'dv-level-trace' : dataItem.traceId != null
+        }">
+          <td style="font-weight: bold">{{dataItem.timestamp | date:'HH:mm:ss.SSS'}}</td>
+          <td class="ellipsis" title="{{dataItem.application}}">{{dataItem.application}}</td>
+          <td *ngIf="dataItem.traceId" (click)="showDataTime(dataItem)" class="traceName">{{dataItem.name}}</td>
+          <td *ngIf="!dataItem.traceId">{{dataItem.message}}</td>
+          <td *ngIf="dataItem.traceId" style="text-align: right">
+            <div *ngFor="let tag of dataItem.tags.split(', ')">
+              <span style="font-weight: bold">{{tag.split(':')[0]}}</span>
+              <span>{{tag.split(':')[1]}}</span>
+            </div>
+          </td>
+          <td *ngIf="!dataItem.traceId" style="font-style: italic; text-align: right">{{dataItem.type}}</td>
+          <td *ngIf="dataItem.logId != null">
+            <span *ngIf="dataItem.exception != null" (click)="showException(dataItem)" class="badge button-exception">Exception</span>
+          </td>
+          <td class="actions" *ngIf="dataItem.traceId != null">
+            <button class="btn drop" *ngIf="dataItem.formats !== null && dataItem.formats.indexOf('XML') > -1">
+              XML
+              <ul>
+                <li (click)="showXmlData(dataItem.traceId, dataItem.name)">View</li>
+                <li (click)="downloadXmlData(dataItem.traceId, dataItem.name)">Download</li>
+              </ul>
+            </button>
+            <button class="btn drop" *ngIf="dataItem.formats !== null && dataItem.formats.indexOf('JSON') > -1">
+              JSON
+              <ul>
+                <li (click)="showJsonData(dataItem.traceId, dataItem.name)">View</li>
+                <li (click)="downloadJsonData(dataItem.traceId, dataItem.name)">Download</li>
+              </ul>
+            </button>
+            <button class="btn drop" *ngIf="dataItem.formats !== null && dataItem.formats.indexOf('TXT') > -1">
+              TXT
+              <ul>
+                <li (click)="showTxtData(dataItem.traceId, dataItem.name)">View</li>
+                <li (click)="downloadTxtData(dataItem.traceId, dataItem.name)">Download</li>
+              </ul>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Exception View -->
+<div bsModal #exceptionModal="bs-modal" class="modal fade exception-view" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-danger modal-exception" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Exception View</h4>
+        <button type="button" class="close" (click)="exceptionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="exceptionHeader">
+          <div class="headerRow">
+            <div>Timestamp</div>
+            <div>Application</div>
+            <div>Machine</div>
+          </div>
+          <div class="valueRow">
+            <div>{{exceptionTimestamp | date:'dd/MM/yy HH:mm:ss.SSS'}}</div>
+            <div>{{exceptionApplication}}</div>
+            <div>{{exceptionMachine}}</div>
+          </div>
+        </div>
+        <div class="exceptionBody">
+          <div class="item" *ngIf="exceptionData?.exceptionType">
+            <div class="key">Type</div>
+            <div class="value">{{exceptionData?.exceptionType}}</div>
+          </div>
+          <div class="item" *ngIf="exceptionData?.source">
+            <div class="key">Source</div>
+            <div class="value">{{exceptionData?.source}}</div>
+          </div>
+          <div class="item">
+            <div class="key">Message</div>
+            <div class="value important">{{exceptionData?.message}}</div>
+          </div>
+          <div class="data" *ngIf="exceptionData?.data && exceptionData.data.length > 0">
+            <div class="item" *ngFor="let itemData of exceptionData?.data">
+              <div class="key">{{itemData.key}}</div>
+              <div class="value important">{{itemData.value}}</div>
+            </div>
+          </div>
+          <div class="exceptionStacktrace">
+              <div class="title">Stacktrace</div>
+              <div class="data">
+                <div class="content" *ngIf="exceptionData?.stackTrace">{{exceptionData?.stackTrace}}</div>
+                <div class="content" *ngIf="!(exceptionData?.stackTrace)">Stacktrace data is not available</div>
+              </div>
+          </div>
+        </div>
+        <div class="exceptionBody inner" *ngFor="let innerException of innerExceptionsData">
+          <div class="item" *ngIf="innerException?.exceptionType">
+            <div class="key">Type</div>
+            <div class="value">{{innerException?.exceptionType}}</div>
+          </div>
+          <div class="item" *ngIf="innerException?.source">
+            <div class="key">Source</div>
+            <div class="value">{{innerException?.source}}</div>
+          </div>
+          <div class="item">
+            <div class="key">Message</div>
+            <div class="value important">{{innerException?.message}}</div>
+          </div>
+          <div class="data" *ngIf="innerException?.data && innerException.data.length > 0">
+            <div class="item" *ngFor="let itemData of innerException?.data">
+              <div class="key">{{itemData.key}}</div>
+              <div class="value important">{{itemData.value}}</div>
+            </div>
+          </div>
+          <div class="exceptionStacktrace">
+              <div class="title">Stacktrace</div>
+              <div class="data">
+                <div class="content" *ngIf="innerException?.stackTrace">{{innerException?.stackTrace}}</div>
+                <div class="content" *ngIf="!(innerException?.stackTrace)">Stacktrace data is not available</div>
+              </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="exceptionModal.hide()">Close</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+<!-- Trace View -->
+<div bsModal #traceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-primary modal-code" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <strong>Trace View: </strong> {{traceName}}</h5>
+          <button type="button" class="close" (click)="traceModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <ngx-codemirror></ngx-codemirror>
+        </div>
+      </div>
+    </div>
+  </div>

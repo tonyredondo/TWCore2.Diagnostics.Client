@@ -23,7 +23,8 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 
 export class LogsComponent implements OnInit {
   private _queryParams: Params;
-  private _defaultPageSize = 15;
+  private _defaultPageSize = 10;
+  public bProcessing = false;
   // Summary rows
   public summary: LogSummary;
   public errorCount: number;
@@ -117,9 +118,11 @@ export class LogsComponent implements OnInit {
     this.getApplications();
   }
   getApplications() {
-    this.updateParams();
+    this.bProcessing = true;
     this._queryService.apiQueryByEnvironmentLogsApplicationsGet(environment.name, this.bsValue[0], this.bsValue[1]).subscribe(x => {
+      this.updateParams();
       if (x === null) {
+        this.bProcessing = false;
         return;
       }
       this.dataCache = {};
@@ -181,6 +184,8 @@ export class LogsComponent implements OnInit {
       }
 
       this.chart.chart.update();
+
+      this.bProcessing = false;
     });
   }
   currentLogData(item: ApplicationsLevels): ICachedData {

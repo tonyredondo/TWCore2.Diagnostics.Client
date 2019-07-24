@@ -1,5 +1,5 @@
-<app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/img/brand/diagnostics.svg', width: 130, height: 25, alt: 'Diagnostics'}"
-  [navbarBrandMinimized]="{src: 'assets/img/brand/diagnostics.svg', width: 30, height: 30, alt: 'Diagnostics'}" [sidebarToggler]="'lg'"
+<app-header [fixed]="true" [navbarBrandFull]="{src: 'assets/img/brand/diagnostics_big.png', width: '80%', height: 'auto', alt: 'Diagnostics'}"
+  [navbarBrandMinimized]="{src: 'assets/img/brand/diagnostics_small.png', width: 30, height: 30, alt: 'Diagnostics'}" [sidebarToggler]="'lg'"
   [asideMenuToggler]="false" [mobileAsideMenuToggler]="false">
   <ul class="nav navbar-nav ml-auto env-nav">
     <!-- <li class="nav-item d-md-down-none">
@@ -11,7 +11,7 @@
     <li class="nav-item d-md-down-none">
       <a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
     </li> -->
-    <li class="nav-item dropdown" dropdown placement="bottom right">
+    <li *ngIf="environments != null" class="nav-item dropdown" dropdown placement="bottom right">
       <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle
         (click)="false">
         <div>Environment:
@@ -28,10 +28,15 @@
         </a>
       </div>
     </li>
+    <li *ngIf="environments == null">
+      <div class="envDrop">
+        Loading environments...
+      </div>
+    </li>
   </ul>
 </app-header>
 
-<div class="app-body">
+<div class="app-body" *ngIf="environments != null">
   <app-sidebar [fixed]="true" [display]="'lg'">
     <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="sidebarMinimized"></app-sidebar-nav>
     <app-sidebar-minimizer></app-sidebar-minimizer>
@@ -52,9 +57,6 @@
 
 
 <app-footer>
-  <span>
-    <a href="https://github.com/tonyredondo/TWCore2.Diagnostics.Client">TWCore Diagnostics</a> &copy; 2018 Daniel Redondo.</span>
-  <span class="ml-auto">Powered by
-    <a href="https://coreui.io/angular">CoreUI for Angular</a>
-  </span>
+  <span class="ml-auto">
+    <a href="https://github.com/tonyredondo/TWCore2.Diagnostics.Client">&copy; 2019 Daniel Redondo</a></span>
 </app-footer>
