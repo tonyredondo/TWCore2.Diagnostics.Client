@@ -53,6 +53,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -67,7 +69,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     TabsModule.forRoot(),
     ChartsModule,
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    MonacoEditorModule.forRoot()
   ],
   declarations: [
     AppComponent,

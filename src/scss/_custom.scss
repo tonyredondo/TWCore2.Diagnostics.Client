@@ -463,31 +463,41 @@
   color: #e4e4e4;
 }
 
-.CodeMirror {
-  font-size:12px;
-  border-radius: 0.5rem;
-  height: calc(100vh - 210px) !important;
-}
-
 .modal-code {
 
-}
-.modal-code .modal-header {
-  padding:0.5rem 1rem;
-  border-bottom-color: #366688;
-}
-.modal-code .modal-body {
-  padding:0rem;
-}
-.modal-code .CodeMirror {
-  border-radius: 0px !important;
-}
-.modal-code .modal-content {
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px;
-  width: calc(100vw - 200px);
-  top: 25px;
-  left: 100px;
+  .modal-header {
+    padding:0.5rem 1rem;
+    border-bottom-color: #111111;
+    background-color: #0a78ab !important;
+    .modal-title {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+  .modal-body {
+    padding:0rem;
+  }
+  .modal-content {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-radius: 5px;
+    overflow: hidden;
+    width: calc(100vw - 100px);
+    top: 0px;
+    left: 50px;
+    border-color: #404040 !important;
+  }
+
+  .modal-code-editor {
+    height: calc(100vh - 100px);
+    background-color: #1d1d1d;
+  }
+  .my-code-editor {
+    .editor-container {
+      margin-left: 5px;
+      height: calc(100vh - 100px) !important;
+    }
+  }
 }
 .modal-primary .modal-header {
   color: #fff;
@@ -502,7 +512,7 @@
 }
 .modal-backdrop {
   &.show {
-    opacity:0.8 !important;
+    opacity:0.7 !important;
   }
 }
 
@@ -1707,3 +1717,4 @@ button {
     }
   }
 }
+

@@ -34,6 +34,9 @@ import { StatusComponent } from './status.component';
 import { SearchComponent } from './search.component';
 import { ViewGroupComponent } from './viewgroup.component';
 
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -52,7 +55,8 @@ import { ViewGroupComponent } from './viewgroup.component';
     ChartsModule,
     AlertModule.forRoot(),
     CodemirrorModule,
-    ButtonsModule
+    ButtonsModule,
+    MonacoEditorModule
   ],
   declarations: [
     LogsComponent,
