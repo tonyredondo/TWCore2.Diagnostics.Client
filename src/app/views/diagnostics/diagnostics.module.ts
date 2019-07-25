@@ -14,7 +14,6 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { CodemirrorModule } from '@nomadreservations/ngx-codemirror';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 // Components Routing
@@ -54,7 +53,6 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     ModalModule.forRoot(),
     ChartsModule,
     AlertModule.forRoot(),
-    CodemirrorModule,
     ButtonsModule,
     MonacoEditorModule
   ],

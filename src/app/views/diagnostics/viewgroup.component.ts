@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem, NodeStatusItemValue, GroupData } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
@@ -66,6 +65,10 @@ export class ViewGroupComponent implements OnInit {
     private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.traceModal.onHide.subscribe(i => {
+      this.code = '';
+      this.cdr.detectChanges();
+    });
   }
 
   async loadData() {
