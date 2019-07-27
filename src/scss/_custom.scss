@@ -468,7 +468,7 @@
   .modal-header {
     padding:0.5rem 1rem;
     border-bottom-color: #111111;
-    background-color: #0a78ab !important;
+    background-color: #33393e !important;
     .modal-title {
       font-size: 14px;
       font-weight: bold;
@@ -490,9 +490,9 @@
     border-bottom-right-radius: 0px;
     border-radius: 5px;
     overflow: hidden;
-    width: calc(100vw - 100px);
+    width: calc(100vw - 80px);
     top: 0px;
-    left: 50px;
+    left: 40px;
     border-color: #404040 !important;
   }
 
@@ -520,7 +520,7 @@
 }
 .modal-backdrop {
   &.show {
-    opacity:0.7 !important;
+    opacity:0.9 !important;
   }
 }
 
@@ -970,9 +970,9 @@
 
   .dvMessageCol {
     display: flex;
-    cursor: pointer;
     .dvText {
       font-size: 90%;
+      cursor: pointer;
     }
     .button-info, .button-success, .button-warning, .button-error {
       float: initial !important;
