@@ -67,7 +67,7 @@ export class ViewGroupComponent implements OnInit {
   ngOnInit() {
     this.traceModal.onHide.subscribe(i => {
       this.code = '';
-      this.cdr.detectChanges();
+      //this.cdr.detectChanges();
     });
   }
 
