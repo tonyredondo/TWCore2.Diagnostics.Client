@@ -477,6 +477,14 @@
   .modal-body {
     padding:0rem;
   }
+  .modal-loading {
+    color: #666;
+    flex: 1;
+    align-self: center;
+    text-align: center;
+    font-size: 16px;
+
+  }
   .modal-content {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;

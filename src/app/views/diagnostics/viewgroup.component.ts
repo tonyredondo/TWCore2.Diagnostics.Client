@@ -56,7 +56,7 @@ export class ViewGroupComponent implements OnInit {
     quickSuggestions: false,
     language: 'javascript'
   };
-  code: string= '}';
+  code: string= '';
 
   constructor(private _queryService: QueryService,
     private _activatedRoute: ActivatedRoute,
@@ -323,9 +323,12 @@ export class ViewGroupComponent implements OnInit {
 
   showXmlData(id: string, name: string) {
     this.traceName = name;
+    this.code = '.: Loading Trace :.';
+    this.traceModal.show();
+    this.cdr.detectChanges();
+
     this._queryService.apiQueryByEnvironmentTracesXmlByIdGet(environment.name, id).subscribe(x => {
       if (x) {
-        this.traceModal.show();
         this.traceObject = x;
         this.editorOptions = Object.assign({ }, this.editorOptions);
         this.editorOptions.language = 'xml';
@@ -349,9 +352,12 @@ export class ViewGroupComponent implements OnInit {
   }
   showJsonData(id: string, name: string) {
     this.traceName = name;
+    this.code = '.: Loading Trace :.';
+    this.traceModal.show();
+    this.cdr.detectChanges();
+
     this._queryService.apiQueryByEnvironmentTracesJsonByIdGet(environment.name, id).subscribe(x => {
       if (x) {
-        this.traceModal.show();
         this.traceObject = x;
         this.editorOptions = Object.assign({ }, this.editorOptions);
         this.editorOptions.language = 'json';
@@ -374,9 +380,12 @@ export class ViewGroupComponent implements OnInit {
   }
   showTxtData(id: string, name: string) {
     this.traceName = name;
+    this.code = '.: Loading Trace :.';
+    this.traceModal.show();
+    this.cdr.detectChanges();
+
     this._queryService.apiQueryByEnvironmentTracesTxtByIdGet(environment.name, id).subscribe(x => {
       if (x) {
-        this.traceModal.show();
         this.traceObject = x;
         this.editorOptions = Object.assign({ }, this.editorOptions);
         this.editorOptions.language = 'txt';
