@@ -1128,7 +1128,7 @@
       font-family: sans-serif !important;
       cursor: default;
       font-weight: bold;
-      font-size: 13px;
+      font-size: 12px;
       border: solid 1px #cacaca;
       border-bottom-width: 0px;
       border-top-width: 0px;
@@ -1137,12 +1137,13 @@
       font-family: sans-serif !important;
       flex: auto;
       padding: 5px 10px;
-      font-size: 13px;
+      font-size: 12px;
       //font-family: Consolas, 'Courier New', Courier, monospace;
 
       &.important {
         color:red;
         font-weight: bold;
+        font-size: 13px;
       }
     }
   }
@@ -1172,6 +1173,7 @@
       .key {
         padding: 5px 10px;
         width: 120px;
+        font-size:12px;
         //font-weight: bold;
         //background-color: #2255f3;
         //color: #fff;
@@ -1181,12 +1183,14 @@
         font-family: sans-serif;
         flex: auto;
         padding: 5px 10px;
+        font-size:12px;
         //font-family: Consolas, 'Courier New', Courier, monospace;
 
         &.important {
           color:#2156f3;
           font-weight: bold;
           text-align: left;
+          font-size: 12px;
         }
       }
     }
