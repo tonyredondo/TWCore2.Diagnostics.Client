@@ -29,6 +29,8 @@ export class ViewGroupComponent implements OnInit {
   public exceptionTimestamp: Date;
   public exceptionApplication: string;
   public exceptionMachine: string;
+  public exceptionOutterType: string;
+  public exceptionOutterAssembly: string;
   public exceptionData: SerializableException;
   public innerExceptionsData: SerializableException[];
   // Trace Viewer
@@ -287,6 +289,8 @@ export class ViewGroupComponent implements OnInit {
     this.exceptionApplication = item.application;
     this.exceptionMachine = item.machine;
     this.exceptionData = item.exception;
+    this.exceptionOutterType = item.type;
+    this.exceptionOutterAssembly = item.assembly;
     this.innerExceptionsData = [];
     if (this.exceptionData !== null) {
       this.createInnerExceptionData(this.exceptionData.innerException);

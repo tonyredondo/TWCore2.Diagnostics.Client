@@ -204,6 +204,16 @@
         <div class="exceptionBodyWrapper">
 
         <div class="exceptionBody">
+          <div class="general outter" *ngIf="exceptionOutterType || exceptionOutterAssembly">
+            <div class="item" *ngIf="exceptionOutterType">
+              <div class="key">Outter Type</div>
+              <div class="value">{{exceptionOutterType}}</div>
+            </div>
+            <div class="item" *ngIf="exceptionOutterAssembly">
+              <div class="key">Outter Assembly</div>
+              <div class="value">{{exceptionOutterAssembly}}</div>
+            </div>
+          </div>
           <div class="general">
             <div class="item" *ngIf="exceptionData?.exceptionType">
               <div class="key">Type</div>
