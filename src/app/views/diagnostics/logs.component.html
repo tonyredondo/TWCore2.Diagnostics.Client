@@ -242,7 +242,7 @@
               <div class="value important">{{itemData.value}}</div>
             </div>
           </div>
-          <div class="exceptionStacktrace">
+          <div class="exceptionStacktrace" *ngIf="exceptionData?.stackTrace">
               <div class="title">Stacktrace</div>
               <div class="data">
                 <div class="content" *ngIf="exceptionData?.stackTrace">{{exceptionData?.stackTrace}}</div>
@@ -271,7 +271,7 @@
               <div class="value important">{{itemData.value}}</div>
             </div>
           </div>
-          <div class="exceptionStacktrace">
+          <div class="exceptionStacktrace" *ngIf="innerException?.stackTrace">
               <div class="title">Stacktrace</div>
               <div class="data">
                 <div class="content" *ngIf="innerException?.stackTrace">{{innerException?.stackTrace}}</div>
