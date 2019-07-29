@@ -92,10 +92,9 @@ export class SearchComponent implements OnInit {
       this.results = data as any as Array<string>;
       if (this.results == null || this.results.length === 0) {
         this.bHasResults = false;
-        return;
+      } else {
+        this.bHasResults = true;
       }
-      this.bHasResults = true;
-      console.log(this.results);
       this.cdr.detectChanges();
     });
   }
