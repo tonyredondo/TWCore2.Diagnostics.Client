@@ -32,6 +32,7 @@ import { TraceDetailsComponent } from './tracedetails.component';
 import { StatusComponent } from './status.component';
 import { SearchComponent } from './search.component';
 import { ViewGroupComponent } from './viewgroup.component';
+import { ChartItemComponent } from './chartitem.component';
 
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
@@ -62,7 +63,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     TraceDetailsComponent,
     StatusComponent,
     SearchComponent,
-    ViewGroupComponent
+    ViewGroupComponent,
+    ChartItemComponent
   ]
 })
 export class DiagnosticsModule { }

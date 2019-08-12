@@ -41,6 +41,11 @@
 
       <div class="countersContent" (click)="hideSidebar()">
 
+        <ng-container *ngFor="let counterItem of shownCounters">
+          <chart-item [counterId]="counterItem.countersId"></chart-item>
+        </ng-container>
+
+
         <div class="card counter-card" *ngFor="let counterItem of shownCounters">
           <div class="card-header">
             <div class="app-title">{{counterItem.application}}</div>

@@ -107,6 +107,7 @@ export class StatusComponent implements OnInit {
         if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {
           lastTime = item.lastData[item.lastData.length - 1].timestamp;
         }
+
         // this._queryService.apiQueryCountersAggregation(environment.name, item.countersId, DataUnitEnum.Hourly, fromTime, new Date()).subscribe(aggData => {
         //   console.log(aggData);
         // });
