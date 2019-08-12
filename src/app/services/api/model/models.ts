@@ -22,3 +22,4 @@ export * from './timeCount';
 export * from './traceResult';
 export * from './groupResult';
 export * from './groupData';
+export * from './countersAggregate';

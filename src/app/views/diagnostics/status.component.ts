@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
-import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem, NodeStatusItemValue } from '../../services/api';
+import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem, NodeStatusItemValue, DataUnitEnum } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -94,6 +94,11 @@ export class StatusComponent implements OnInit {
     const yesterdayTime = new Date().getTime() - (24 * 60 * 60 * 1000);
     const fromTime = new Date();
     fromTime.setTime(yesterdayTime);
+
+
+
+
+
     // console.log(fromTime);
     for (let i = 0; i < this.selectedCounters.length; i++) {
       const item = this.rawCounters[this.selectedCounters[i]];
@@ -102,6 +107,10 @@ export class StatusComponent implements OnInit {
         if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {
           lastTime = item.lastData[item.lastData.length - 1].timestamp;
         }
+        // this._queryService.apiQueryCountersAggregation(environment.name, item.countersId, DataUnitEnum.Hourly, fromTime, new Date()).subscribe(aggData => {
+        //   console.log(aggData);
+        // });
+
         this._queryService.getLastCounterValues(item.countersId, 'Week', environment.name, null, lastTime).subscribe(data => {
           if (data) {
             if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {

@@ -36,7 +36,7 @@ import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables'
 import { Configuration }                                     from '../configuration';
 import { environment } from '../../../../environments/environment';
 import { KeyValue } from '../model/keyValue';
-import { GroupData } from '../model/models';
+import { GroupData, DataUnitEnum, CounterValuesAggregate } from '../model/models';
 
 
 @Injectable()
@@ -1318,6 +1318,57 @@ export class QueryService {
         ];
 
         return this.httpClient.get<PagedListGroupResult>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/groups`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+
+
+
+
+    public apiQueryCountersAggregation(environment: string, counterId: string, dataUnit: DataUnitEnum, fromDate?: Date, toDate?: Date, observe?: 'body', reportProgress?: boolean): Observable<CounterValuesAggregate> {
+        if (environment === null || environment === undefined) {
+            throw new Error('Required parameter environment was null or undefined when calling apiQueryByEnvironmentGroupsGet.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (fromDate !== undefined) {
+            queryParameters = queryParameters.set('fromDate', <any>fromDate.toISOString());
+        }
+        if (toDate !== undefined) {
+            queryParameters = queryParameters.set('toDate', <any>toDate.toISOString());
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain',
+            'application/json',
+            'text/json',
+            'application/xml',
+            'text/xml',
+            'application/binary-formatter',
+            'application/n-binary',
+            'application/pw-binary',
+            'application/w-binary'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<CounterValuesAggregate>(`${this.basePath}/api/query/${encodeURIComponent(String(environment))}/counters/${encodeURIComponent(String(counterId))}/aggregation/${encodeURIComponent(String(dataUnit))}`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
