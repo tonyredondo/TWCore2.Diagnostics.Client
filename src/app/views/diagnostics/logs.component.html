@@ -208,18 +208,33 @@
             <div>{{exceptionMachine}}</div>
           </div>
         </div>
+
+        <div class="exceptionBodyWrapper">
+
         <div class="exceptionBody">
-          <div class="item" *ngIf="exceptionData?.exceptionType">
-            <div class="key">Type</div>
-            <div class="value">{{exceptionData?.exceptionType}}</div>
+          <div class="general outter" *ngIf="exceptionOutterType || exceptionOutterAssembly">
+            <div class="item" *ngIf="exceptionOutterType">
+              <div class="key">Outter Type</div>
+              <div class="value">{{exceptionOutterType}}</div>
+            </div>
+            <div class="item" *ngIf="exceptionOutterAssembly">
+              <div class="key">Outter Assembly</div>
+              <div class="value">{{exceptionOutterAssembly}}</div>
+            </div>
           </div>
-          <div class="item" *ngIf="exceptionData?.source">
-            <div class="key">Source</div>
-            <div class="value">{{exceptionData?.source}}</div>
-          </div>
-          <div class="item">
-            <div class="key">Message</div>
-            <div class="value important">{{exceptionData?.message}}</div>
+          <div class="general">
+            <div class="item" *ngIf="exceptionData?.exceptionType">
+              <div class="key">Type</div>
+              <div class="value">{{exceptionData?.exceptionType}}</div>
+            </div>
+            <div class="item" *ngIf="exceptionData?.source">
+              <div class="key">Source</div>
+              <div class="value">{{exceptionData?.source}}</div>
+            </div>
+            <div class="item">
+              <div class="key">Message</div>
+              <div class="value important">{{exceptionData?.message}}</div>
+            </div>
           </div>
           <div class="data" *ngIf="exceptionData?.data && exceptionData.data.length > 0">
             <div class="item" *ngFor="let itemData of exceptionData?.data">
@@ -227,7 +242,7 @@
               <div class="value important">{{itemData.value}}</div>
             </div>
           </div>
-          <div class="exceptionStacktrace">
+          <div class="exceptionStacktrace" *ngIf="exceptionData?.stackTrace">
               <div class="title">Stacktrace</div>
               <div class="data">
                 <div class="content" *ngIf="exceptionData?.stackTrace">{{exceptionData?.stackTrace}}</div>
@@ -236,17 +251,19 @@
           </div>
         </div>
         <div class="exceptionBody inner" *ngFor="let innerException of innerExceptionsData">
-          <div class="item" *ngIf="innerException?.exceptionType">
-            <div class="key">Type</div>
-            <div class="value">{{innerException?.exceptionType}}</div>
-          </div>
-          <div class="item" *ngIf="innerException?.source">
-            <div class="key">Source</div>
-            <div class="value">{{innerException?.source}}</div>
-          </div>
-          <div class="item">
-            <div class="key">Message</div>
-            <div class="value important">{{innerException?.message}}</div>
+          <div class="general">
+            <div class="item" *ngIf="innerException?.exceptionType">
+              <div class="key">Type</div>
+              <div class="value">{{innerException?.exceptionType}}</div>
+            </div>
+            <div class="item" *ngIf="innerException?.source">
+              <div class="key">Source</div>
+              <div class="value">{{innerException?.source}}</div>
+            </div>
+            <div class="item">
+              <div class="key">Message</div>
+              <div class="value important">{{innerException?.message}}</div>
+            </div>
           </div>
           <div class="data" *ngIf="innerException?.data && innerException.data.length > 0">
             <div class="item" *ngFor="let itemData of innerException?.data">
@@ -254,7 +271,7 @@
               <div class="value important">{{itemData.value}}</div>
             </div>
           </div>
-          <div class="exceptionStacktrace">
+          <div class="exceptionStacktrace" *ngIf="innerException?.stackTrace">
               <div class="title">Stacktrace</div>
               <div class="data">
                 <div class="content" *ngIf="innerException?.stackTrace">{{innerException?.stackTrace}}</div>
@@ -263,6 +280,7 @@
           </div>
         </div>
 
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="exceptionModal.hide()">Close</button>

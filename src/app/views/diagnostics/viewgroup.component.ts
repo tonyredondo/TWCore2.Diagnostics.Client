@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem, NodeStatusItemValue, GroupData } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { CodemirrorService } from '@nomadreservations/ngx-codemirror';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { enGbLocale } from 'ngx-bootstrap/locale';
@@ -30,6 +29,8 @@ export class ViewGroupComponent implements OnInit {
   public exceptionTimestamp: Date;
   public exceptionApplication: string;
   public exceptionMachine: string;
+  public exceptionOutterType: string;
+  public exceptionOutterAssembly: string;
   public exceptionData: SerializableException;
   public innerExceptionsData: SerializableException[];
   // Trace Viewer
@@ -46,15 +47,30 @@ export class ViewGroupComponent implements OnInit {
     this._group = value;
     this.loadData();
   }
+  editorOptions = {
+    theme: 'vs-dark',
+    automaticLayout: true,
+    scrollBeyondLastLine: false,
+    readOnly: true,
+    contextmenu: true,
+    fontSize: 11,
+    glyphMargin: false,
+    quickSuggestions: false,
+    language: 'javascript'
+  };
+  code: string= '';
 
   constructor(private _queryService: QueryService,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
-    private _codeMirror: CodemirrorService,
     private localeService: BsLocaleService,
     private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
+    this.traceModal.onHide.subscribe(i => {
+      this.code = '';
+      //this.cdr.detectChanges();
+    });
   }
 
   async loadData() {
@@ -273,6 +289,8 @@ export class ViewGroupComponent implements OnInit {
     this.exceptionApplication = item.application;
     this.exceptionMachine = item.machine;
     this.exceptionData = item.exception;
+    this.exceptionOutterType = item.type;
+    this.exceptionOutterAssembly = item.assembly;
     this.innerExceptionsData = [];
     if (this.exceptionData !== null) {
       this.createInnerExceptionData(this.exceptionData.innerException);
@@ -309,114 +327,90 @@ export class ViewGroupComponent implements OnInit {
 
   showXmlData(id: string, name: string) {
     this.traceName = name;
+    this.code = '.: Loading Trace :.';
+    this.traceModal.show();
+    this.cdr.detectChanges();
+
     this._queryService.apiQueryByEnvironmentTracesXmlByIdGet(environment.name, id).subscribe(x => {
       if (x) {
-        this.traceModal.show();
         this.traceObject = x;
-        this._codeMirror.instance$.subscribe(editor => {
-          editor.setOption('mode', 'application/xml');
-          if (this.traceObject.startsWith('<?xml')) {
-            debugger;
-            if (this.lineLessThan(this.traceObject, 5)) {
-              this.traceObject = vkbeautify.xml(this.traceObject);
-            }
-          } else if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
-            editor.setOption('mode', 'application/json');
-            if (this.lineLessThan(this.traceObject, 5)) {
-              this.traceObject = vkbeautify.json(this.traceObject);
-            }
+        this.editorOptions = Object.assign({ }, this.editorOptions);
+        this.editorOptions.language = 'xml';
+        console.log(this.editorOptions);
+
+        if (this.traceObject.startsWith('<?xml')) {
+          if (this.lineLessThan(this.traceObject, 5)) {
+            this.traceObject = vkbeautify.xml(this.traceObject);
           }
-          editor.setOption('theme', 'material');
-          editor.setOption('readOnly', true);
-          editor.setOption('lineNumbers', true);
-          editor.setOption('matchBrackets', true);
-          editor.setOption('foldGutter', true);
-          editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-          editor.setOption('extraKeys', {
-            'Ctrl-F': 'findPersistent'
-          });
-          editor.setValue(this.traceObject);
-          editor.getDoc().setCursor({ line: 0, ch: 0});
-          editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
-          editor.scrollTo(0, 0);
-          setTimeout(() => editor.refresh(), 200);
-        });
+        } else if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
+          this.editorOptions.language = 'json';
+          if (this.lineLessThan(this.traceObject, 5)) {
+            this.traceObject = vkbeautify.json(this.traceObject);
+          }
+        }
+
+        this.code = this.traceObject;
+        this.cdr.detectChanges();
       }
     });
   }
   showJsonData(id: string, name: string) {
     this.traceName = name;
+    this.code = '.: Loading Trace :.';
+    this.traceModal.show();
+    this.cdr.detectChanges();
+
     this._queryService.apiQueryByEnvironmentTracesJsonByIdGet(environment.name, id).subscribe(x => {
       if (x) {
-        this.traceModal.show();
         this.traceObject = x;
-        this._codeMirror.instance$.subscribe(editor => {
-          editor.setOption('mode', 'application/json');
-          if (this.traceObject.startsWith('<?xml')) {
-            editor.setOption('mode', 'application/xml');
-            if (this.lineLessThan(this.traceObject, 5)) {
-              this.traceObject = vkbeautify.xml(this.traceObject);
-            }
-          } else {
-            if (this.lineLessThan(this.traceObject, 5)) {
-              this.traceObject = vkbeautify.json(this.traceObject);
-            }
+        this.editorOptions = Object.assign({ }, this.editorOptions);
+        this.editorOptions.language = 'json';
+
+        if (this.traceObject.startsWith('<?xml')) {
+          this.editorOptions.language = 'xml';
+          if (this.lineLessThan(this.traceObject, 5)) {
+            this.traceObject = vkbeautify.xml(this.traceObject);
           }
-          editor.setOption('theme', 'material');
-          editor.setOption('readOnly', true);
-          editor.setOption('lineNumbers', true);
-          editor.setOption('matchBrackets', true);
-          editor.setOption('foldGutter', true);
-          editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-          editor.setOption('extraKeys', {
-            'Ctrl-F': 'findPersistent'
-          });
-          editor.setValue(this.traceObject);
-          editor.getDoc().setCursor({ line: 0, ch: 0});
-          editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
-          editor.scrollTo(0, 0);
-          setTimeout(() => editor.refresh(), 200);
-        });
+        } else {
+          if (this.lineLessThan(this.traceObject, 5)) {
+            this.traceObject = vkbeautify.json(this.traceObject);
+          }
+        }
+
+        this.code = this.traceObject;
+        this.cdr.detectChanges();
       }
     });
   }
   showTxtData(id: string, name: string) {
     this.traceName = name;
+    this.code = '.: Loading Trace :.';
+    this.traceModal.show();
+    this.cdr.detectChanges();
+
     this._queryService.apiQueryByEnvironmentTracesTxtByIdGet(environment.name, id).subscribe(x => {
       if (x) {
-        this.traceModal.show();
         this.traceObject = x;
-        this._codeMirror.instance$.subscribe(editor => {
-          editor.setOption('mode', 'text/plain');
-          if (this.traceObject.startsWith('<?xml')) {
-            editor.setOption('mode', 'application/xml');
-            if (this.lineLessThan(this.traceObject, 5)) {
-              this.traceObject = vkbeautify.xml(this.traceObject);
-            }
-            console.log("Xml detected.");
+        this.editorOptions = Object.assign({ }, this.editorOptions);
+        this.editorOptions.language = 'txt';
+
+        if (this.traceObject.startsWith('<?xml')) {
+          this.editorOptions.language = 'xml';
+          if (this.lineLessThan(this.traceObject, 5)) {
+            this.traceObject = vkbeautify.xml(this.traceObject);
           }
-          if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
-            editor.setOption('mode', 'application/json');
-            if (this.lineLessThan(this.traceObject, 5)) {
-              this.traceObject = vkbeautify.json(this.traceObject);
-            }
-            console.log("Json detected.");
+          console.log("Xml detected.");
+        }
+        if (this.traceObject.startsWith('{') || this.traceObject.startsWith('[')) {
+          this.editorOptions.language = 'json';
+          if (this.lineLessThan(this.traceObject, 5)) {
+            this.traceObject = vkbeautify.json(this.traceObject);
           }
-          editor.setOption('theme', 'material');
-          editor.setOption('readOnly', true);
-          editor.setOption('lineNumbers', true);
-          editor.setOption('matchBrackets', true);
-          editor.setOption('foldGutter', true);
-          editor.setOption('gutters', ['CodeMirror-linenumbers', 'CodeMirror-foldgutter']);
-          editor.setOption('extraKeys', {
-            'Ctrl-F': 'findPersistent'
-          });
-          editor.setValue(this.traceObject);
-          editor.getDoc().setCursor({ line: 0, ch: 0});
-          editor.getDoc().setSelection({ line: 0, ch: 0}, { line: 0, ch: 0 }, { scroll: true });
-          editor.scrollTo(0, 0);
-          setTimeout(() => editor.refresh(), 200);
-        });
+          console.log("Json detected.");
+        }
+
+        this.code = this.traceObject;
+        this.cdr.detectChanges();
       }
     });
   }

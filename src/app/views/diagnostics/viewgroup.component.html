@@ -200,18 +200,33 @@
             <div>{{exceptionMachine}}</div>
           </div>
         </div>
+
+        <div class="exceptionBodyWrapper">
+
         <div class="exceptionBody">
-          <div class="item" *ngIf="exceptionData?.exceptionType">
-            <div class="key">Type</div>
-            <div class="value">{{exceptionData?.exceptionType}}</div>
+          <div class="general outter" *ngIf="exceptionOutterType || exceptionOutterAssembly">
+            <div class="item" *ngIf="exceptionOutterType">
+              <div class="key">Outter Type</div>
+              <div class="value">{{exceptionOutterType}}</div>
+            </div>
+            <div class="item" *ngIf="exceptionOutterAssembly">
+              <div class="key">Outter Assembly</div>
+              <div class="value">{{exceptionOutterAssembly}}</div>
+            </div>
           </div>
-          <div class="item" *ngIf="exceptionData?.source">
-            <div class="key">Source</div>
-            <div class="value">{{exceptionData?.source}}</div>
-          </div>
-          <div class="item">
-            <div class="key">Message</div>
-            <div class="value important">{{exceptionData?.message}}</div>
+          <div class="general">
+            <div class="item" *ngIf="exceptionData?.exceptionType">
+              <div class="key">Type</div>
+              <div class="value">{{exceptionData?.exceptionType}}</div>
+            </div>
+            <div class="item" *ngIf="exceptionData?.source">
+              <div class="key">Source</div>
+              <div class="value">{{exceptionData?.source}}</div>
+            </div>
+            <div class="item">
+              <div class="key">Message</div>
+              <div class="value important">{{exceptionData?.message}}</div>
+            </div>
           </div>
           <div class="data" *ngIf="exceptionData?.data && exceptionData.data.length > 0">
             <div class="item" *ngFor="let itemData of exceptionData?.data">
@@ -228,17 +243,19 @@
           </div>
         </div>
         <div class="exceptionBody inner" *ngFor="let innerException of innerExceptionsData">
-          <div class="item" *ngIf="innerException?.exceptionType">
-            <div class="key">Type</div>
-            <div class="value">{{innerException?.exceptionType}}</div>
-          </div>
-          <div class="item" *ngIf="innerException?.source">
-            <div class="key">Source</div>
-            <div class="value">{{innerException?.source}}</div>
-          </div>
-          <div class="item">
-            <div class="key">Message</div>
-            <div class="value important">{{innerException?.message}}</div>
+          <div class="general">
+            <div class="item" *ngIf="innerException?.exceptionType">
+              <div class="key">Type</div>
+              <div class="value">{{innerException?.exceptionType}}</div>
+            </div>
+            <div class="item" *ngIf="innerException?.source">
+              <div class="key">Source</div>
+              <div class="value">{{innerException?.source}}</div>
+            </div>
+            <div class="item">
+              <div class="key">Message</div>
+              <div class="value important">{{innerException?.message}}</div>
+            </div>
           </div>
           <div class="data" *ngIf="innerException?.data && innerException.data.length > 0">
             <div class="item" *ngFor="let itemData of innerException?.data">
@@ -255,6 +272,8 @@
           </div>
         </div>
 
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="exceptionModal.hide()">Close</button>
@@ -268,18 +287,18 @@
 
 
 <!-- Trace View -->
-<div bsModal #traceModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div bsModal #traceModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-primary modal-code" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
-            <strong>Trace View: </strong> {{traceName}}</h5>
+            <strong>Trace: </strong> {{traceName}}</h5>
           <button type="button" class="close" (click)="traceModal.hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <ngx-codemirror></ngx-codemirror>
+        <div class="modal-body modal-code-editor">
+          <ngx-monaco-editor class="my-code-editor" [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
         </div>
       </div>
     </div>

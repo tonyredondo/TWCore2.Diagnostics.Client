@@ -14,7 +14,6 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AlertModule } from 'ngx-bootstrap/alert';
-import { CodemirrorModule } from '@nomadreservations/ngx-codemirror';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 // Components Routing
@@ -34,6 +33,9 @@ import { StatusComponent } from './status.component';
 import { SearchComponent } from './search.component';
 import { ViewGroupComponent } from './viewgroup.component';
 
+import { MonacoEditorModule } from 'ngx-monaco-editor';
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -51,8 +53,8 @@ import { ViewGroupComponent } from './viewgroup.component';
     ModalModule.forRoot(),
     ChartsModule,
     AlertModule.forRoot(),
-    CodemirrorModule,
-    ButtonsModule
+    ButtonsModule,
+    MonacoEditorModule
   ],
   declarations: [
     LogsComponent,
