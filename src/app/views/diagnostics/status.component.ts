@@ -1,5 +1,5 @@
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
@@ -14,7 +14,8 @@ import { NodeCountersQueryValue } from '../../services/api/model/nodeCountersQue
 defineLocale('en-gb', enGbLocale);
 
 @Component({
-  templateUrl: 'status.component.html'
+  templateUrl: 'status.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StatusComponent implements OnInit {
   private _params: Params;
@@ -45,13 +46,15 @@ export class StatusComponent implements OnInit {
 
   constructor(private _queryService: QueryService,
     private _activatedRoute: ActivatedRoute,
-    private _router: Router) {}
+    private _router: Router,
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this._params = Object.assign({}, this._activatedRoute.snapshot.params);
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
     this.updateParams();
     this.getData();
+    this.cdr.detectChanges();
   }
 
   getData() {
@@ -59,6 +62,7 @@ export class StatusComponent implements OnInit {
     if (!environment.name) {
       this.bProcessing = false;
       this.noData = true;
+      this.cdr.detectChanges();
       return;
     }
     console.log(environment.name);
@@ -84,6 +88,7 @@ export class StatusComponent implements OnInit {
       this.bProcessing = false;
       console.log(this.counters);
       console.log(this.rawCounters);
+      this.cdr.detectChanges();
     });
   }
 
@@ -169,6 +174,7 @@ export class StatusComponent implements OnInit {
             });
           }
           console.log(item);
+          this.cdr.detectChanges();
         });
       }
     }
@@ -178,6 +184,8 @@ export class StatusComponent implements OnInit {
       console.log('Refreshing');
       self.refreshGraphs();
     }, 10000);
+
+
   }
 
   public toggleVisible(item: any) {

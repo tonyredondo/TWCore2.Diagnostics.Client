@@ -41,9 +41,13 @@
 
       <div class="countersContent" (click)="hideSidebar()">
 
-        <ng-container *ngFor="let counterItem of shownCounters">
-          <chart-item [counterId]="counterItem.countersId"></chart-item>
-        </ng-container>
+        <div class="chart-page">
+          <chart-item [counterId]="'123456'"></chart-item>
+          <chart-item [counterId]="'123456'"></chart-item>
+          <chart-item [counterId]="'123456'"></chart-item>
+          <chart-item [counterId]="'123456'"></chart-item>
+          <chart-item [counterId]="'123456'"></chart-item>
+        <div>
 
 
         <div class="card counter-card" *ngFor="let counterItem of shownCounters">

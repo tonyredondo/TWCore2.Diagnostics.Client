@@ -1,12 +1,21 @@
-
-<div class="card counter-card">
-  <div class="card-header">
-    <div class="app-title">{{counterId}}</div>
-    <div class="name-title"></div>
+<div class="chart-card">
+  <div class="chart">
+      <apx-chart [series]="series"
+        [chart]="chart"
+        [dataLabels]="dataLabels"
+        [title]="title"
+        [subtitle]="subtitle"
+        [xaxis]="xaxis"
+        [tooltip]="tooltip">
+      </apx-chart>
   </div>
-  <div class="card-body counter-body">
-    <div class="chart-wrapper">
 
+  <div class="summary">
+
+    <div class="centered">
+      <div>Cummulative</div>
+      <div>250</div>
     </div>
+
   </div>
 </div>

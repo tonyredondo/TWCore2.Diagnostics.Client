@@ -24,6 +24,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 
 // Charts
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { NgApexchartsModule } from 'ng-apexcharts'
 
 // Components
 import { LogsComponent } from './logs.component';
@@ -55,7 +56,8 @@ import { MonacoEditorModule } from 'ngx-monaco-editor';
     ChartsModule,
     AlertModule.forRoot(),
     ButtonsModule,
-    MonacoEditorModule
+    MonacoEditorModule,
+    NgApexchartsModule
   ],
   declarations: [
     LogsComponent,
