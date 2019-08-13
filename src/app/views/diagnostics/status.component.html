@@ -42,32 +42,10 @@
       <div class="countersContent" (click)="hideSidebar()">
 
         <div class="chart-page">
-          <chart-item [counterId]="'123456'"></chart-item>
-          <chart-item [counterId]="'123456'"></chart-item>
-          <chart-item [counterId]="'123456'"></chart-item>
-          <chart-item [counterId]="'123456'"></chart-item>
-          <chart-item [counterId]="'123456'"></chart-item>
+          <ng-container *ngFor="let counterId of selectedCounters">
+              <chart-item [counterId]="counterId"></chart-item>
+          </ng-container>
         <div>
-
-
-        <div class="card counter-card" *ngFor="let counterItem of shownCounters">
-          <div class="card-header">
-            <div class="app-title">{{counterItem.application}}</div>
-            <div class="name-title">{{counterItem.name}}</div>
-          </div>
-          <div class="card-body counter-body">
-            <div class="chart-wrapper">
-              <canvas baseChart class="chart" style="height:300px; max-height: 300px;"
-                [datasets]="counterItem.barChartData"
-                [labels]="counterItem.barChartLabels"
-                [options]="barChartOptions"
-                [legend]="barChartLegend"
-                [chartType]="barChartType"
-                (chartHover)="chartHovered($event)"
-                (chartClick)="chartClicked($event)"></canvas>
-            </div>
-          </div>
-        </div>
 
       </div>
 

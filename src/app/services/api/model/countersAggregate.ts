@@ -13,6 +13,7 @@ export const DataUnitEnum = {
 export interface CounterValuesAggregateItem {
   from?: Date;
   to?: Date;
+  timestamp?: number;
   value?: number;
 }
 
@@ -22,5 +23,6 @@ export interface CounterValuesAggregate {
   toDate?: Date;
   dataUnit?: DataUnitEnum;
   value?: number;
+  averageValue?: number;
   data?: Array<CounterValuesAggregateItem>;
 }

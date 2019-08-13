@@ -25,24 +25,8 @@ export class StatusComponent implements OnInit {
   public counters: Array<AppCounters>;
   public rawCounters: { [ key: string ]: CounterItem };
   public selectedCounters: Array<string> = [];
-  public shownCounters: Array<CounterItem> = [];
   timerValue: any;
   showSideBar = false;
-
-  // barChart
-  public barChartOptions: any = {
-    scaleShowVerticalLines: false,
-    responsive: true,
-    animation: false
-  };
-  public barChartType = 'line';
-  public barChartLegend = false;
-
-  // public barChartLabels: string[] = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  // public barChartData: any[] = [
-  //   {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-  //   {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'}
-  // ];
 
   constructor(private _queryService: QueryService,
     private _activatedRoute: ActivatedRoute,
@@ -92,102 +76,6 @@ export class StatusComponent implements OnInit {
     });
   }
 
-  refreshGraphs() {
-    if (this.timerValue) {
-      clearTimeout(this.timerValue);
-    }
-    const yesterdayTime = new Date().getTime() - (24 * 60 * 60 * 1000);
-    const fromTime = new Date();
-    fromTime.setTime(yesterdayTime);
-
-
-
-
-
-    // console.log(fromTime);
-    for (let i = 0; i < this.selectedCounters.length; i++) {
-      const item = this.rawCounters[this.selectedCounters[i]];
-      if (item !== undefined) {
-        let lastTime = null;
-        if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {
-          lastTime = item.lastData[item.lastData.length - 1].timestamp;
-        }
-
-        // this._queryService.apiQueryCountersAggregation(environment.name, item.countersId, DataUnitEnum.Hourly, fromTime, new Date()).subscribe(aggData => {
-        //   console.log(aggData);
-        // });
-
-        this._queryService.getLastCounterValues(item.countersId, 'Week', environment.name, null, lastTime).subscribe(data => {
-          if (data) {
-            if (item.lastData !== null && item.lastData !== undefined && item.lastData.length > 0) {
-              // console.log(data);
-              item.lastData = item.lastData.slice(data.length - 1, item.lastData.length - data.length);
-              item.barChartLabels = item.barChartLabels.slice(data.length - 1, item.barChartLabels.length - data.length);
-              item.barChartData[0].data = item.barChartData[0].data.slice(data.length - 1, item.barChartData[0].data.length - data.length);
-              data.forEach(element => item.lastData.push(element));
-              for (let j = 0; j < data.length; j++) {
-                const itemData = data[j];
-                item.barChartLabels.push(moment(itemData.timestamp).format('MM-DD (HH:mm)'));
-                item.barChartData[0].data.push(itemData.value);
-              }
-            } else {
-              item.lastData = data;
-              item.barChartLabels = [];
-              item.barChartData = [ { data: [], label: 'Values' } ];
-              for (let j = 0; j < data.length; j++) {
-                const itemData = data[j];
-                item.barChartLabels.push(moment(itemData.timestamp).format('MM-DD (HH:mm)'));
-                item.barChartData[0].data.push(itemData.value);
-              }
-            }
-
-            if (this.shownCounters.findIndex(citem => citem.countersId === item.countersId) > -1) {
-              return;
-            }
-            this.shownCounters.push(item);
-            this.shownCounters.sort((a, b) => {
-              if (a.application < b.application) {
-                return -1;
-              } else if (a.application > b.application) {
-                return 1;
-              } else {
-                if (a.kind < b.kind) {
-                  return -1;
-                } else if (a.kind > b.kind) {
-                  return 1;
-                } else {
-                  if (a.category < b.category) {
-                    return -1;
-                  } else if (a.category > b.category) {
-                    return 1;
-                  } else {
-                    if (a.name < b.name) {
-                      return -1;
-                    } else if (a.name > b.name) {
-                      return 1;
-                    } else {
-                      return 0;
-                    }
-                  }
-                }
-              }
-            });
-          }
-          console.log(item);
-          this.cdr.detectChanges();
-        });
-      }
-    }
-
-    const self = this;
-    this.timerValue = setTimeout(function() {
-      console.log('Refreshing');
-      self.refreshGraphs();
-    }, 10000);
-
-
-  }
-
   public toggleVisible(item: any) {
     console.log(item);
     item.itemsVisible = !item.itemsVisible;
@@ -205,8 +93,7 @@ export class StatusComponent implements OnInit {
       }
       this.selectedCounters = nSelected;
     }
-    this.shownCounters = [];
-    this.refreshGraphs();
+    this.cdr.detectChanges();
   }
   public toggleSidebar() {
     this.showSideBar = !this.showSideBar;
@@ -216,8 +103,6 @@ export class StatusComponent implements OnInit {
   }
   public showSidebar() {
     this.showSideBar = true;
-  }
-  public chartClicked(event: Event) {
   }
 
   // Private Methods

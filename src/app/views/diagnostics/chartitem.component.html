@@ -1,4 +1,4 @@
-<div class="chart-card">
+<div class="chart-card" *ngIf="series">
   <div class="chart">
       <apx-chart [series]="series"
         [chart]="chart"
@@ -13,8 +13,15 @@
   <div class="summary">
 
     <div class="centered">
-      <div>Cummulative</div>
-      <div>250</div>
+      <div class="item">
+          <div>Cummulative</div>
+          <div class="value">{{cumulative}} <span>requests</span></div>
+      </div>
+      <div class="item">
+          <div>Avg. Hourly</div>
+          <div class="value">{{average}} <span>requests</span></div>
+      </div>
+
     </div>
 
   </div>
