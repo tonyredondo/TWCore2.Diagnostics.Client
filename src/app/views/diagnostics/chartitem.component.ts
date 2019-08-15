@@ -167,6 +167,6 @@ export class ChartItemComponent implements OnInit, OnDestroy {
     var self = this;
     setTimeout(()=> {
       self.loadData();
-    }, 60000);
+    }, 120000);
   }
 }
