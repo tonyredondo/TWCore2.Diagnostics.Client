@@ -103,7 +103,6 @@ export class ViewGroupComponent implements OnInit {
       const dataItem = gData.data[i];
 
       if (dataItem.level !== undefined && this.logLevels[dataItem.level] == false) {
-        console.log(dataItem.level);
         continue;
       }
       nData.push(dataItem);
@@ -293,12 +292,9 @@ export class ViewGroupComponent implements OnInit {
       }
     }
 
-    console.log("Extended data", gData);
     this.groupData = gData;
     this.bProcessing = false;
-
     this.logLevelsKeys = Object.keys(this.logLevels).sort();
-    console.log(this.logLevelsKeys);
     this.cdr.detectChanges();
   }
 
