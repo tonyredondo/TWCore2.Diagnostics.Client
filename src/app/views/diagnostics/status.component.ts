@@ -23,7 +23,6 @@ export class StatusComponent implements OnInit {
   public noData?: boolean;
   public bProcessing = false;
   public counters: Array<AppCounters>;
-  public rawCounters: { [ key: string ]: CounterItem };
   public selectedCounters: Array<string> = [];
   showSideBar = false;
 
@@ -35,6 +34,24 @@ export class StatusComponent implements OnInit {
   ngOnInit() {
     this._params = Object.assign({}, this._activatedRoute.snapshot.params);
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
+
+    if (this._queryParams.env) {
+      environment.name = this._queryParams.env;
+    }
+    let loaded = false;
+    if (this._queryParams.cids) {
+      var ncids = JSON.parse(this._queryParams.cids);
+      if (ncids) {
+        this.selectedCounters = ncids;
+        var sCounter = JSON.stringify(this.selectedCounters);
+        localStorage.setItem("selectedCounters-" + environment.name, sCounter);
+        loaded = true;
+      }
+    }
+    if (!loaded) {
+      var sCounter = localStorage.getItem("selectedCounters-" + environment.name);
+      this.selectedCounters = JSON.parse(sCounter) || [];
+    }
     this.updateParams();
     this.getData();
   }
@@ -51,31 +68,40 @@ export class StatusComponent implements OnInit {
     this.noData = null;
     this.counters = null;
     this._queryService.getCounters(environment.name).subscribe(data => {
+
       if (data && data.length > 0) {
         this.noData = false;
         this.counters = this.createCountersTree(data);
-        this.rawCounters = {};
-        for (let i = 0; i < data.length; i++) {
-          const item = Object.assign(data[i], { selected : false, lastData: [], barChartLabels: [], barChartData: [] }) as CounterItem;
-          for (let j = 0; j < this.selectedCounters.length; j++) {
-            if (this.selectedCounters[i] === item.countersId) {
-              item.selected = true;
+
+        if (this.selectedCounters.length > 0) {
+          for(let ic = 0; ic < this.counters.length; ic++) {
+            let appCounters = this.counters[ic];
+            for (let kc = 0; kc < appCounters.items.length; kc++) {
+              let kindCounters = appCounters.items[kc];
+              for (let cc = 0; cc < kindCounters.items.length; cc++) {
+                let categoryCounters = kindCounters.items[cc];
+                for (let ci = 0; ci < categoryCounters.items.length; ci++) {
+                  let counter = categoryCounters.items[ci];
+                  for(let sCIdx = 0; sCIdx < this.selectedCounters.length; sCIdx++) {
+                    if (counter.countersId === this.selectedCounters[sCIdx])
+                      counter.selected = true;
+                  }
+                }
+              }
             }
           }
-          this.rawCounters[data[i].countersId] = item;
         }
+
       } else {
         this.noData = true;
       }
       this.bProcessing = false;
-      //console.log(this.counters);
-      //console.log(this.rawCounters);
       this.cdr.detectChanges();
     });
   }
 
   public toggleVisible(item: any) {
-    console.log(item);
+    //console.log(item);
     item.itemsVisible = !item.itemsVisible;
   }
   public toggleSelect(item: CounterItem) {
@@ -91,6 +117,8 @@ export class StatusComponent implements OnInit {
       }
       this.selectedCounters = nSelected;
     }
+    var sCounter = JSON.stringify(this.selectedCounters);
+    localStorage.setItem("selectedCounters-" + environment.name, sCounter);
     this.cdr.detectChanges();
   }
   public toggleSidebar() {
@@ -149,6 +177,7 @@ export class StatusComponent implements OnInit {
 
   private updateParams() {
     this._queryParams.env = environment.name;
+    this._queryParams.cids = JSON.stringify(this.selectedCounters);
     this._router.navigate([], {
       relativeTo: this._activatedRoute,
       queryParams: this._queryParams,
