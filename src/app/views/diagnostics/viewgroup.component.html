@@ -16,8 +16,22 @@
     <div class="item">
       <span>Duration:</span> {{ getTimeDiff(groupData.end, groupData.start) }}
     </div>
-    <div class="item">
-      <span>Logs:</span> {{groupData.logsCount}}
+    <div class="item dropdown" dropdown placement="bottom left">
+
+      <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" dropdownToggle (click)="false">
+        <span>Logs:</span> {{groupData.logsCount}}
+      </a>
+      <div class="dropdown-menu dropdown-menu-left" *dropdownMenu aria-labelledby="simple-dropdown">
+        <div class="dropdown-header text-center">
+          <strong>Log Levels</strong>
+        </div>
+        <a class="dropdown-item" *ngFor="let item of logLevelsKeys" (click)="changeLogLevel(item)">
+          <i class="fa fa-check-square" *ngIf="logLevels[item]"></i>
+          <i class="fa fa-square" *ngIf="!logLevels[item]"></i>
+          {{item}} <span class="badge badge-info"></span>
+        </a>
+      </div>
+
     </div>
     <div class="item">
       <span>Traces:</span> {{groupData.tracesCount}}

@@ -1594,6 +1594,10 @@ button {
         padding: 0px 0px 0px 10px;
         border-right: 0px solid #ccc;
       }
+      a {
+        color: #014869;
+        cursor: pointer;
+      }
     }
     &.separator {
       flex: 9;

@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild, Input, ChangeDetectorRef, ChangeDetection
 import { QueryService } from '../../services/api/api/query.service';
 import { environment } from '../../../environments/environment';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
-import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem, NodeStatusItemValue, GroupData } from '../../services/api';
+import { SearchResults, SerializableException, NodeLogItem, NodeTraceItem, NodeStatusItemValue, GroupData, LogLevelEnum } from '../../services/api';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
@@ -22,6 +22,8 @@ export class ViewGroupComponent implements OnInit {
   public groupData: GroupDataExt = null;
   public searchView: string = 'ByApp';
   public bProcessing: boolean = true;
+  public logLevels = {};
+  public logLevelsKeys = [];
 
   // Exception Viewer
   @ViewChild('exceptionModal')
@@ -96,8 +98,15 @@ export class ViewGroupComponent implements OnInit {
     gData.start = null;
     gData.end = null;
 
+    let nData = []
     for (let i = 0; i < gData.data.length; i++) {
       const dataItem = gData.data[i];
+
+      if (dataItem.level !== undefined && this.logLevels[dataItem.level] == false) {
+        console.log(dataItem.level);
+        continue;
+      }
+      nData.push(dataItem);
 
       let appItem = gData.groupedData.find(item => item.appName === dataItem.application);
       if (appItem === undefined) {
@@ -156,6 +165,7 @@ export class ViewGroupComponent implements OnInit {
         hasJson: ((dataItem.formats !== null && dataItem.formats.indexOf('JSON') > -1) || dataItem.formats === null),
         hasTxt: (dataItem.formats !== null && dataItem.formats.indexOf('TXT') > -1)
       };
+
       if (nodeItem.tags.indexOf('Status: Error') > -1) {
         appItem.hasError = true;
       }
@@ -169,6 +179,10 @@ export class ViewGroupComponent implements OnInit {
       }
       appItem.items.push(nodeItem);
 
+      if (nodeItem.level && this.logLevels[nodeItem.level] === undefined) {
+        this.logLevels[nodeItem.level] = true;
+      }
+
       if (nodeItem.traceId)
         gData.tracesCount += 1;
       if (nodeItem.logId)
@@ -178,6 +192,8 @@ export class ViewGroupComponent implements OnInit {
       if (gData.end == null || gData.end < nodeItem.timestamp)
         gData.end = nodeItem.timestamp;
     }
+
+    gData.data = nData;
 
     for (let j = 0; j < gData.groupedData.length; j++) {
       const appItem = gData.groupedData[j];
@@ -280,9 +296,16 @@ export class ViewGroupComponent implements OnInit {
     console.log("Extended data", gData);
     this.groupData = gData;
     this.bProcessing = false;
+
+    this.logLevelsKeys = Object.keys(this.logLevels).sort();
+    console.log(this.logLevelsKeys);
     this.cdr.detectChanges();
   }
 
+  changeLogLevel(item: LogLevelEnum) {
+    this.logLevels[item] = !this.logLevels[item];
+    this.loadData();
+  }
 
   showException(item: NodeLogItem) {
     this.exceptionTimestamp = item.timestamp;
