@@ -37,7 +37,15 @@
         </div>
       </div>
 
-      <div class="title" (click)="hideSidebar()">Services Status</div>
+      <div class="title" (click)="hideSidebar()">Services Status
+        <span class="fa-pointer float-right" *ngIf="selectedCounters.length > 0" (click)="getData()" style="
+          margin-top: -2px;
+          margin-right: 5px;
+          font-weight: normal;">
+          <i class="fa fa-refresh"></i>&nbsp;
+          <span>Refresh</span>
+        </span>
+      </div>
 
       <div class="countersContent" (click)="hideSidebar()">
 
