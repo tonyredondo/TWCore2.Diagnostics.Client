@@ -25,7 +25,6 @@ export class StatusComponent implements OnInit {
   public counters: Array<AppCounters>;
   public rawCounters: { [ key: string ]: CounterItem };
   public selectedCounters: Array<string> = [];
-  timerValue: any;
   showSideBar = false;
 
   constructor(private _queryService: QueryService,
@@ -38,7 +37,6 @@ export class StatusComponent implements OnInit {
     this._queryParams = Object.assign({}, this._activatedRoute.snapshot.queryParams);
     this.updateParams();
     this.getData();
-    this.cdr.detectChanges();
   }
 
   getData() {
@@ -49,7 +47,7 @@ export class StatusComponent implements OnInit {
       this.cdr.detectChanges();
       return;
     }
-    console.log(environment.name);
+    //console.log(environment.name);
     this.noData = null;
     this.counters = null;
     this._queryService.getCounters(environment.name).subscribe(data => {
@@ -70,8 +68,8 @@ export class StatusComponent implements OnInit {
         this.noData = true;
       }
       this.bProcessing = false;
-      console.log(this.counters);
-      console.log(this.rawCounters);
+      //console.log(this.counters);
+      //console.log(this.rawCounters);
       this.cdr.detectChanges();
     });
   }

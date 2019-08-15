@@ -1,27 +1,35 @@
 <div class="chart-card" *ngIf="series">
   <div class="chart">
-      <apx-chart [series]="series"
+      <apx-chart #chartObj [series]="series"
         [chart]="chart"
         [dataLabels]="dataLabels"
         [title]="title"
         [subtitle]="subtitle"
         [xaxis]="xaxis"
-        [tooltip]="tooltip">
+        [tooltip]="tooltip"
+        [stroke]="stroke">
       </apx-chart>
   </div>
 
   <div class="summary">
 
     <div class="centered">
-      <div class="item">
-          <div>Cummulative</div>
-          <div class="value">{{cumulative}} <span>requests</span></div>
+      <div class="item" *ngIf="aggregates.currentDay != aggregates.averageInCurrentDay">
+          <div>Total Day</div>
+          <div class="value">{{aggregates.currentDay}} <span>{{unit}}</span></div>
       </div>
       <div class="item">
-          <div>Avg. Hourly</div>
-          <div class="value">{{average}} <span>requests</span></div>
+          <div>Avg. Day</div>
+          <div class="value">{{aggregates.averageInCurrentDay}} <span>{{unit}}{{dataUnit}}</span></div>
       </div>
-
+      <div class="item" *ngIf="aggregates.currentWeek != aggregates.averageInCurrentWeek">
+          <div>Total Week</div>
+          <div class="value">{{aggregates.currentWeek}} <span>{{unit}}</span></div>
+      </div>
+      <div class="item">
+          <div>Avg. Week</div>
+          <div class="value">{{aggregates.averageInCurrentWeek}} <span>{{unit}}{{dataUnit}}</span></div>
+      </div>
     </div>
 
   </div>

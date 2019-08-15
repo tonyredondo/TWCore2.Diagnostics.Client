@@ -1820,7 +1820,7 @@ button {
     border-left: solid 1px #c8ced3;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    //align-items: center;
     justify-content: center;
 
     .centered {
@@ -1828,7 +1828,7 @@ button {
       font-weight: bold;
 
       .item {
-        padding: 5px 0px;
+        padding: 4px;
         .value {
           color: #008ffb;
           font-size: 16px;

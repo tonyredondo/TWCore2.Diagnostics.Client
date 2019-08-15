@@ -22,7 +22,15 @@ export interface CounterValuesAggregate {
   fromDate?: Date;
   toDate?: Date;
   dataUnit?: DataUnitEnum;
-  value?: number;
-  averageValue?: number;
+  aggregates?: ValuesAggregates;
   data?: Array<CounterValuesAggregateItem>;
+}
+
+export interface ValuesAggregates {
+  currentDay?: number;
+  averageInCurrentDay?: number;
+  currentWeek?: number;
+  averageInCurrentWeek?: number;
+  aggregatedValue?: number;
+  averageValue?: number;
 }
