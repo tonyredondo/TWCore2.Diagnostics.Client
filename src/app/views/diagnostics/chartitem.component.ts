@@ -89,7 +89,7 @@ export class ChartItemComponent implements OnInit, OnDestroy {
   async loadData() {
     if (this.destroy) return;
 
-    var fromDate = new Date(new Date().setHours(-336,0,0,0));
+    var fromDate = new Date(new Date().setHours(-240,0,0,0));
     var toDate = new Date(new Date().setHours(0,0,0,0));
     this._queryService.apiQueryCountersAggregation(environment.name, this.counterId, DataUnitEnum.Hourly, fromDate, toDate).subscribe(data => {
 
